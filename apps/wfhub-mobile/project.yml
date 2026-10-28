@@ -9,7 +9,12 @@ targets:
     sources: [WFHub]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.cagatayldzz.wfhub
+        DEVELOPMENT_TEAM: 4U6KP93722
+        CODE_SIGN_STYLE: Automatic
+        PRODUCT_BUNDLE_IDENTIFIER: com.wfhub.cagatayldzz
+        MARKETING_VERSION: "2.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_OBJC_BRIDGING_HEADER: WFHub/Bridge.h
         LIBRARY_SEARCH_PATHS: '$(inherited) $(SRCROOT)/build/rust/$(PLATFORM_NAME)'
         OTHER_LDFLAGS: '$(inherited) -lwfhub_ffi'

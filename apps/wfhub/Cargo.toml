@@ -1,0 +1,11 @@
+[package]
+name = "wfhub"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+gpui.workspace = true
+wfhub-ui.workspace = true
+
+[lints]
+workspace = true

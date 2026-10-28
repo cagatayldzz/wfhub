@@ -61,23 +61,6 @@ struct RouteList: View {
   }
 }
 
-struct HomeView: View {
-  @AppStorage("tennoName") private var name = "Tenno"
-  var body: some View {
-    List {
-      Section("World State") {
-        ForEach(Catalogue.routes.activities.filter { ["nightwave", "events", "news", "voidTrader", "alerts"].contains($0.endpoint) }) { route in
-          NavigationLink(route.title) { DataScreen(route: route, kind: .activity) }
-        }
-      }
-      Section("Explore") {
-        NavigationLink("Codex") { RouteList(title: "Codex", routes: Catalogue.routes.categories, kind: .category) }
-      }
-    }
-    .navigationTitle("Welcome, \(name)")
-  }
-}
-
 struct SettingsView: View {
   @AppStorage("tennoName") private var name = "Tenno"
   @AppStorage("platform") private var platform = "pc"

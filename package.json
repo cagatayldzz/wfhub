@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:phone": "apps/wfhub-mobile/scripts/simulator.sh",
+    "dev:phone": "cargo run -p wfhub -- --phone",
     "mobile:project": "cd apps/wfhub-mobile && xcodegen generate",
     "mobile:rust": "apps/wfhub-mobile/scripts/build-rust.sh",
     "mobile:simulator": "apps/wfhub-mobile/scripts/simulator.sh",
