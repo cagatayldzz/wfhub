@@ -1,21 +1,36 @@
 use gpui::{App, Application, Bounds, Pixels, Size, WindowBounds, WindowOptions, prelude::*, px, size};
-use wfhub_ui::Root;
+mod ui;
 
-fn initial_window_size(cx: &App, phone: bool) -> Size<Pixels> {
-  let (width, height) =
-    cx.primary_display().map(|display| display.bounds().size).map_or((1440.0, 900.0), |screen| (f32::from(screen.width), f32::from(screen.height)));
-  if phone {
-    let height = (height * 0.8).min(844.0);
-    size(px(height * 390.0 / 844.0), px(height))
-  } else {
-    size(px((width * 0.8).min(900.0)), px((height * 0.8).min(700.0)))
+use ui::Root;
+
+struct Assets;
+
+impl gpui::AssetSource for Assets {
+  fn load(&self, path: &str) -> anyhow::Result<Option<std::borrow::Cow<'static, [u8]>>> {
+    let bytes: Option<&'static [u8]> = match path {
+      "nav/home.svg" => Some(include_bytes!("../assets/home.svg")),
+      "nav/activities.svg" => Some(include_bytes!("../assets/activities.svg")),
+      "nav/market.svg" => Some(include_bytes!("../assets/market.svg")),
+      "nav/codex.svg" => Some(include_bytes!("../assets/codex.svg")),
+      "nav/settings.svg" => Some(include_bytes!("../assets/settings.svg")),
+      _ => None,
+    };
+    Ok(bytes.map(std::borrow::Cow::Borrowed))
+  }
+  fn list(&self, _: &str) -> anyhow::Result<Vec<gpui::SharedString>> {
+    Ok(Vec::new())
   }
 }
 
+fn initial_window_size(cx: &App) -> Size<Pixels> {
+  let height = cx.primary_display().map(|display| f32::from(display.bounds().size.height)).unwrap_or(900.0);
+  let height = (height * 0.8).min(844.0);
+  size(px(height * 390.0 / 844.0), px(height))
+}
+
 fn main() {
-  let phone = std::env::args().any(|arg| arg == "--phone");
-  Application::new().run(move |cx| {
-    let bounds = Bounds::centered(None, initial_window_size(cx, phone), cx);
+  Application::new().with_assets(Assets).run(move |cx| {
+    let bounds = Bounds::centered(None, initial_window_size(cx), cx);
     let result = cx.open_window(
       WindowOptions { window_bounds: Some(WindowBounds::Windowed(bounds)), window_min_size: Some(size(px(240.), px(320.))), ..Default::default() },
       |_, cx| cx.new(Root::new),

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["apps/wfhub", "crates/core", "crates/ffi", "crates/ui"]
+members = ["apps/wfhub", "crates/core", "crates/ffi"]
 default-members = ["apps/wfhub"]
 
 [workspace.package]
@@ -12,5 +12,4 @@ unsafe_code = "deny"
 
 [workspace.dependencies]
 gpui = { version = "0.2.2", features = ["runtime_shaders"] }
-wfhub-ui = { path = "crates/ui" }
 wfhub-core = { path = "crates/core" }
