@@ -1,27 +1,47 @@
 import SwiftUI
 
 struct ActivitiesView: View {
+  @State private var search = ""
+  private let order = ["alerts", "voidTrader", "fissures", "cycles", "dailyDeals", "nightwave", "events", "invasions", "arbitration", "archonHunt", "steelPath", "sentientOutposts", "simaris", "constructionProgress", "news", "flashSales", "sortie"]
   private var routes: [Route] {
-    var result = Catalogue.routes.activities.filter { !$0.endpoint.hasSuffix("Cycle") }
-    if let index = result.firstIndex(where: { $0.endpoint == "fissures" }) {
-      result.insert(Route(title: "Cycles", endpoint: "cycles"), at: index + 1)
-    }
-    return result
+    order.compactMap { endpoint in
+      if endpoint == "cycles" { return Route(title: "Cycles", endpoint: endpoint) }
+      return Catalogue.routes.activities.first { $0.endpoint == endpoint }
+    }.filter { search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) }
   }
 
   var body: some View {
     ScrollView {
-      LazyVStack(spacing: 0) {
-        ForEach(routes) { route in
-          if route.endpoint == "cycles" {
-            NavigationLink { CyclesView() } label: { ActivityLink(route: route) }
-          } else {
-            NavigationLink { DataScreen(route: route, kind: .activity) } label: { ActivityLink(route: route) }
+      LazyVStack(alignment: .leading, spacing: 10) {
+        HStack(alignment: .firstTextBaseline) {
+          VStack(alignment: .leading, spacing: 4) {
+            Text("Activities").font(.system(size: 28, weight: .heavy))
+            Text("Worldstate Details").font(.subheadline).foregroundStyle(.secondary)
           }
-          Divider().padding(.leading, 76)
+          Spacer()
+        }.padding(.bottom, 10)
+        HStack(spacing: 10) {
+          Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
+          TextField("Search activities", text: $search).textInputAutocapitalization(.never).autocorrectionDisabled()
+          if !search.isEmpty {
+            Button { search = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary) }
+              .accessibilityLabel("Clear search")
+          }
+        }.padding(12).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.bottom, 6)
+        if routes.isEmpty {
+          ContentUnavailableView.search(text: search)
+        } else {
+          ForEach(routes) { route in
+            if route.endpoint == "cycles" {
+              NavigationLink { CyclesView() } label: { ActivityLink(route: route) }.buttonStyle(.plain)
+            } else {
+              NavigationLink { DataScreen(route: route, kind: .activity) } label: { ActivityLink(route: route) }.buttonStyle(.plain)
+            }
+          }
         }
-      }.padding(.top, 8)
-    }.navigationTitle("Activities")
+      }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 24)
+    }
+    .navigationBarHidden(true)
   }
 }
 
@@ -42,13 +62,21 @@ private struct ActivityLink: View {
   var body: some View {
     HStack(spacing: 14) {
       AsyncImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/activities/\(imageName).png")) { image in
-        image.resizable().scaledToFill()
-      } placeholder: { Color.secondary.opacity(0.12) }
-      .frame(width: 44, height: 44).clipped().cornerRadius(6)
-      Text(route.title).font(.system(size: 18, weight: .bold)).foregroundStyle(.primary)
-      Spacer()
-      Image(systemName: "chevron.right").font(.caption.bold()).foregroundStyle(.tertiary)
-    }.padding(.horizontal, 20).padding(.vertical, 12).contentShape(Rectangle())
+        image.resizable().scaledToFit()
+      } placeholder: { Image(systemName: "sparkle").foregroundStyle(WFStyle.accent) }
+      .frame(width: 48, height: 48)
+      VStack(alignment: .leading, spacing: 3) {
+        Text(LocalizedStringKey(route.title)).font(.system(size: 17, weight: .bold)).foregroundStyle(.primary)
+      }
+      Spacer(minLength: 8)
+      Image(systemName: "chevron.right").font(.system(size: 12, weight: .bold)).foregroundStyle(.secondary)
+    }
+    .padding(.horizontal, 16).padding(.vertical, 12)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(Color(uiColor: .secondarySystemBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 12))
+    .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.primary.opacity(0.07)))
+    .contentShape(Rectangle())
   }
 }
 
@@ -113,71 +141,108 @@ struct CyclesView: View {
 struct SettingsView: View {
   @AppStorage("tennoName") private var storedName = "Tenno"
   @AppStorage("platform") private var storedPlatform = "pc"
+  @AppStorage("appLanguage") private var language = "system"
+  @AppStorage("appTheme") private var theme = "system"
   @State private var name = ""
   @State private var platform = "pc"
   @State private var saved = false
-  @AppStorage("appLanguage") private var language = "system"
-  @AppStorage("appTheme") private var theme = "system"
+  @FocusState private var editingName: Bool
+
+  private let languages: [(String, String)] = [
+    ("de", "Deutsch"), ("en", "English"), ("es", "Español"), ("fr", "Français"),
+    ("it", "Italiano"), ("ja", "日本語"), ("ko", "한국어"), ("pl", "Polski"),
+    ("pt", "Português"), ("ru", "Русский"), ("th", "ไทย"), ("tr", "Türkçe"),
+    ("uk", "Українська"), ("zh", "简体中文")
+  ]
+  private let platforms: [(String, String)] = [("pc", "PC"), ("xb1", "Xbox"), ("swi", "Nintendo Switch"), ("ps4", "PlayStation")]
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 22) {
-        VStack(alignment: .leading, spacing: 8) {
-          Text("Tenno name").font(.subheadline.bold()).foregroundStyle(.secondary)
-          TextField("Tenno name", text: $name).textInputAutocapitalization(.never)
-            .padding(14).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 10))
+      VStack(alignment: .leading, spacing: 24) {
+        Text("Settings").font(.system(size: 28, weight: .heavy))
+
+        VStack(alignment: .leading, spacing: 10) {
+          Text("PROFILE").font(.caption.bold()).tracking(1).foregroundStyle(.secondary).padding(.horizontal, 4)
+          VStack(spacing: 0) {
+            HStack(spacing: 12) {
+              SettingsIcon(name: "person.crop.circle")
+              VStack(alignment: .leading, spacing: 4) {
+                Text("Tenno Name").font(.subheadline).foregroundStyle(.secondary)
+                TextField("Tenno Name", text: $name).textInputAutocapitalization(.never).autocorrectionDisabled()
+                  .font(.body.weight(.semibold)).focused($editingName)
+              }
+            }.padding(16)
+            Divider().padding(.leading, 60)
+            Menu {
+              ForEach(platforms, id: \.0) { code, title in
+                Button { platform = code } label: { if platform == code { Label(title, systemImage: "checkmark") } else { Text(title) } }
+              }
+            } label: {
+              SettingsRow(icon: "gamecontroller", title: "Platform", value: platforms.first { $0.0 == platform }?.1 ?? "PC")
+            }
+          }.tint(.primary).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 14))
         }
-        VStack(alignment: .leading, spacing: 8) {
-          Text("Platform").font(.subheadline.bold()).foregroundStyle(.secondary)
-          Picker("Platform", selection: $platform) {
-            Text("PC").tag("pc")
-            Text("Xbox").tag("xb1")
-            Text("Nintendo Switch").tag("swi")
-            Text("PlayStation").tag("ps4")
-          }.pickerStyle(.menu).frame(maxWidth: .infinity, alignment: .leading)
-            .padding(10).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 10))
+
+        VStack(alignment: .leading, spacing: 10) {
+          Text("PREFERENCES").font(.caption.bold()).tracking(1).foregroundStyle(.secondary).padding(.horizontal, 4)
+          VStack(spacing: 0) {
+            Menu {
+              Button { language = "system" } label: { if language == "system" { Label("System", systemImage: "checkmark") } else { Text("System") } }
+              ForEach(languages, id: \.0) { code, title in
+                Button { language = code } label: { if language == code { Label(title, systemImage: "checkmark") } else { Text(title) } }
+              }
+            } label: {
+              SettingsRow(icon: "globe", title: "Language", value: language == "system" ? "System" : languages.first { $0.0 == language }?.1 ?? "English")
+            }
+            Divider().padding(.leading, 60)
+            Menu {
+              Button { theme = "system" } label: { if theme == "system" { Label("System", systemImage: "checkmark") } else { Text("System") } }
+              Button { theme = "light" } label: { if theme == "light" { Label("Light", systemImage: "checkmark") } else { Text("Light") } }
+              Button { theme = "dark" } label: { if theme == "dark" { Label("Dark", systemImage: "checkmark") } else { Text("Dark") } }
+            } label: {
+              SettingsRow(icon: "circle.lefthalf.filled", title: "Appearance", value: theme == "light" ? "Light" : theme == "dark" ? "Dark" : "System")
+            }
+          }.tint(.primary).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 14))
         }
-        VStack(alignment: .leading, spacing: 8) {
-          Text("Language").font(.subheadline.bold()).foregroundStyle(.secondary)
-          Picker("Language", selection: $language) {
-            Text("System").tag("system")
-            Text("Deutsch").tag("de")
-            Text("English").tag("en")
-            Text("Español").tag("es")
-            Text("Français").tag("fr")
-            Text("Italiano").tag("it")
-            Text("日本語").tag("ja")
-            Text("한국어").tag("ko")
-            Text("Polski").tag("pl")
-            Text("Português").tag("pt")
-            Text("Русский").tag("ru")
-            Text("ไทย").tag("th")
-            Text("Türkçe").tag("tr")
-            Text("Українська").tag("uk")
-            Text("简体中文").tag("zh")
-          }.pickerStyle(.menu).frame(maxWidth: .infinity, alignment: .leading)
-            .padding(10).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-        VStack(alignment: .leading, spacing: 8) {
-          Text("Appearance").font(.subheadline.bold()).foregroundStyle(.secondary)
-          Picker("Appearance", selection: $theme) {
-            Text("System").tag("system")
-            Text("Light").tag("light")
-            Text("Dark").tag("dark")
-          }.pickerStyle(.menu).frame(maxWidth: .infinity, alignment: .leading)
-            .padding(10).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 10))
-        }
+
         Button {
           storedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
           storedPlatform = platform
+          editingName = false
           saved = true
         } label: {
-          Text("Save").font(.headline).foregroundStyle(.black).frame(maxWidth: .infinity).padding(15).background(WFStyle.gold).clipShape(RoundedRectangle(cornerRadius: 10))
+          Text("Save").font(.headline).foregroundStyle(.black).frame(maxWidth: .infinity).padding(.vertical, 16)
+            .background(WFStyle.gold).clipShape(RoundedRectangle(cornerRadius: 12))
         }
-      }.padding(20)
-    }.navigationTitle("Settings")
+      }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 32)
+    }.scrollDismissesKeyboard(.interactively).navigationBarHidden(true)
       .onAppear { name = storedName; platform = storedPlatform }
       .alert("Settings saved", isPresented: $saved) { Button("OK", role: .cancel) {} }
+  }
+}
+
+private struct SettingsIcon: View {
+  let name: String
+  var body: some View {
+    Image(systemName: name).font(.system(size: 17, weight: .semibold)).foregroundStyle(WFStyle.accent)
+      .frame(width: 34, height: 34).background(WFStyle.accent.opacity(0.1)).clipShape(RoundedRectangle(cornerRadius: 9))
+  }
+}
+
+private struct SettingsRow: View {
+  let icon: String
+  let title: LocalizedStringKey
+  let value: String
+  var body: some View {
+    HStack(spacing: 12) {
+      SettingsIcon(name: icon)
+      VStack(alignment: .leading, spacing: 4) {
+        Text(title).font(.subheadline).foregroundStyle(Color(uiColor: .secondaryLabel))
+        Text(LocalizedStringKey(value)).font(.body.weight(.semibold)).foregroundStyle(Color(uiColor: .label)).lineLimit(1)
+      }
+      Spacer(minLength: 8)
+      Image(systemName: "chevron.up.chevron.down").font(.caption.weight(.semibold)).foregroundStyle(Color(uiColor: .secondaryLabel))
+    }.padding(16).contentShape(Rectangle())
   }
 }
 

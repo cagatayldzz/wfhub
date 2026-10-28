@@ -36,6 +36,7 @@ struct DataScreen: View {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, item in
                   if matches(item) {
                     if route.endpoint == "news" { NewsDetailRow(item: item) }
+                    else if route.endpoint == "flashSales" { FlashSaleCard(item: item) }
                     else { ActivityRow(value: item, endpoint: route.endpoint) }
                   }
                 }
@@ -62,7 +63,7 @@ struct DataScreen: View {
   }
 
   private func matches(_ item: [String: Any]) -> Bool {
-    search.isEmpty || itemTitle(item).localizedCaseInsensitiveContains(search)
+    search.isEmpty || itemTitle(item).localizedCaseInsensitiveContains(search) || (item["item"] as? String ?? "").localizedCaseInsensitiveContains(search)
   }
 
   private func load() async {
@@ -73,6 +74,8 @@ struct DataScreen: View {
       guard !Task.isCancelled, selectedPlatform == platform else { return }
       if route.endpoint == "news", let news = result as? [[String: Any]] {
         data = news.sorted { ($0["date"] as? String ?? "") > ($1["date"] as? String ?? "") }
+      } else if route.endpoint == "flashSales", let sales = result as? [[String: Any]] {
+        data = sales.sorted { ($0["expiry"] as? String ?? "") < ($1["expiry"] as? String ?? "") }
       } else { data = result }
       error = nil
     } catch {

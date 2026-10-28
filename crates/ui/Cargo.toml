@@ -6,6 +6,8 @@ edition.workspace = true
 [dependencies]
 gpui.workspace = true
 wfhub-core.workspace = true
+serde_json = "1"
+ureq = "3"
 
 [lints]
 workspace = true

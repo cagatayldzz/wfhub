@@ -52,7 +52,7 @@ struct HomeView: View {
           NavigationLink { DataScreen(route: route("nightwave", fallback: "Nightwave"), kind: .activity) } label: {
             VStack(alignment: .leading, spacing: 6) {
               Text("NIGHTWAVE").font(.system(size: 26, weight: .black)).foregroundStyle(WFStyle.accent)
-              Text("\(text("Nora's season", "Nora'nın sezonu")) \(number(nightwave["season"]))")
+              Text("\(text("Nora's Mix Season", "Nora'nın sezonu")) \(number(nightwave["season"]))")
               Countdown(expiry: nightwave["expiry"] as? String)
             }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 20).padding(.vertical, 24)
           }.buttonStyle(.plain)
@@ -60,7 +60,7 @@ struct HomeView: View {
         }
 
         if !data.events.isEmpty {
-          sectionHeader(text("Events", "Etkinlikler"), subtitle: text("Latest events", "Son etkinlikler"), endpoint: "events")
+          sectionHeader(text("Events", "Etkinlikler"), subtitle: text("Latest Events", "Son etkinlikler"), endpoint: "events")
           VStack(spacing: 12) {
             ForEach(Array(data.events.enumerated()), id: \.offset) { _, event in EventCard(event: event) }
           }.padding(.horizontal, 16)
@@ -82,7 +82,7 @@ struct HomeView: View {
         }
 
         if !data.alerts.isEmpty {
-          sectionHeader(text("Activities", "Aktiviteler"), subtitle: text("Latest activities", "Son aktiviteler"), endpoint: "alerts")
+          sectionHeader(text("Activities", "Aktiviteler"), subtitle: text("Latest Activities", "Son aktiviteler"), endpoint: "alerts")
           VStack(spacing: 12) {
             ForEach(Array(data.alerts.enumerated()), id: \.offset) { _, alert in AlertCard(alert: alert) }
           }.padding(.horizontal, 16)

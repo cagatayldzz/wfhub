@@ -18,7 +18,7 @@ fn main() {
     let bounds = Bounds::centered(None, initial_window_size(cx, phone), cx);
     let result = cx.open_window(
       WindowOptions { window_bounds: Some(WindowBounds::Windowed(bounds)), window_min_size: Some(size(px(240.), px(320.))), ..Default::default() },
-      |_, cx| cx.new(|_| Root::new()),
+      |_, cx| cx.new(Root::new),
     );
     if let Err(error) = result {
       eprintln!("Could not open window: {error}");

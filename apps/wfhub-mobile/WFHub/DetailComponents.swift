@@ -216,3 +216,51 @@ struct NewsDetailRow: View {
     } else { content }
   }
 }
+
+struct FlashSaleCard: View {
+  let item: [String: Any]
+
+  var body: some View {
+    WFCard {
+      VStack(alignment: .leading, spacing: 12) {
+        HStack(alignment: .top, spacing: 10) {
+          Text(item["item"] as? String ?? "Item")
+            .font(.headline).foregroundStyle(.primary).fixedSize(horizontal: false, vertical: true)
+          Spacer(minLength: 0)
+          if let discount = item["discount"] as? Int, discount > 0 {
+            Text("−\(discount)%").font(.caption.bold()).foregroundStyle(.black)
+              .padding(.horizontal, 8).padding(.vertical, 5)
+              .background(WFStyle.gold).clipShape(Capsule())
+          }
+        }
+        HStack(spacing: 14) {
+          if let price = item["premiumOverride"] as? Int, price > 0 {
+            CurrencyLabel(icon: "platinum", value: price)
+          }
+          if let price = item["regularOverride"] as? Int, price > 0 {
+            CurrencyLabel(icon: "credits", value: price)
+          }
+          Spacer(minLength: 0)
+          if let expiry = item["expiry"] as? String, let date = screenDate(expiry), date > .now {
+            Label { Text(date, style: .timer).monospacedDigit() } icon: { Image(systemName: "clock") }
+              .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+          }
+        }
+      }
+    }
+  }
+}
+
+private struct CurrencyLabel: View {
+  let icon: String
+  let value: Int
+  var body: some View {
+    HStack(spacing: 4) {
+      AsyncImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/icons/\(icon).png")) { image in
+        image.resizable().scaledToFit()
+      } placeholder: { Image(systemName: "diamond.fill").resizable().scaledToFit().foregroundStyle(WFStyle.accent) }
+      .frame(width: 16, height: 16)
+      Text(value, format: .number).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+    }.accessibilityElement(children: .combine)
+  }
+}

@@ -33,6 +33,10 @@ enum Catalogue {
 }
 
 struct RootView: View {
+  @State private var selection = ProcessInfo.processInfo.arguments.firstIndex(of: "--preview-tab").flatMap { index in
+    let args = ProcessInfo.processInfo.arguments
+    return index + 1 < args.count ? Int(args[index + 1]) : nil
+  } ?? 0
   @AppStorage("appLanguage") private var language = "system"
   @AppStorage("appTheme") private var theme = "system"
   private var colorScheme: ColorScheme? {
@@ -43,12 +47,12 @@ struct RootView: View {
     }
   }
   var body: some View {
-    TabView {
-      NavigationStack { HomeView() }.tabItem { Label("Home", systemImage: "house") }
-      NavigationStack { ActivitiesView() }.tabItem { Label("Activities", systemImage: "bolt") }
-      NavigationStack { MarketView() }.tabItem { Label("Market", systemImage: "bag") }
-      NavigationStack { CodexCategoriesView() }.tabItem { Label("Codex", systemImage: "book") }
-      NavigationStack { SettingsView() }.tabItem { Label("Settings", systemImage: "gear") }
+    TabView(selection: $selection) {
+      NavigationStack { HomeView() }.tabItem { Label("Home", systemImage: "house") }.tag(0)
+      NavigationStack { ActivitiesView() }.tabItem { Label("Activities", systemImage: "bolt") }.tag(1)
+      NavigationStack { MarketView() }.tabItem { Label("Market", systemImage: "bag") }.tag(2)
+      NavigationStack { CodexCategoriesView() }.tabItem { Label("Codex", systemImage: "book") }.tag(3)
+      NavigationStack { SettingsView() }.tabItem { Label("Settings", systemImage: "gear") }.tag(4)
     }
     .tint(WFStyle.accent)
     .preferredColorScheme(colorScheme)
