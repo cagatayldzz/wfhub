@@ -1,0 +1,22 @@
+name: WFHub
+options:
+  deploymentTarget:
+    iOS: '17.0'
+targets:
+  WFHub:
+    type: application
+    platform: iOS
+    sources: [WFHub]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.cagatayldzz.wfhub
+        SWIFT_OBJC_BRIDGING_HEADER: WFHub/Bridge.h
+        LIBRARY_SEARCH_PATHS: '$(inherited) $(SRCROOT)/build/rust/$(PLATFORM_NAME)'
+        OTHER_LDFLAGS: '$(inherited) -lwfhub_ffi'
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: WFHub
+        SWIFT_VERSION: '5.0'
+    preBuildScripts:
+      - name: Build Rust core
+        script: '"${SRCROOT}/scripts/build-rust.sh"'
+        basedOnDependencyAnalysis: false

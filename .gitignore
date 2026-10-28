@@ -1,0 +1,4 @@
+/target/
+/apps/wfhub-mobile/build/
+/apps/wfhub-mobile/*.xcodeproj/
+.DS_Store

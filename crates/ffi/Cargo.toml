@@ -1,0 +1,10 @@
+[package]
+name = "wfhub-ffi"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+wfhub-core = { path = "../core" }

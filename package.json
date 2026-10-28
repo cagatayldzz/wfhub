@@ -1,0 +1,17 @@
+{
+  "name": "wfhub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev:phone": "apps/wfhub-mobile/scripts/simulator.sh",
+    "mobile:project": "cd apps/wfhub-mobile && xcodegen generate",
+    "mobile:rust": "apps/wfhub-mobile/scripts/build-rust.sh",
+    "mobile:simulator": "apps/wfhub-mobile/scripts/simulator.sh",
+    "mobile:archive": "apps/wfhub-mobile/scripts/archive.sh",
+    "cf:deploy": "npx wrangler deploy --name wfhub --assets ./apps/wfhub-web",
+    "check": "cargo fmt --all -- --check && cargo clippy --locked --workspace --all-targets -- -D warnings && cargo test --locked --workspace",
+    "test": "cargo test --locked --workspace",
+    "update": "cargo update",
+    "commit": "git add -A && oco --yes"
+  }
+}
