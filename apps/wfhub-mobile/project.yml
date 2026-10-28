@@ -7,6 +7,22 @@ targets:
     type: application
     platform: iOS
     sources: [WFHub]
+    info:
+      path: WFHub-Info.plist
+      properties:
+        CFBundleDisplayName: WFHub
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
     settings:
       base:
         DEVELOPMENT_TEAM: 4U6KP93722
@@ -18,7 +34,7 @@ targets:
         SWIFT_OBJC_BRIDGING_HEADER: WFHub/Bridge.h
         LIBRARY_SEARCH_PATHS: '$(inherited) $(SRCROOT)/build/rust/$(PLATFORM_NAME)'
         OTHER_LDFLAGS: '$(inherited) -lwfhub_ffi'
-        GENERATE_INFOPLIST_FILE: YES
+        GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_KEY_CFBundleDisplayName: WFHub
         SWIFT_VERSION: '5.0'
     preBuildScripts:

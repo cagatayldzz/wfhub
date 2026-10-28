@@ -33,15 +33,26 @@ enum Catalogue {
 }
 
 struct RootView: View {
+  @AppStorage("appLanguage") private var language = "system"
+  @AppStorage("appTheme") private var theme = "system"
+  private var colorScheme: ColorScheme? {
+    switch theme {
+    case "light": return .light
+    case "dark": return .dark
+    default: return nil
+    }
+  }
   var body: some View {
     TabView {
       NavigationStack { HomeView() }.tabItem { Label("Home", systemImage: "house") }
-      NavigationStack { RouteList(title: "Activities", routes: Catalogue.routes.activities, kind: .activity) }.tabItem { Label("Activities", systemImage: "bolt") }
-      NavigationStack { RouteList(title: "Codex", routes: Catalogue.routes.categories, kind: .category) }.tabItem { Label("Codex", systemImage: "book") }
-      NavigationStack { MarketView() }.tabItem { Label("Market", systemImage: "cart") }
+      NavigationStack { ActivitiesView() }.tabItem { Label("Activities", systemImage: "bolt") }
+      NavigationStack { MarketView() }.tabItem { Label("Market", systemImage: "bag") }
+      NavigationStack { CodexCategoriesView() }.tabItem { Label("Codex", systemImage: "book") }
       NavigationStack { SettingsView() }.tabItem { Label("Settings", systemImage: "gear") }
     }
-    .tint(.orange)
+    .tint(WFStyle.accent)
+    .preferredColorScheme(colorScheme)
+    .environment(\.locale, language == "system" ? .autoupdatingCurrent : Locale(identifier: language))
   }
 }
 
@@ -61,18 +72,3 @@ struct RouteList: View {
   }
 }
 
-struct SettingsView: View {
-  @AppStorage("tennoName") private var name = "Tenno"
-  @AppStorage("platform") private var platform = "pc"
-  var body: some View {
-    Form {
-      TextField("Tenno name", text: $name)
-      Picker("Platform", selection: $platform) {
-        Text("PC").tag("pc")
-        Text("PlayStation").tag("ps4")
-        Text("Xbox").tag("xb1")
-        Text("Nintendo Switch").tag("swi")
-      }
-    }.navigationTitle("Settings")
-  }
-}

@@ -21,7 +21,11 @@ struct HomeView: View {
   @State private var loading = true
 
   private var turkish: Bool { locale.language.languageCode?.identifier == "tr" }
-  private func text(_ english: String, _ turkishText: String) -> String { turkish ? turkishText : english }
+  private func text(_ english: String, _ turkishText: String) -> String {
+    let language = locale.language.languageCode?.identifier ?? "en"
+    guard let path = Bundle.main.path(forResource: language, ofType: "lproj"), let bundle = Bundle(path: path) else { return english }
+    return bundle.localizedString(forKey: english, value: english, table: nil)
+  }
   private func route(_ endpoint: String, fallback: String) -> Route {
     Catalogue.routes.activities.first { $0.endpoint == endpoint } ?? Route(title: fallback, endpoint: endpoint)
   }
@@ -36,7 +40,7 @@ struct HomeView: View {
         ForEach(Array(data.banners.enumerated()), id: \.offset) { _, banner in
           if let title = banner["title"] as? String,
              let link = banner["link"] as? String,
-             let url = URL(string: link.replacingOccurrences(of: "{lang}", with: turkish ? "tr" : "en")),
+             let url = URL(string: link.replacingOccurrences(of: "{lang}", with: locale.language.languageCode?.identifier ?? "en")),
              ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
             Link(destination: url) {
               ImageBanner(image: banner["imageLink"] as? String, title: title, subtitle: nil, expiry: nil)
@@ -47,7 +51,7 @@ struct HomeView: View {
         if let nightwave = data.nightwave {
           NavigationLink { DataScreen(route: route("nightwave", fallback: "Nightwave"), kind: .activity) } label: {
             VStack(alignment: .leading, spacing: 6) {
-              Text("NIGHTWAVE").font(.system(size: 26, weight: .black)).foregroundStyle(gold)
+              Text("NIGHTWAVE").font(.system(size: 26, weight: .black)).foregroundStyle(WFStyle.accent)
               Text("\(text("Nora's season", "Nora'nın sezonu")) \(number(nightwave["season"]))")
               Countdown(expiry: nightwave["expiry"] as? String)
             }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 20).padding(.vertical, 24)
@@ -66,7 +70,7 @@ struct HomeView: View {
           sectionHeader(text("News", "Haberler"), subtitle: text("Latest news", "Son haberler"), endpoint: "news")
           VStack(spacing: 15) {
             ForEach(Array(data.news.prefix(2).enumerated()), id: \.offset) { index, item in
-              NewsCard(item: item, index: index + 1, language: turkish ? "tr" : "en")
+              NewsCard(item: item, index: index + 1, language: locale.language.languageCode?.identifier ?? "en")
             }
           }.padding(.horizontal, 16).padding(.bottom, 16)
         }
@@ -120,18 +124,14 @@ struct HomeView: View {
       if let endpoint {
         NavigationLink(text("View all", "Tümünü gör")) { DataScreen(route: route(endpoint, fallback: title), kind: .activity) }
       } else {
-        NavigationLink(text("View all", "Tümünü gör")) { RouteList(title: "Codex", routes: Catalogue.routes.categories, kind: .category) }
+        NavigationLink(text("View all", "Tümünü gör")) { CodexCategoriesView() }
       }
     }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 16)
   }
 
   private func codexCard(_ title: String, category: String, image: String) -> some View {
     NavigationLink { DataScreen(route: Route(title: title, endpoint: category), kind: .category) } label: {
-      ZStack(alignment: .bottomLeading) {
-        RemoteImage(url: cdn + image).frame(height: 140).clipped()
-        LinearGradient(colors: [.clear, .black.opacity(0.8)], startPoint: .center, endPoint: .bottom)
-        Text(title.uppercased()).font(.headline).foregroundStyle(.white).padding(12)
-      }.frame(maxWidth: .infinity).frame(height: 140).clipped()
+      ArtworkCard(title: title, image: URL(string: cdn + image))
     }.buttonStyle(.plain)
   }
 
@@ -194,7 +194,7 @@ private struct ImageBanner: View {
         if let subtitle, !subtitle.isEmpty { Text(subtitle).font(.body) }
         if expiry != nil { Countdown(expiry: expiry) }
       }.foregroundStyle(.white).padding(.horizontal, 20)
-    }.frame(height: 110).clipped()
+    }.frame(height: 110).clipped().clipShape(RoundedRectangle(cornerRadius: 12)).padding(.horizontal, 16).padding(.vertical, 6)
   }
 }
 
@@ -228,7 +228,7 @@ private struct EventCard: View {
     return nil
   }
   var body: some View {
-    VStack(alignment: .leading, spacing: 6) {
+    WFCard { VStack(alignment: .leading, spacing: 6) {
       HStack {
         Text(event["description"] as? String ?? "Event").font(.headline).lineLimit(2)
         Spacer()
@@ -239,7 +239,7 @@ private struct EventCard: View {
         Spacer()
         Countdown(expiry: event["expiry"] as? String).font(.subheadline)
       }
-    }.padding(12).frame(maxWidth: .infinity, alignment: .leading).overlay(Rectangle().stroke(Color.secondary.opacity(0.25)))
+    } }
   }
 }
 
@@ -250,14 +250,14 @@ private struct AlertCard: View {
     let reward = mission["reward"] as? [String: Any] ?? [:]
     let items = reward["items"] as? [String] ?? []
     let counted = (reward["countedItems"] as? [[String: Any]] ?? []).map { "\(number($0["count"])) \($0["type"] as? String ?? "")" }
-    return VStack(alignment: .leading, spacing: 6) {
+    return WFCard { VStack(alignment: .leading, spacing: 6) {
       Text((alert["tag"] as? String) == "LotusGift" ? "Gifts of the Lotus" : (mission["node"] as? String ?? "Alert")).font(.headline)
       HStack {
         Text((items.isEmpty ? counted : items).joined(separator: ", ")).foregroundStyle(.secondary)
         Spacer()
         Countdown(expiry: alert["expiry"] as? String).font(.subheadline)
       }
-    }.padding(12).frame(maxWidth: .infinity, alignment: .leading).overlay(Rectangle().stroke(Color.secondary.opacity(0.25)))
+    } }
   }
 }
 

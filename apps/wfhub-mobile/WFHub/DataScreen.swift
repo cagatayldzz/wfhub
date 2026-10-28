@@ -20,29 +20,45 @@ struct DataScreen: View {
       if let error {
         ContentUnavailableView { Label("Unable to load", systemImage: "wifi.slash") } description: { Text(error) } actions: { Button("Retry") { Task { await load() } } }
       } else if let data {
-        List {
+        ScrollView {
           if let items = data as? [[String: Any]] {
-            ForEach(Array(items.enumerated()), id: \.offset) { _, item in
-              if matches(item) {
-                if kind == .category, let slug = item["slug"] as? String {
-                  NavigationLink(itemTitle(item)) { ItemScreen(category: route.endpoint, slug: slug, title: itemTitle(item)) }
-                } else {
-                  JsonRow(value: item)
+            if items.isEmpty { ContentUnavailableView("No data found!", systemImage: "tray") }
+            if kind == .category {
+              LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                  if matches(item), let slug = item["slug"] as? String {
+                    NavigationLink { ItemScreen(category: route.endpoint, slug: slug, title: itemTitle(item)) } label: { CodexTile(item: item) }.buttonStyle(.plain)
+                  }
                 }
-              }
+              }.padding(12)
+            } else {
+              LazyVStack(spacing: 10) {
+                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                  if matches(item) {
+                    if route.endpoint == "news" { NewsDetailRow(item: item) }
+                    else { ActivityRow(value: item, endpoint: route.endpoint) }
+                  }
+                }
+              }.padding(12)
             }
           } else if let object = data as? [String: Any] {
-            JsonRow(value: object)
-          } else {
-            Text("No data available")
-          }
+            ActivityRow(value: object, endpoint: route.endpoint).padding(12)
+          } else { ContentUnavailableView("No data found!", systemImage: "tray") }
         }.searchable(text: $search).refreshable { await load() }
       } else {
         ProgressView()
       }
     }
     .navigationTitle(route.title)
-    .task(id: platform) { await load() }
+    .task(id: platform) {
+      await load()
+      if kind == .activity {
+        while !Task.isCancelled {
+          do { try await Task.sleep(nanoseconds: 60_000_000_000) } catch { return }
+          await load()
+        }
+      }
+    }
   }
 
   private func matches(_ item: [String: Any]) -> Bool {
@@ -50,8 +66,19 @@ struct DataScreen: View {
   }
 
   private func load() async {
+    let selectedPlatform = platform
     guard let url else { error = "Invalid address"; return }
-    do { data = try await API.fetch(url); error = nil } catch { self.error = error.localizedDescription }
+    do {
+      let result = try await API.fetch(url)
+      guard !Task.isCancelled, selectedPlatform == platform else { return }
+      if route.endpoint == "news", let news = result as? [[String: Any]] {
+        data = news.sorted { ($0["date"] as? String ?? "") > ($1["date"] as? String ?? "") }
+      } else { data = result }
+      error = nil
+    } catch {
+      guard !Task.isCancelled, selectedPlatform == platform else { return }
+      self.error = error.localizedDescription
+    }
   }
 }
 
@@ -81,7 +108,10 @@ struct JsonRow: View {
 
 enum API {
   static func fetch(_ url: URL) async throws -> Any {
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.timeoutInterval = 30
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
     guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { throw URLError(.badServerResponse) }
     return try JSONSerialization.jsonObject(with: data)
   }
@@ -95,17 +125,21 @@ struct ItemScreen: View {
   @State private var error: String?
   var body: some View {
     Group {
-      if let item { List { JsonRow(value: item) } }
-      else if let error { ContentUnavailableView("Unable to load", systemImage: "wifi.slash", description: Text(error)) }
+      if let item { CodexDetail(item: item) }
+      else if let error {
+        ContentUnavailableView { Label("Unable to load", systemImage: "wifi.slash") } description: { Text(error) } actions: { Button("Retry") { Task { await loadItem() } } }
+      }
       else { ProgressView() }
-    }.navigationTitle(title).task {
+    }.navigationTitle(title).task { await loadItem() }
+  }
+  private func loadItem() async {
       var components = URLComponents(string: "https://wfhub-api.cagatayldzz.com")!
       components.path = "/api/\(category)/\(slug).json"
       do {
         guard let url = components.url else { throw URLError(.badURL) }
         item = try await API.fetch(url) as? [String: Any]
         if item == nil { throw URLError(.cannotParseResponse) }
+        error = nil
       } catch { self.error = error.localizedDescription }
     }
-  }
 }
