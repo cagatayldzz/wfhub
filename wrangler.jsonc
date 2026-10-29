@@ -3,6 +3,19 @@
   "name": "wfhub",
   "main": "apps/wfhub-api/worker.mjs",
   "compatibility_date": "2026-10-29",
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": false
+    },
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  },
   "assets": {
     "directory": "./.cloudflare-build",
     "binding": "ASSETS",
