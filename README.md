@@ -42,7 +42,7 @@ The landing page and legal pages are static files in `apps/wfhub-web`. To previe
 bun run dev:web
 ```
 
-Open `http://localhost:8000`. The privacy and terms pages are drafts and require review before publication. The `cf:deploy` script deploys this directory to Cloudflare.
+Open `http://localhost:8000` for the landing page and `/hub/` for the web companion. API requests use locally generated data when available, otherwise they use the deployed API. Run `bun run cf:build` to generate local data. The privacy and terms pages are drafts and require review before publication. The `cf:deploy` script deploys this directory to Cloudflare.
 
 ## Codex API
 

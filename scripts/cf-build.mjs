@@ -9,6 +9,7 @@ const fields = ['uniqueName', 'name', 'description', 'health', 'shield', 'armor'
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await cp(web, output, { recursive: true, filter: path => path !== new URL('api/', web).pathname.replace(/\/$/, '') });
+await cp(new URL('api/swagger/', web), new URL('api/swagger/', output), { recursive: true });
 await mkdir(new URL('_api-data/', output), { recursive: true });
 for (const category of categories) {
   const response = await fetch(`${source}json/${category}.json`);

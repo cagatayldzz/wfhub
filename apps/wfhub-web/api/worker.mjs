@@ -9,6 +9,16 @@ export default {
     if (request.method !== 'GET' && request.method !== 'HEAD') {
       return new Response('Method not allowed\n', { status: 405, headers });
     }
+    if (path === '/api/swagger') {
+      const url = new URL(request.url);
+      url.pathname += '/';
+      return Response.redirect(url, 308);
+    }
+    if (['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json'].includes(path)) {
+      const url = new URL(request.url);
+      if (path.endsWith('/')) url.pathname += 'index.html';
+      return env.ASSETS.fetch(new Request(url, request));
+    }
     const suffix = path.slice('/api/'.length);
     if (!path.startsWith('/api/') || !suffix.endsWith('.json') ||
         !suffix.split('/').every(part => part !== '.' && part !== '..' && /^[a-zA-Z0-9._-]+$/.test(part))) {
