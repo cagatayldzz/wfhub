@@ -16,7 +16,7 @@ export default {
     }
     if (['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json'].includes(path)) {
       const url = new URL(request.url);
-      if (path.endsWith('/')) url.pathname += 'index.html';
+      if (path.endsWith('/index.html')) url.pathname = '/api/swagger/';
       return env.ASSETS.fetch(new Request(url, request));
     }
     const suffix = path.slice('/api/'.length);
