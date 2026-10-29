@@ -1,0 +1,186 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "WFHub API",
+    "description": "Static Warframe data API generated from WFCD items.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://wfhub-api.cagatayldzz.com"
+    }
+  ],
+  "paths": {
+    "/api/{category}.json": {
+      "get": {
+        "summary": "List items in a category",
+        "operationId": "listCategoryItems",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category item list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{category}/{slug}.json": {
+      "get": {
+        "summary": "Get a single item",
+        "operationId": "getCategoryItem",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Category"
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The item's URL slug, for example `akimbo-slip-shot`.",
+            "schema": {
+              "type": "string",
+              "example": "akimbo-slip-shot"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single category item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiDetailItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Item not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Category": {
+        "name": "category",
+        "in": "path",
+        "required": true,
+        "description": "One of the generated data categories.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "arcanes",
+            "arch-gun",
+            "arch-melee",
+            "archwing",
+            "enemy",
+            "fish",
+            "gear",
+            "glyphs",
+            "melee",
+            "misc",
+            "mods",
+            "node",
+            "pets",
+            "primary",
+            "quests",
+            "railjack",
+            "relics",
+            "resources",
+            "secondary",
+            "sentinels",
+            "sentinelweapons",
+            "sigils",
+            "skins",
+            "warframes"
+          ]
+        }
+      }
+    },
+    "schemas": {
+      "ApiItem": {
+        "type": "object",
+        "required": [
+          "name",
+          "imageName",
+          "slug"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Ash Prime"
+          },
+          "imageName": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/AshPrime.png"
+          },
+          "slug": {
+            "type": "string",
+            "example": "ash-prime"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApiDetailItem": {
+        "type": "object",
+        "required": [
+          "uniqueName",
+          "name",
+          "description",
+          "health",
+          "shield",
+          "armor",
+          "stamina",
+          "power",
+          "masteryReq",
+          "sprintSpeed",
+          "abilities",
+          "sprint",
+          "wikiaUrl",
+          "releaseDate",
+          "imageName",
+          "slug"
+        ],
+        "properties": {
+          "uniqueName": { "type": ["string", "null"] },
+          "name": { "type": "string", "example": "Ash" },
+          "description": { "type": ["string", "null"] },
+          "health": { "type": ["number", "null"] },
+          "shield": { "type": ["number", "null"] },
+          "armor": { "type": ["number", "null"] },
+          "stamina": { "type": ["number", "null"] },
+          "power": { "type": ["number", "null"] },
+          "masteryReq": { "type": ["number", "null"] },
+          "sprintSpeed": { "type": ["number", "null"] },
+          "abilities": { "type": "array", "items": {} },
+          "sprint": { "type": ["number", "null"] },
+          "wikiaUrl": { "type": ["string", "null"], "format": "uri" },
+          "releaseDate": { "type": ["string", "null"], "format": "date" },
+          "imageName": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://wfhub-api.cagatayldzz.com/img/Ash.png"
+          },
+          "slug": { "type": "string", "example": "ash" }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

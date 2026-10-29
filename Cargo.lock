@@ -6206,6 +6206,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "wfhub-api"
+version = "0.1.0"
+
+[[package]]
 name = "wfhub-core"
 version = "0.1.0"
 

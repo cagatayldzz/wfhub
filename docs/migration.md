@@ -1,21 +1,18 @@
-# Migration plan and current coverage
+# Migration and coverage
 
-Source: `wfhub-mobile` Expo application. The destination is a Rust workspace with a native SwiftUI iOS client, following Kintsu's core → C FFI → platform UI direction. Network requests currently live in Swift; the Rust core owns the route catalogue. The source application remains the reference for behavior and design.
+WFHub contains a SwiftUI iOS client and a Rust/GPUI desktop client. They share a route catalogue through `crates/core`; iOS consumes it through the C bridge in `crates/ffi`. Their screens and networking remain separate implementations.
 
-## Implemented foundation
+## Current coverage
 
-- Five native tabs and navigation, platform and Tenno name preferences.
-- Activity endpoints, six cycle endpoints, Codex categories and item navigation.
-- Recent market buy/sell orders, joined with the market item catalogue.
-- Async loading, errors and refresh for data screens.
-- XcodeGen configuration and Rust static-library build script.
+Both clients have Home, Activities, Market, Codex, and Settings navigation. They display network-backed world-state, Codex, and market data. The desktop client has a phone-proportioned window, per-tab navigation history, and locally saved settings. The iOS client includes localized strings and native navigation.
 
-## Remaining migration work
+## Remaining work
 
-- Replace generic activity and item rendering with the source app's specific cards, nested data, countdowns, filters, images and links; group cycles as in the source.
-- Match the original home dashboard, theme, assets and layouts; migrate all translations and language selection.
-- Match market behavior, API headers, refresh timing, error handling and item imagery against live responses.
-- Add accessibility, offline behavior and UI/integration tests; verify every screen against the source on device.
-- Android is not implemented: Kintsu supplies an iOS architecture, not an Android client. A native Android frontend and Rust bridge remain to be designed.
+- Verify visual and functional parity screen by screen, including nested activity and Codex details.
+- Bring desktop language selection, input handling, and settings behavior closer to iOS.
+- Improve desktop activity and item-specific rendering, filtering, and cycle summaries where generic views remain.
+- Verify refresh behavior, links, loading and error states, and accessibility in both clients.
+- Add UI and integration coverage for navigation and network-backed screens.
+- Design and implement an Android client if one is needed; it is not currently included.
 
-This is a migration foundation, not feature or visual parity with the Expo app.
+This document describes the broad direction, not a guarantee that every feature is identical across clients. Check the relevant implementation and test on the target platform when planning a change.
