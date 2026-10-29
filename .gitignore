@@ -1,4 +1,5 @@
 /target/
+/.cloudflare-build/
 /apps/wfhub-mobile/build/
 /apps/wfhub-mobile/*.xcodeproj/
 .DS_Store
