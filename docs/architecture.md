@@ -28,7 +28,7 @@ The root state tracks the selected tab, each tab's current page and navigation h
 
 ## Codex API
 
-`apps/wfhub-api` is a Rust workspace application that serves the included Codex JSON snapshot at `/api/` paths. See its [README](../apps/wfhub-api/README.md) for configuration and data provenance. The legacy dataset generator has not yet been migrated.
+`apps/wfhub-web` contains the website and Cloudflare Worker serving Codex data at `/api/` paths. See the [API README](../apps/wfhub-web/api/README.md) for configuration and data provenance.
 
 ## iOS client
 

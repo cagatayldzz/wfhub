@@ -11,7 +11,7 @@ struct DataScreen: View {
   private var url: URL? {
     switch kind {
     case .activity: return URL(string: "https://api.warframestat.us/\(platform)/\(route.endpoint)/")
-    case .category: return URL(string: "https://wfhub-api.cagatayldzz.com/api/\(route.endpoint).json")
+    case .category: return URL(string: "https://wfhub.cagatayldzz.com/api/\(route.endpoint).json")
     }
   }
 
@@ -136,7 +136,7 @@ struct ItemScreen: View {
     }.navigationTitle(title).task { await loadItem() }
   }
   private func loadItem() async {
-      var components = URLComponents(string: "https://wfhub-api.cagatayldzz.com")!
+      var components = URLComponents(string: "https://wfhub.cagatayldzz.com")!
       components.path = "/api/\(category)/\(slug).json"
       do {
         guard let url = components.url else { throw URLError(.badURL) }

@@ -171,8 +171,8 @@ impl Root {
     let url = match &self.page {
       Page::Home => Some(format!("https://api.warframestat.us/{}/", self.platform)),
       Page::Activity(_, endpoint) => Some(format!("https://api.warframestat.us/{}/{endpoint}/", self.platform)),
-      Page::Category(category) => Some(format!("https://wfhub-api.cagatayldzz.com/api/{category}.json")),
-      Page::Item(category, slug) => Some(format!("https://wfhub-api.cagatayldzz.com/api/{category}/{slug}.json")),
+      Page::Category(category) => Some(format!("https://wfhub.cagatayldzz.com/api/{category}.json")),
+      Page::Item(category, slug) => Some(format!("https://wfhub.cagatayldzz.com/api/{category}/{slug}.json")),
       Page::Market => Some("https://api.warframe.market/v2/orders/recent".into()),
       _ => None,
     };

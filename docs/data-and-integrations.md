@@ -7,7 +7,7 @@ WFHub displays live data from external services. Availability, response shape, a
 | Content | Source | Use |
 | --- | --- | --- |
 | World state and activities | `https://api.warframestat.us/{platform}/` | Home and activity data, including alerts and cycles |
-| Codex catalogue and details | `https://wfhub-api.cagatayldzz.com/api/` | Category lists and item details |
+| Codex catalogue and details | `https://wfhub.cagatayldzz.com/api/` | Category lists and item details |
 | Recent market orders and items | `https://api.warframe.market/v2/` | Recent buy/sell orders joined with item names and icons |
 | Artwork and banners | `https://cdn.cagatayldzz.com/constants/wfhub/` | Home banners, activity icons, and Codex artwork |
 | Market artwork and item pages | `https://warframe.market/` | Item icons and links to market listings |

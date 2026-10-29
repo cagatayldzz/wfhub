@@ -8,8 +8,7 @@ WFHub is an application for browsing Warframe world state, activities, Codex con
 apps/
   wfhub/          GPUI desktop application and UI source
   wfhub-mobile/   SwiftUI iOS application and XcodeGen configuration
-  wfhub-web/      Static landing page and legal information pages
-  wfhub-api/      Rust Codex API and JSON data snapshot
+  wfhub-web/      Website, legal pages, and Codex API
 crates/
   core/           Shared activity and Codex route catalogue
   ffi/            C interface used by the iOS client
@@ -40,14 +39,14 @@ The application opens in a phone-proportioned window. You can also use `bun run 
 The landing page and legal pages are static files in `apps/wfhub-web`. To preview them locally:
 
 ```sh
-python3 -m http.server 8000 --directory apps/wfhub-web
+bun run dev:web
 ```
 
 Open `http://localhost:8000`. The privacy and terms pages are drafts and require review before publication. The `cf:deploy` script deploys this directory to Cloudflare.
 
 ## Codex API
 
-Run `cargo run -p wfhub-api` to serve the included dataset locally at `http://127.0.0.1:8080`. See the [API README](apps/wfhub-api/README.md) for configuration and dataset limitations.
+The website and API are deployed together with Cloudflare Workers. See the [API README](apps/wfhub-web/api/README.md) for configuration and dataset details.
 
 ## iOS application
 

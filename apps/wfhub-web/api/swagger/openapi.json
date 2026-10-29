@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://wfhub-api.cagatayldzz.com"
+      "url": "https://wfhub.cagatayldzz.com"
     }
   ],
   "paths": {
@@ -175,7 +175,7 @@
           "imageName": {
             "type": "string",
             "format": "uri",
-            "example": "https://wfhub-api.cagatayldzz.com/img/Ash.png"
+            "example": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Ash.png"
           },
           "slug": { "type": "string", "example": "ash" }
         },

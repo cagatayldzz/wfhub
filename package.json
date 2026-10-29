@@ -8,6 +8,7 @@
     "check": "cargo fmt --all -- --check && cargo clippy --locked --workspace --all-targets -- -D warnings && cargo test --locked --workspace",
     "commit": "git add -A && oco --yes",
     "dev:phone": "cargo run -p wfhub -- --phone",
+    "dev:web": "open http://localhost:8000 && python3 -m http.server 8000 --directory apps/wfhub-web",
     "mobile:archive": "apps/wfhub-mobile/scripts/archive.sh",
     "mobile:project": "cd apps/wfhub-mobile && xcodegen generate",
     "mobile:rust": "apps/wfhub-mobile/scripts/build-rust.sh",

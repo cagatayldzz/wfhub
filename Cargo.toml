@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["apps/wfhub", "apps/wfhub-api", "crates/core", "crates/ffi"]
+members = ["apps/wfhub", "apps/wfhub-web/api", "crates/core", "crates/ffi"]
 default-members = ["apps/wfhub"]
 
 [workspace.package]
