@@ -1,6 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "wfhub",
+  "workers_dev": false,
+  "preview_urls": false,
   "main": "apps/wfhub-web/api/worker.mjs",
   "compatibility_date": "2026-10-29",
   "observability": {
