@@ -196,7 +196,7 @@ private struct RemoteImage: View {
   var alignment: Alignment = .center
   var body: some View {
     GeometryReader { geometry in
-      AsyncImage(url: url.flatMap(URL.init(string:))) { image in image.resizable().scaledToFill() } placeholder: { Color.gray.opacity(0.2) }
+      ThumbnailImage(url: url.flatMap(URL.init(string:)), contentMode: .fill)
         .frame(width: geometry.size.width, height: geometry.size.height, alignment: alignment)
         .clipped()
     }

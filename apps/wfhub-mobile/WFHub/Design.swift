@@ -1,4 +1,46 @@
 import SwiftUI
+import ImageIO
+
+// Decode remote artwork near its displayed size instead of expanding full-resolution images in memory.
+struct ThumbnailImage: View {
+  let url: URL?
+  var contentMode: ContentMode = .fit
+  var maxPixelSize: Int = 1200
+  @State private var image: UIImage?
+
+  var body: some View {
+    Group {
+      if let image {
+        Image(uiImage: image).resizable().aspectRatio(contentMode: contentMode)
+      } else {
+        Color.gray.opacity(0.2)
+      }
+    }
+    .task(id: url) {
+      image = nil
+      guard let url else { return }
+      do {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? false else { return }
+        let size = maxPixelSize
+        let decoded = await Task.detached(priority: .utility) { () -> UIImage? in
+          guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+                let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+                  kCGImageSourceCreateThumbnailFromImageAlways: true,
+                  kCGImageSourceCreateThumbnailWithTransform: true,
+                  kCGImageSourceThumbnailMaxPixelSize: size,
+                  kCGImageSourceShouldCacheImmediately: true
+                ] as CFDictionary) else { return nil }
+          return UIImage(cgImage: thumbnail)
+        }.value
+        guard !Task.isCancelled else { return }
+        image = decoded
+      } catch {
+        // Keep the placeholder if the image cannot be loaded.
+      }
+    }
+  }
+}
 
 // Shared visual language used by the native screens.
 enum WFStyle {
@@ -27,7 +69,7 @@ struct ArtworkCard: View {
   let image: URL?
   var body: some View {
     VStack(spacing: 6) {
-      AsyncImage(url: image) { image in image.resizable().scaledToFit() } placeholder: { Color.clear }
+      ThumbnailImage(url: image, maxPixelSize: 600)
         .frame(height: 100).frame(maxWidth: .infinity)
       Text(title).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
         .lineLimit(2).multilineTextAlignment(.center).frame(maxWidth: .infinity, minHeight: 40)
