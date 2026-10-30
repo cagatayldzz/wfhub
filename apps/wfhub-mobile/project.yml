@@ -1,4 +1,11 @@
 name: WFHub
+packages:
+  GoogleMobileAds:
+    url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
+    from: 12.0.0
+  GoogleUserMessagingPlatform:
+    url: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
+    from: 3.0.0
 options:
   deploymentTarget:
     iOS: '17.0'
@@ -7,10 +14,18 @@ targets:
     type: application
     platform: iOS
     sources: [WFHub]
+    dependencies:
+      - package: GoogleMobileAds
+        product: GoogleMobileAds
+      - package: GoogleUserMessagingPlatform
+        product: GoogleUserMessagingPlatform
     info:
       path: WFHub-Info.plist
       properties:
         CFBundleDisplayName: WFHub
+        GADApplicationIdentifier: ca-app-pub-6626336739486650~2054337670
+        SKAdNetworkItems:
+          - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
         ITSAppUsesNonExemptEncryption: false
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)

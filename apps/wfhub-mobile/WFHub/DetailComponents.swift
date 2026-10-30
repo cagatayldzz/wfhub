@@ -88,7 +88,7 @@ struct ActivityRow: View {
     if endpoint == "alerts", let mission = value["mission"] as? [String: Any] { return mission["node"] as? String ?? "Alert" }
     if endpoint == "sortie" || endpoint == "archonHunt" { return value["boss"] as? String ?? "Mission" }
     if endpoint == "nightwave" { return "Nightwave" }
-    if endpoint == "voidTrader" { return value["character"] as? String ?? "Baro Ki'Teer" }
+    if endpoint == "voidTrader" { return "Baro Ki'Teer" }
     return itemTitle(value)
   }
   private var detail: String? {

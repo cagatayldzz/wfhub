@@ -1,18 +1,17 @@
 import SwiftUI
 
 struct ActivitiesView: View {
-  @State private var search = ""
   private let order = ["alerts", "voidTrader", "fissures", "cycles", "dailyDeals", "nightwave", "events", "invasions", "arbitration", "archonHunt", "steelPath", "sentientOutposts", "simaris", "constructionProgress", "news", "flashSales", "sortie"]
   private var routes: [Route] {
     order.compactMap { endpoint in
       if endpoint == "cycles" { return Route(title: "Cycles", endpoint: endpoint) }
       return Catalogue.routes.activities.first { $0.endpoint == endpoint }
-    }.filter { search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) }
+    }
   }
 
   var body: some View {
     ScrollView {
-      LazyVStack(alignment: .leading, spacing: 10) {
+      LazyVStack(alignment: .leading, spacing: 8) {
         HStack(alignment: .firstTextBaseline) {
           VStack(alignment: .leading, spacing: 4) {
             Text("Activities").font(.system(size: 28, weight: .heavy))
@@ -20,17 +19,6 @@ struct ActivitiesView: View {
           }
           Spacer()
         }.padding(.bottom, 10)
-        HStack(spacing: 10) {
-          Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
-          TextField("Search activities", text: $search).textInputAutocapitalization(.never).autocorrectionDisabled()
-          if !search.isEmpty {
-            Button { search = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary) }
-              .accessibilityLabel("Clear search")
-          }
-        }.padding(12).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.bottom, 6)
-        if routes.isEmpty {
-          ContentUnavailableView.search(text: search)
-        } else {
           ForEach(routes) { route in
             if route.endpoint == "cycles" {
               NavigationLink { CyclesView() } label: { ActivityLink(route: route) }.buttonStyle(.plain)
@@ -38,7 +26,6 @@ struct ActivitiesView: View {
               NavigationLink { DataScreen(route: route, kind: .activity) } label: { ActivityLink(route: route) }.buttonStyle(.plain)
             }
           }
-        }
       }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 24)
     }
     .navigationBarHidden(true)
@@ -60,22 +47,22 @@ private struct ActivityLink: View {
     }
   }
   var body: some View {
-    HStack(spacing: 14) {
+    HStack(spacing: 12) {
       AsyncImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/activities/\(imageName).png")) { image in
         image.resizable().scaledToFit()
       } placeholder: { Image(systemName: "sparkle").foregroundStyle(WFStyle.accent) }
-      .frame(width: 48, height: 48)
+      .frame(width: 40, height: 40)
       VStack(alignment: .leading, spacing: 3) {
-        Text(LocalizedStringKey(route.title)).font(.system(size: 17, weight: .bold)).foregroundStyle(.primary)
+        Text(LocalizedStringKey(route.title)).font(.system(size: 16, weight: .semibold)).foregroundStyle(.primary)
       }
       Spacer(minLength: 8)
       Image(systemName: "chevron.right").font(.system(size: 12, weight: .bold)).foregroundStyle(.secondary)
     }
-    .padding(.horizontal, 16).padding(.vertical, 12)
+    .padding(.horizontal, 14).padding(.vertical, 9)
+    .frame(minHeight: 58)
     .frame(maxWidth: .infinity, alignment: .leading)
-    .background(Color(uiColor: .secondarySystemBackground))
+    .background(Color(uiColor: .secondarySystemBackground).opacity(0.65))
     .clipShape(RoundedRectangle(cornerRadius: 12))
-    .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.primary.opacity(0.07)))
     .contentShape(Rectangle())
   }
 }
@@ -139,6 +126,7 @@ struct CyclesView: View {
 }
 
 struct SettingsView: View {
+  @EnvironmentObject private var ads: AdsManager
   @AppStorage("tennoName") private var storedName = "Tenno"
   @AppStorage("platform") private var storedPlatform = "pc"
   @AppStorage("appLanguage") private var language = "system"
@@ -203,6 +191,12 @@ struct SettingsView: View {
               SettingsRow(icon: "circle.lefthalf.filled", title: "Appearance", value: theme == "light" ? "Light" : theme == "dark" ? "Dark" : "System")
             }
           }.tint(.primary).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 14))
+        }
+
+        if ads.privacyOptionsRequired {
+          Button { Task { await ads.showPrivacyOptions() } } label: {
+            Label("Privacy options", systemImage: "hand.raised")
+          }
         }
 
         Button {

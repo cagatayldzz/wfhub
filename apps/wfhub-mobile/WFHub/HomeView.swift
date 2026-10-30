@@ -14,6 +14,7 @@ private struct HomeData {
 }
 
 struct HomeView: View {
+  @EnvironmentObject private var ads: AdsManager
   @AppStorage("tennoName") private var name = "Tenno"
   @AppStorage("platform") private var platform = "pc"
   @Environment(\.locale) private var locale
@@ -43,7 +44,7 @@ struct HomeView: View {
              let url = URL(string: link.replacingOccurrences(of: "{lang}", with: locale.language.languageCode?.identifier ?? "en")),
              ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
             Link(destination: url) {
-              ImageBanner(image: banner["imageLink"] as? String, title: title, subtitle: nil, expiry: nil)
+              ImageBanner(image: banner["imageLink"] as? String, title: title, subtitle: nil, expiry: nil, imageAlignment: .leading)
             }.buttonStyle(.plain)
           }
         }
@@ -52,7 +53,7 @@ struct HomeView: View {
           NavigationLink { DataScreen(route: route("nightwave", fallback: "Nightwave"), kind: .activity) } label: {
             VStack(alignment: .leading, spacing: 6) {
               Text("NIGHTWAVE").font(.system(size: 26, weight: .black)).foregroundStyle(WFStyle.accent)
-              Text("\(text("Nora's Mix Season", "Nora'nın sezonu")) \(number(nightwave["season"]))")
+              Text("Season \(number(nightwave["season"]))")
               Countdown(expiry: nightwave["expiry"] as? String)
             }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 20).padding(.vertical, 24)
           }.buttonStyle(.plain)
@@ -66,6 +67,13 @@ struct HomeView: View {
           }.padding(.horizontal, 16)
         }
 
+        if ads.ready {
+          HomeAdBanner()
+            .padding(.horizontal, 16)
+            .padding(.top, 24)
+            .padding(.bottom, 8)
+        }
+
         if !data.news.isEmpty {
           sectionHeader(text("News", "Haberler"), subtitle: text("Latest news", "Son haberler"), endpoint: "news")
           VStack(spacing: 15) {
@@ -77,7 +85,7 @@ struct HomeView: View {
 
         if let trader = data.trader {
           NavigationLink { DataScreen(route: route("voidTrader", fallback: "Baro Ki'Teer"), kind: .activity) } label: {
-            ImageBanner(image: cdn + "sections/baro-ki-teer.png", title: trader["character"] as? String ?? "Baro Ki'Teer", subtitle: trader["location"] as? String, expiry: trader["expiry"] as? String)
+            ImageBanner(image: cdn + "sections/baro-ki-teer.png", title: "Baro Ki'Teer", subtitle: trader["location"] as? String, expiry: trader["expiry"] as? String, height: 140, imageAlignment: .leading)
           }.buttonStyle(.plain)
         }
 
@@ -90,7 +98,7 @@ struct HomeView: View {
 
         sectionHeader("Codex", subtitle: text("Codex content", "Codex içeriği"), endpoint: nil)
         HStack(spacing: 10) {
-          codexCard("Warframes", category: "warframes", image: "codex/excalibur-prime.png")
+          codexCard("Warframes", category: "warframes", image: "codex/warframes.png")
           codexCard("Secondary", category: "secondary", image: "codex/secondary.png")
         }.padding(.horizontal, 16).padding(.bottom, 32)
 
@@ -122,9 +130,19 @@ struct HomeView: View {
       }
       Spacer()
       if let endpoint {
-        NavigationLink(text("View all", "Tümünü gör")) { DataScreen(route: route(endpoint, fallback: title), kind: .activity) }
+        NavigationLink {
+          DataScreen(route: Route(title: title, endpoint: endpoint), kind: .activity)
+        } label: {
+          Text(text("View all", "Tümünü gör"))
+            .frame(minWidth: 70, minHeight: 44, alignment: .trailing)
+            .contentShape(Rectangle())
+        }
       } else {
-        NavigationLink(text("View all", "Tümünü gör")) { CodexCategoriesView() }
+        NavigationLink { CodexCategoriesView() } label: {
+          Text(text("View all", "Tümünü gör"))
+            .frame(minWidth: 70, minHeight: 44, alignment: .trailing)
+            .contentShape(Rectangle())
+        }
       }
     }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 16)
   }
@@ -175,8 +193,13 @@ private func number(_ value: Any?) -> String {
 
 private struct RemoteImage: View {
   let url: String?
+  var alignment: Alignment = .center
   var body: some View {
-    AsyncImage(url: url.flatMap(URL.init(string:))) { image in image.resizable().scaledToFill() } placeholder: { Color.gray.opacity(0.2) }
+    GeometryReader { geometry in
+      AsyncImage(url: url.flatMap(URL.init(string:))) { image in image.resizable().scaledToFill() } placeholder: { Color.gray.opacity(0.2) }
+        .frame(width: geometry.size.width, height: geometry.size.height, alignment: alignment)
+        .clipped()
+    }
   }
 }
 
@@ -185,16 +208,18 @@ private struct ImageBanner: View {
   let title: String
   let subtitle: String?
   let expiry: String?
+  var height: CGFloat = 110
+  var imageAlignment: Alignment = .center
   var body: some View {
     ZStack(alignment: .leading) {
-      RemoteImage(url: image).frame(maxWidth: .infinity).frame(height: 110).clipped()
+      RemoteImage(url: image, alignment: imageAlignment).frame(maxWidth: .infinity).frame(height: height).clipped()
       Color.black.opacity(0.5)
       VStack(alignment: .leading, spacing: 5) {
         Text(title.uppercased()).font(.system(size: 22, weight: .black)).foregroundStyle(gold)
         if let subtitle, !subtitle.isEmpty { Text(subtitle).font(.body) }
         if expiry != nil { Countdown(expiry: expiry) }
       }.foregroundStyle(.white).padding(.horizontal, 20)
-    }.frame(height: 110).clipped().clipShape(RoundedRectangle(cornerRadius: 12)).padding(.horizontal, 16).padding(.vertical, 6)
+    }.frame(height: height).clipped().clipShape(RoundedRectangle(cornerRadius: 12)).padding(.horizontal, 16).padding(.vertical, 6)
   }
 }
 

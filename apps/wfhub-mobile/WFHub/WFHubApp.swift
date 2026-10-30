@@ -2,8 +2,9 @@ import SwiftUI
 
 @main
 struct WFHubApp: App {
+  @StateObject private var ads = AdsManager()
   var body: some Scene {
-    WindowGroup { RootView() }
+    WindowGroup { RootView().environmentObject(ads).task { await ads.prepare() } }
   }
 }
 
