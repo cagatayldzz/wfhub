@@ -48,9 +48,7 @@ private struct ActivityLink: View {
   }
   var body: some View {
     HStack(spacing: 12) {
-      AsyncImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/activities/\(imageName).png")) { image in
-        image.resizable().scaledToFit()
-      } placeholder: { Image(systemName: "sparkle").foregroundStyle(WFStyle.accent) }
+      ThumbnailImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/activities/\(imageName).png"), maxPixelSize: 160)
       .frame(width: 40, height: 40)
       VStack(alignment: .leading, spacing: 3) {
         Text(LocalizedStringKey(route.title)).font(.system(size: 16, weight: .semibold)).foregroundStyle(.primary)

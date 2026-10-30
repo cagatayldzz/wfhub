@@ -18,7 +18,7 @@ struct CodexRow: View {
   let item: [String: Any]
   var body: some View {
     HStack(spacing: 12) {
-      AsyncImage(url: imageURL(item["imageName"])) { image in image.resizable().scaledToFit() } placeholder: { Color.secondary.opacity(0.1) }
+      ThumbnailImage(url: imageURL(item["imageName"]), maxPixelSize: 256)
         .frame(width: 64, height: 64).clipped()
       Text(itemTitle(item)).font(.headline)
     }.padding(.vertical, 4)
@@ -37,7 +37,7 @@ struct CodexDetail: View {
     ScrollView {
       VStack(alignment: .leading, spacing: 14) {
         VStack(spacing: 10) {
-          AsyncImage(url: imageURL(item["imageName"])) { image in image.resizable().scaledToFit() } placeholder: { Color.clear }
+          ThumbnailImage(url: imageURL(item["imageName"]), maxPixelSize: 800)
             .frame(height: 190).frame(maxWidth: .infinity)
           Text(itemTitle(item)).font(.title2.bold()).foregroundStyle(.white).multilineTextAlignment(.center)
         }.padding(20).frame(maxWidth: .infinity).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 12))
@@ -62,7 +62,7 @@ struct CodexDetail: View {
             Text("Abilities").font(.headline)
             ForEach(Array(abilities.enumerated()), id: \.offset) { _, ability in
               HStack(alignment: .top, spacing: 12) {
-                AsyncImage(url: imageURL(ability["imageName"])) { image in image.resizable().scaledToFit() } placeholder: { Color.clear }
+                ThumbnailImage(url: imageURL(ability["imageName"]), maxPixelSize: 192)
                   .frame(width: 48, height: 48).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 7))
                 VStack(alignment: .leading, spacing: 4) {
                   Text(ability["name"] as? String ?? "Ability").font(.subheadline.bold())
@@ -203,7 +203,7 @@ struct NewsDetailRow: View {
   var body: some View {
     let content = VStack(alignment: .leading, spacing: 8) {
       if let image = item["imageLink"] as? String {
-        AsyncImage(url: URL(string: image)) { image in image.resizable().scaledToFill() } placeholder: { Color.secondary.opacity(0.1) }
+        ThumbnailImage(url: URL(string: image), contentMode: .fill)
           .frame(height: 180).frame(maxWidth: .infinity).clipped().cornerRadius(10)
       }
       Text(title.uppercased()).font(.headline)
@@ -256,9 +256,7 @@ private struct CurrencyLabel: View {
   let value: Int
   var body: some View {
     HStack(spacing: 4) {
-      AsyncImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/icons/\(icon).png")) { image in
-        image.resizable().scaledToFit()
-      } placeholder: { Image(systemName: "diamond.fill").resizable().scaledToFit().foregroundStyle(WFStyle.accent) }
+      ThumbnailImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/icons/\(icon).png"), maxPixelSize: 96)
       .frame(width: 16, height: 16)
       Text(value, format: .number).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
     }.accessibilityElement(children: .combine)

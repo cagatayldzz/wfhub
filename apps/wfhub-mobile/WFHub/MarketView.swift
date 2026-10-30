@@ -6,6 +6,7 @@ struct MarketView: View {
   @State private var type = "sell"
   @State private var error: String?
   @State private var loading = true
+  @State private var isRefreshing = false
   var body: some View {
     ScrollView {
       LazyVStack(alignment: .leading, spacing: 10) {
@@ -41,11 +42,8 @@ struct MarketView: View {
   }
   private func orderLabel(name: String, order: [String: Any], user: [String: Any]?, icon: String?) -> some View {
     HStack(alignment: .center, spacing: 14) {
-      AsyncImage(url: icon.flatMap { URL(string: "https://warframe.market/static/assets/" + $0) }) { image in
-        image.resizable().scaledToFit().padding(8)
-      } placeholder: {
-        Image(systemName: "shippingbox").font(.title2).foregroundStyle(.white.opacity(0.5))
-      }
+      ThumbnailImage(url: icon.flatMap { URL(string: "https://warframe.market/static/assets/" + $0) }, maxPixelSize: 256)
+        .padding(8)
       .frame(width: 76, height: 76).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 10))
 
       VStack(alignment: .leading, spacing: 7) {
@@ -73,15 +71,29 @@ struct MarketView: View {
   }
 
   private func load() async {
+    guard !isRefreshing else { return }
+    isRefreshing = true
+    defer { isRefreshing = false }
     do {
       async let orderResponse = API.fetch(URL(string: "https://api.warframe.market/v2/orders/recent")!)
       async let itemResponse = API.fetch(URL(string: "https://api.warframe.market/v2/items")!)
       let (rawOrders, rawItems) = try await (orderResponse, itemResponse)
       guard let orderData = (rawOrders as? [String: Any])?["data"] as? [[String: Any]], let itemData = (rawItems as? [String: Any])?["data"] as? [[String: Any]] else { throw URLError(.cannotParseResponse) }
-      orders = orderData
-      items = Dictionary(itemData.compactMap { item in (item["id"] as? String).map { ($0, item) } }, uniquingKeysWith: { first, _ in first })
+      guard !Task.isCancelled else { return }
+      let visibleOrders = ["sell", "buy"].flatMap { type in
+        orderData.lazy.filter { ($0["type"] as? String) == type }.prefix(35)
+      }
+      let itemIDs = Set(visibleOrders.compactMap { $0["itemId"] as? String })
+      orders = visibleOrders
+      items = Dictionary(itemData.compactMap { item in
+        guard let id = item["id"] as? String, itemIDs.contains(id) else { return nil }
+        return (id, item)
+      }, uniquingKeysWith: { first, _ in first })
       error = nil
-    } catch { self.error = error.localizedDescription }
+    } catch {
+      guard !Task.isCancelled else { return }
+      self.error = error.localizedDescription
+    }
     loading = false
   }
 }
