@@ -7,6 +7,9 @@ struct DataScreen: View {
   @State private var data: Any?
   @State private var error: String?
   @State private var search = ""
+  @State private var tier = "All"
+  private static let tiers = ["All", "Lith", "Meso", "Neo", "Axi", "Requiem", "Omnia"]
+  private var isFissures: Bool { route.endpoint == "fissures" }
 
   private var url: URL? {
     switch kind {
@@ -20,6 +23,8 @@ struct DataScreen: View {
       if let error {
         ContentUnavailableView { Label("Unable to load", systemImage: "wifi.slash") } description: { Text(error) } actions: { Button("Retry") { Task { await load() } } }
       } else if let data {
+        VStack(spacing: 0) {
+        if isFissures { tierFilter }
         ScrollView {
           if let items = data as? [[String: Any]] {
             if items.isEmpty { ContentUnavailableView("No data found!", systemImage: "tray") }
@@ -43,9 +48,14 @@ struct DataScreen: View {
               }.padding(12)
             }
           } else if let object = data as? [String: Any] {
+            if route.endpoint == "nightwave" { NightwaveView(value: object) } else {
             ActivityRow(value: object, endpoint: route.endpoint).padding(12)
+            }
           } else { ContentUnavailableView("No data found!", systemImage: "tray") }
-        }.searchable(text: $search).refreshable { await load() }
+        }
+        .refreshable { await load() }
+        }
+        .modifier(SearchIf(enabled: !isFissures && data is [[String: Any]], text: $search))
       } else {
         ProgressView()
       }
@@ -62,8 +72,25 @@ struct DataScreen: View {
     }
   }
 
+  private var tierFilter: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: 8) {
+        ForEach(Self.tiers, id: \.self) { name in
+          Button { tier = name } label: {
+            Text(name == "All" ? "All" : name.uppercased())
+              .font(.subheadline.weight(.semibold))
+              .padding(.horizontal, 14).padding(.vertical, 8)
+              .background(tier == name ? WFStyle.accent : Color(uiColor: .secondarySystemBackground), in: Capsule())
+              .foregroundStyle(tier == name ? Color(uiColor: .systemBackground) : Color.primary)
+          }.buttonStyle(.plain)
+        }
+      }.padding(.horizontal, 12).padding(.vertical, 8)
+    }.background(.bar)
+  }
+
   private func matches(_ item: [String: Any]) -> Bool {
-    search.isEmpty || itemTitle(item).localizedCaseInsensitiveContains(search) || (item["item"] as? String ?? "").localizedCaseInsensitiveContains(search)
+    if isFissures { return tier == "All" || (item["tier"] as? String)?.caseInsensitiveCompare(tier) == .orderedSame }
+    return search.isEmpty || itemTitle(item).localizedCaseInsensitiveContains(search) || (item["item"] as? String ?? "").localizedCaseInsensitiveContains(search)
   }
 
   private func load() async {
@@ -145,4 +172,12 @@ struct ItemScreen: View {
         error = nil
       } catch { self.error = error.localizedDescription }
     }
+}
+
+private struct SearchIf: ViewModifier {
+  let enabled: Bool
+  @Binding var text: String
+  func body(content: Content) -> some View {
+    if enabled { content.searchable(text: $text) } else { content }
+  }
 }

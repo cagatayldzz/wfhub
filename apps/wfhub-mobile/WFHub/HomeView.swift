@@ -223,7 +223,7 @@ private struct ImageBanner: View {
   }
 }
 
-private struct Countdown: View {
+struct Countdown: View {
   let expiry: String?
   var body: some View {
     TimelineView(.periodic(from: .now, by: 60)) { context in

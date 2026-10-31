@@ -1,43 +1,72 @@
 import SwiftUI
 import ImageIO
 
+// Decoded thumbnails live in memory; downloaded files live on disk, so scrolling never re-downloads or re-decodes.
+enum ImageStore {
+  static let memory: NSCache<NSString, UIImage> = {
+    let cache = NSCache<NSString, UIImage>()
+    cache.totalCostLimit = 64 * 1024 * 1024
+    return cache
+  }()
+
+  private static let session: URLSession = {
+    let configuration = URLSessionConfiguration.default
+    configuration.urlCache = URLCache(memoryCapacity: 16 * 1024 * 1024, diskCapacity: 300 * 1024 * 1024, directory: nil)
+    configuration.requestCachePolicy = .returnCacheDataElseLoad
+    return URLSession(configuration: configuration)
+  }()
+
+  static func key(_ url: URL, _ size: Int) -> NSString { "\(url.absoluteString)#\(size)" as NSString }
+
+  static func cached(_ url: URL?, size: Int) -> UIImage? {
+    url.flatMap { memory.object(forKey: key($0, size)) }
+  }
+
+  static func load(_ url: URL, size: Int) async -> UIImage? {
+    if let hit = memory.object(forKey: key(url, size)) { return hit }
+    guard let (data, response) = try? await session.data(from: url),
+          (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? false else { return nil }
+    let decoded = await Task.detached(priority: .utility) { () -> UIImage? in
+      guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+            let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+              kCGImageSourceCreateThumbnailFromImageAlways: true,
+              kCGImageSourceCreateThumbnailWithTransform: true,
+              kCGImageSourceThumbnailMaxPixelSize: size,
+              kCGImageSourceShouldCacheImmediately: true
+            ] as CFDictionary) else { return nil }
+      return UIImage(cgImage: thumbnail)
+    }.value
+    if let decoded {
+      memory.setObject(decoded, forKey: key(url, size), cost: decoded.cgImage.map { $0.bytesPerRow * $0.height } ?? 0)
+    }
+    return decoded
+  }
+}
+
 // Decode remote artwork near its displayed size instead of expanding full-resolution images in memory.
 struct ThumbnailImage: View {
   let url: URL?
   var contentMode: ContentMode = .fit
   var maxPixelSize: Int = 1200
+  var showsPlaceholder = true
   @State private var image: UIImage?
 
   var body: some View {
     Group {
-      if let image {
+      if let image = image ?? ImageStore.cached(url, size: maxPixelSize) {
         Image(uiImage: image).resizable().aspectRatio(contentMode: contentMode)
       } else {
-        Color.gray.opacity(0.2)
+        // Keep a real view here: .task never runs on an empty Group.
+        Color.gray.opacity(showsPlaceholder ? 0.2 : 0)
       }
     }
     .task(id: url) {
+      guard let url else { image = nil; return }
+      if let hit = ImageStore.cached(url, size: maxPixelSize) { image = hit; return }
       image = nil
-      guard let url else { return }
-      do {
-        let (data, response) = try await URLSession.shared.data(from: url)
-        guard (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? false else { return }
-        let size = maxPixelSize
-        let decoded = await Task.detached(priority: .utility) { () -> UIImage? in
-          guard let source = CGImageSourceCreateWithData(data as CFData, nil),
-                let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
-                  kCGImageSourceCreateThumbnailFromImageAlways: true,
-                  kCGImageSourceCreateThumbnailWithTransform: true,
-                  kCGImageSourceThumbnailMaxPixelSize: size,
-                  kCGImageSourceShouldCacheImmediately: true
-                ] as CFDictionary) else { return nil }
-          return UIImage(cgImage: thumbnail)
-        }.value
-        guard !Task.isCancelled else { return }
-        image = decoded
-      } catch {
-        // Keep the placeholder if the image cannot be loaded.
-      }
+      let loaded = await ImageStore.load(url, size: maxPixelSize)
+      guard !Task.isCancelled else { return }
+      image = loaded
     }
   }
 }
