@@ -45,7 +45,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         PRODUCT_BUNDLE_IDENTIFIER: com.wfhub.cagatayldzz
         MARKETING_VERSION: "2.0"
-        CURRENT_PROJECT_VERSION: "6"
+        CURRENT_PROJECT_VERSION: "7"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_OBJC_BRIDGING_HEADER: WFHub/Bridge.h
         LIBRARY_SEARCH_PATHS: '$(inherited) $(SRCROOT)/build/rust/$(PLATFORM_NAME)'
