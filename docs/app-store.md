@@ -1,12 +1,5 @@
 # App Store listing
 
-## What's New in This Version
-
-Void Fissures and Nightwave are now easier to follow.
-
-- Filter Void Fissures by relic tier: Lith, Meso, Neo, Axi, Requiem, or Omnia
-- A redesigned Nightwave screen with the season countdown and every active challenge with its type and points
-
 ## Keywords
 
 ```text
@@ -15,7 +8,8 @@ Alerts,News,Market,Events,Cycles,Trading,Catalogue,Tracker,Orders,Activities
 
 ## Promotional Text
 
-Explore the rebuilt WFHub for iOS. Track events, cycles, and market orders—all in one place.
+Stay up to date with live activities, explore the Codex, and browse recent market orders
+—all in one place.
 
 ## Description
 

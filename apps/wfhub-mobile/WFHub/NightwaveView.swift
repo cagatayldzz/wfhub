@@ -9,7 +9,7 @@ struct NightwaveView: View {
   var body: some View {
     VStack(spacing: 0) {
       hero
-      LazyVStack(spacing: 10) {
+      LazyVStack(spacing: 8) {
         ForEach(Array((value["activeChallenges"] as? [[String: Any]] ?? []).enumerated()), id: \.offset) { _, challenge in
           NightwaveChallengeRow(challenge: challenge)
         }
@@ -57,22 +57,23 @@ private struct NightwaveChallengeRow: View {
       ZStack(alignment: .bottom) {
         LinearGradient(colors: [Color(red: 0.08, green: 0.08, blue: 0.08), Color(red: 0.15, green: 0.18, blue: 0.2), .black], startPoint: .bottom, endPoint: .top)
         ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/nightwave/\(slug).png"), maxPixelSize: 192, showsPlaceholder: false)
-          .frame(width: 75, height: 75)
+          .frame(width: 56, height: 56)
           .frame(maxHeight: .infinity)
         if let points = challenge["reputation"] as? Int {
-          Text("\(points)").font(.system(size: 14, weight: .bold)).foregroundStyle(gold).padding(.vertical, 4)
+          Text("\(points)").font(.system(size: 12, weight: .semibold)).foregroundStyle(gold).padding(.bottom, 5)
         }
-      }.frame(width: 100)
+      }.frame(width: 80)
 
       VStack(alignment: .leading, spacing: 2) {
-        Text(title).font(.system(size: 18, weight: .bold))
-        Text(kind).font(.system(size: 14, weight: .bold)).foregroundStyle(gold)
-        Text(challenge["desc"] as? String ?? "").font(.system(size: 15)).foregroundStyle(.secondary).padding(.top, 8)
+        Text(title).font(.system(size: 16, weight: .semibold))
+        Text(kind).font(.system(size: 12, weight: .semibold)).foregroundStyle(gold)
+        Text(challenge["desc"] as? String ?? "").font(.system(size: 14)).foregroundStyle(.secondary).padding(.top, 4)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
-      .padding(12)
-      .overlay(Rectangle().stroke(Color.primary.opacity(0.15), lineWidth: 1))
+      .padding(10)
     }
     .fixedSize(horizontal: false, vertical: true)
+    .clipShape(RoundedRectangle(cornerRadius: 8))
+    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.primary.opacity(0.1), lineWidth: 1))
   }
 }

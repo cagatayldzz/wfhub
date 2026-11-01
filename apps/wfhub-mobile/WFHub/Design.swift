@@ -96,14 +96,16 @@ struct WFCard<Content: View>: View {
 struct ArtworkCard: View {
   let title: String
   let image: URL?
+  var compact = false
   var body: some View {
     VStack(spacing: 6) {
       ThumbnailImage(url: image, maxPixelSize: 600)
-        .frame(height: 100).frame(maxWidth: .infinity)
-      Text(title).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
+        .frame(width: compact ? 72 : nil, height: compact ? 72 : 100)
+        .frame(maxWidth: .infinity)
+      Text(title).font(.system(size: compact ? 13 : 15, weight: .bold)).foregroundStyle(.white)
         .lineLimit(2).multilineTextAlignment(.center).frame(maxWidth: .infinity, minHeight: 40)
     }
-    .padding(10).frame(maxWidth: .infinity).background(WFStyle.artwork)
+    .padding(compact ? 8 : 10).frame(maxWidth: .infinity).background(WFStyle.artwork)
     .clipShape(RoundedRectangle(cornerRadius: 10))
     .contentShape(Rectangle())
   }

@@ -48,14 +48,18 @@ struct DataScreen: View {
               }.padding(12)
             }
           } else if let object = data as? [String: Any] {
-            if route.endpoint == "nightwave" { NightwaveView(value: object) } else {
-            ActivityRow(value: object, endpoint: route.endpoint).padding(12)
+            if route.endpoint == "nightwave" {
+              NightwaveView(value: object)
+            } else if route.endpoint == "constructionProgress" {
+              ConstructionProgressView(value: object)
+            } else {
+              ActivityRow(value: object, endpoint: route.endpoint).padding(12)
             }
           } else { ContentUnavailableView("No data found!", systemImage: "tray") }
         }
         .refreshable { await load() }
         }
-        .modifier(SearchIf(enabled: !isFissures && data is [[String: Any]], text: $search))
+        .modifier(SearchIf(enabled: !isFissures && route.endpoint != "news" && data is [[String: Any]], text: $search))
       } else {
         ProgressView()
       }
@@ -109,6 +113,55 @@ struct DataScreen: View {
       guard !Task.isCancelled, selectedPlatform == platform else { return }
       self.error = error.localizedDescription
     }
+  }
+}
+
+
+private struct ConstructionProgressView: View {
+  let value: [String: Any]
+
+  private func progress(_ key: String) -> Double? {
+    let result: Double?
+    if let text = value[key] as? String { result = Double(text) }
+    else if let number = value[key] as? NSNumber { result = number.doubleValue }
+    else { result = nil }
+    guard let result, result.isFinite, (0...100).contains(result) else { return nil }
+    return result
+  }
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      Text("Track the construction progress of each faction’s project.")
+        .font(.subheadline).foregroundStyle(.secondary)
+      project("Balor Fomorian", faction: "Grineer", progress: progress("fomorianProgress"))
+      project("Razorback Armada", faction: "Corpus", progress: progress("razorbackProgress"))
+    }
+    .padding(16)
+  }
+
+  private func project(_ title: String, faction: String, progress: Double?) -> some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(title).font(.headline)
+          Text(faction).font(.caption.weight(.medium)).foregroundStyle(.secondary)
+        }
+        Spacer()
+        if let progress {
+          Text(progress / 100, format: .percent.precision(.fractionLength(2)))
+            .font(.headline.monospacedDigit()).foregroundStyle(WFStyle.accent)
+        } else {
+          Text("Unavailable").font(.subheadline).foregroundStyle(.secondary)
+        }
+      }
+      if let progress {
+        ProgressView(value: progress, total: 100).tint(WFStyle.accent)
+          .accessibilityLabel("\(title) construction progress")
+      }
+    }
+    .padding(16)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
   }
 }
 

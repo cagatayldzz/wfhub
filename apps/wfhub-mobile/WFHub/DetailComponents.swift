@@ -203,14 +203,18 @@ struct NewsDetailRow: View {
   var body: some View {
     let content = VStack(alignment: .leading, spacing: 8) {
       if let image = item["imageLink"] as? String {
-        ThumbnailImage(url: URL(string: image), contentMode: .fill)
-          .frame(height: 180).frame(maxWidth: .infinity).clipped().cornerRadius(10)
+        GeometryReader { geometry in
+          ThumbnailImage(url: URL(string: image), contentMode: .fill)
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .clipped()
+        }
+        .frame(height: 180).frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 10))
       }
       Text(title.uppercased()).font(.headline)
       if let value = item["date"] as? String, let date = screenDate(value) {
         Text(date, format: .dateTime.day().month().year().hour().minute()).foregroundStyle(.secondary)
       }
-    }.padding(.vertical, 6)
+    }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 6)
     if let link = item["link"] as? String, let url = URL(string: link), ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
       Link(destination: url) { content }.buttonStyle(.plain)
     } else { content }

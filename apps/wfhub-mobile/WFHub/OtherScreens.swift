@@ -239,7 +239,7 @@ private struct SettingsRow: View {
 }
 
 struct CodexCategoriesView: View {
-  private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+  private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 2)
   var body: some View {
     ScrollView {
       LazyVGrid(columns: columns, spacing: 10) {
