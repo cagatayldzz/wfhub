@@ -20,6 +20,8 @@ From the repository root, start the desktop app:
 cargo run -p wfhub
 ```
 
+The app opens in a phone-proportioned window. You can also run `bun run dev:phone`.
+
 To generate the iOS project and open it in Xcode:
 
 ```sh
@@ -31,6 +33,12 @@ open WFHub.xcodeproj
 Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team. The Xcode build invokes `scripts/build-rust.sh` to build the Rust static library.
 
 Alternatively, from the repository root, `bun run mobile:simulator` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
+
+## Website and API
+
+Run `bun run dev:web` from the repository root, then open `http://localhost:8000` for the landing page. API requests use locally generated data when available, otherwise they use the deployed API. Run `bun run cf:build` to generate local data; `bun run cf:deploy` builds and deploys the website and API to Cloudflare.
+
+The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-web/api/README.md) for configuration and dataset details.
 
 ## Checks
 

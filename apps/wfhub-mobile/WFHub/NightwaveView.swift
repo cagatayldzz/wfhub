@@ -3,7 +3,7 @@ import SwiftUI
 // Nightwave screen: hero card with the season countdown, then one row per active challenge.
 struct NightwaveView: View {
   let value: [String: Any]
-  private let cdn = "https://cdn.cagatayldzz.com/constants/wfhub/"
+  private let cdn = "https://wfhub.cagatayldzz.com/public/"
   private let gold = Color(red: 0.83, green: 0.73, blue: 0.44)
 
   var body: some View {
@@ -45,7 +45,7 @@ private struct NightwaveChallengeRow: View {
     if challenge["isDaily"] as? Bool == true { return "Daily" }
     return challenge["isElite"] as? Bool == true ? "Elite Weekly" : "Weekly"
   }
-  // Same file naming as the CDN uses: no apostrophes, hyphenated, trailing roman numeral dropped.
+  // Same file naming as the image assets use: no apostrophes, hyphenated, trailing roman numeral dropped.
   private var slug: String {
     var text = title.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "\\s+", with: "-", options: .regularExpression)
     text = text.replacingOccurrences(of: "(?:-\\s?|^)[IVXLCDMivxlcdm]+$", with: "", options: .regularExpression)
@@ -56,7 +56,7 @@ private struct NightwaveChallengeRow: View {
     HStack(spacing: 0) {
       ZStack(alignment: .bottom) {
         LinearGradient(colors: [Color(red: 0.08, green: 0.08, blue: 0.08), Color(red: 0.15, green: 0.18, blue: 0.2), .black], startPoint: .bottom, endPoint: .top)
-        ThumbnailImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/nightwave/\(slug).png"), maxPixelSize: 192, showsPlaceholder: false)
+        ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/nightwave/\(slug).png"), maxPixelSize: 192, showsPlaceholder: false)
           .frame(width: 75, height: 75)
           .frame(maxHeight: .infinity)
         if let points = challenge["reputation"] as? Int {

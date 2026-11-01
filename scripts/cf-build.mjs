@@ -11,6 +11,7 @@ await mkdir(output, { recursive: true });
 await cp(web, output, { recursive: true, filter: path => path !== new URL('api/', web).pathname.replace(/\/$/, '') });
 await cp(new URL('api/swagger/', web), new URL('api/swagger/', output), { recursive: true });
 await mkdir(new URL('_api-data/', output), { recursive: true });
+await cp(new URL('api/data/events.json', web), new URL('_api-data/events.json', output));
 for (const category of categories) {
   const response = await fetch(`${source}json/${category}.json`);
   if (!response.ok) throw new Error(`Failed to download ${category}: HTTP ${response.status}`);

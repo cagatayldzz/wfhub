@@ -18,6 +18,11 @@ const server = Bun.serve({
       return file && await file.exists() ? new Response(file) : new Response('Not found', { status: 404 });
     }
     if (url.pathname.startsWith('/api/')) {
+      if (url.pathname === '/api/events.json') {
+        return worker.fetch(request, { ASSETS: { async fetch() {
+          return new Response(Bun.file(resolve(root, 'api/data/events.json')));
+        } } });
+      }
       const category = url.pathname.split('/')[2]?.replace(/\.json$/, '');
       const data = fileFor(build, `/_api-data/${category}.json`);
       if (data && await data.exists()) {
@@ -31,7 +36,6 @@ const server = Bun.serve({
     }
     if (url.pathname.startsWith('/api') || url.pathname.startsWith('/_api-data')) return new Response('Not found', { status: 404 });
     let path = url.pathname;
-    if (path === '/hub') return Response.redirect(`${url.origin}/hub/`, 302);
     if (path.endsWith('/')) path += 'index.html';
     const file = fileFor(root, path);
     return file && await file.exists() ? new Response(file) : new Response('Not found', { status: 404 });

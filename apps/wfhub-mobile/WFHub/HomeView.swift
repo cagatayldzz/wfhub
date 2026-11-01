@@ -1,7 +1,7 @@
 import SwiftUI
 
 private let gold = Color(red: 0.83, green: 0.73, blue: 0.44)
-private let cdn = "https://cdn.cagatayldzz.com/constants/wfhub/"
+private let cdn = "https://wfhub.cagatayldzz.com/public/"
 
 private struct HomeData {
   var nightwave: [String: Any]?
@@ -159,7 +159,7 @@ struct HomeView: View {
     let results = await withTaskGroup(of: (String, Any?).self, returning: [(String, Any?)].self) { group in
       for endpoint in endpoints {
         group.addTask {
-          let address = endpoint == "banners" ? cdn + "api/events.json" : "https://api.warframestat.us/\(selectedPlatform)/\(endpoint)/"
+          let address = endpoint == "banners" ? "https://wfhub.cagatayldzz.com/api/events.json" : "https://api.warframestat.us/\(selectedPlatform)/\(endpoint)/"
           guard let url = URL(string: address) else { return (endpoint, nil) }
           return (endpoint, try? await API.fetch(url))
         }

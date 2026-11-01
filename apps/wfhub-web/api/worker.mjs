@@ -19,6 +19,14 @@ export default {
       if (path.endsWith('/index.html')) url.pathname = '/api/swagger/';
       return env.ASSETS.fetch(new Request(url, request));
     }
+    if (path === '/api/events.json') {
+      const url = new URL(request.url);
+      url.pathname = '/_api-data/events.json';
+      const response = await env.ASSETS.fetch(new Request(url, { method: 'GET' }));
+      if (!response.ok) return new Response('Not found\n', { status: 404, headers });
+      headers['Content-Type'] = 'application/json; charset=utf-8';
+      return new Response(request.method === 'HEAD' ? null : response.body, { headers });
+    }
     const suffix = path.slice('/api/'.length);
     if (!path.startsWith('/api/') || !suffix.endsWith('.json') ||
         !suffix.split('/').every(part => part !== '.' && part !== '..' && /^[a-zA-Z0-9._-]+$/.test(part))) {

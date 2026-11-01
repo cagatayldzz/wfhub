@@ -48,7 +48,7 @@ private struct ActivityLink: View {
   }
   var body: some View {
     HStack(spacing: 12) {
-      ThumbnailImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/activities/\(imageName).png"), maxPixelSize: 160)
+      ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/activities/\(imageName).png"), maxPixelSize: 160)
       .frame(width: 40, height: 40)
       VStack(alignment: .leading, spacing: 3) {
         Text(LocalizedStringKey(route.title)).font(.system(size: 16, weight: .semibold)).foregroundStyle(.primary)
@@ -247,7 +247,7 @@ struct CodexCategoriesView: View {
           NavigationLink {
             DataScreen(route: route, kind: .category)
           } label: {
-            ArtworkCard(title: route.title, image: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/codex/\(route.endpoint).png"))
+            ArtworkCard(title: route.title, image: URL(string: "https://wfhub.cagatayldzz.com/public/codex/\(route.endpoint == "misc" ? "gear" : route.endpoint).png"))
           }.buttonStyle(.plain)
         }
       }.padding(10)

@@ -256,7 +256,7 @@ private struct CurrencyLabel: View {
   let value: Int
   var body: some View {
     HStack(spacing: 4) {
-      ThumbnailImage(url: URL(string: "https://cdn.cagatayldzz.com/constants/wfhub/icons/\(icon).png"), maxPixelSize: 96)
+      ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/icons/\(icon).png"), maxPixelSize: 96)
       .frame(width: 16, height: 16)
       Text(value, format: .number).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
     }.accessibilityElement(children: .combine)

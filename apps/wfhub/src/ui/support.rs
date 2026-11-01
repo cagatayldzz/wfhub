@@ -61,7 +61,7 @@ pub(super) fn activity_image(endpoint: &str) -> String {
     "flashSales" => "market",
     _ => endpoint,
   };
-  format!("https://cdn.cagatayldzz.com/constants/wfhub/activities/{name}.png")
+  format!("https://wfhub.cagatayldzz.com/public/activities/{name}.png")
 }
 
 pub(super) fn title_case(value: &str) -> String {

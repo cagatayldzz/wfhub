@@ -129,7 +129,7 @@ impl Root {
           let mut grid_row = div().w_full().flex().gap_2();
           for (column, category) in categories.iter().enumerate() {
             let category = (*category).to_string();
-            let image_url = format!("https://cdn.cagatayldzz.com/constants/wfhub/codex/{category}.png");
+            let image_url = format!("https://wfhub.cagatayldzz.com/public/codex/{category}.png");
             let artwork = if self.loading {
               div().w_full().h(px(100.)).into_any_element()
             } else {
@@ -420,7 +420,7 @@ impl Root {
                 .overflow_hidden()
                 .cursor_pointer()
                 .child(
-                  img(image_path("https://cdn.cagatayldzz.com/constants/wfhub/sections/baro-ki-teer.png"))
+                  img(image_path("https://wfhub.cagatayldzz.com/public/sections/baro-ki-teer.png"))
                     .absolute()
                     .inset_0()
                     .w_full()
@@ -499,7 +499,7 @@ impl Root {
           }
           body = body.child(self.section_header("Codex", "Codex content", None, cx));
           body = body.child(div().flex().gap_2().children(
-            [("Warframes", "warframes", "excalibur-prime"), ("Secondary", "secondary", "secondary")].into_iter().enumerate().map(
+            [("Warframes", "warframes", "warframes"), ("Secondary", "secondary", "secondary")].into_iter().enumerate().map(
               |(index, (title, category, artwork))| {
                 div()
                   .id(("home-codex", index))
@@ -512,7 +512,7 @@ impl Root {
                   .flex_col()
                   .items_center()
                   .gap_1()
-                  .child(img(image_path(&format!("https://cdn.cagatayldzz.com/constants/wfhub/codex/{artwork}.png"))).w_full().h(px(100.)))
+                  .child(img(image_path(&format!("https://wfhub.cagatayldzz.com/public/codex/{artwork}.png"))).w_full().h(px(100.)))
                   .child(div().h(px(40.)).text_size(px(15.)).font_weight(FontWeight::BOLD).text_color(rgb(0xffffff)).child(title))
                   .on_click(cx.listener(move |this, _, _, cx| this.open(Page::Category(category.into()), cx)))
               },

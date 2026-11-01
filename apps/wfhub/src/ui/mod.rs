@@ -153,7 +153,7 @@ impl Root {
       let task = cx.background_executor().spawn(async move {
         std::thread::scope(|scope| {
           for category in wfhub_core::CATEGORIES {
-            scope.spawn(move || cache_image(Some(&format!("https://cdn.cagatayldzz.com/constants/wfhub/codex/{category}.png"))));
+            scope.spawn(move || cache_image(Some(&format!("https://wfhub.cagatayldzz.com/public/codex/{category}.png"))));
           }
         });
       });
@@ -183,7 +183,7 @@ impl Root {
         let mut data = fetch(&url)?;
         if url.starts_with("https://api.warframestat.us/")
           && url.matches('/').count() == 4
-          && let Ok(banners) = fetch("https://cdn.cagatayldzz.com/constants/wfhub/api/events.json")
+          && let Ok(banners) = fetch("https://wfhub.cagatayldzz.com/api/events.json")
           && let Some(object) = data.as_object_mut()
         {
           object.insert("banners".into(), banners);
@@ -227,10 +227,10 @@ impl Root {
           }
         }
         if url.starts_with("https://api.warframestat.us/") && url.matches('/').count() == 4 {
-          for category in ["excalibur-prime", "secondary"] {
-            cache_image(Some(&format!("https://cdn.cagatayldzz.com/constants/wfhub/codex/{category}.png")));
+          for category in ["warframes", "secondary"] {
+            cache_image(Some(&format!("https://wfhub.cagatayldzz.com/public/codex/{category}.png")));
           }
-          cache_image(Some("https://cdn.cagatayldzz.com/constants/wfhub/sections/baro-ki-teer.png"));
+          cache_image(Some("https://wfhub.cagatayldzz.com/public/sections/baro-ki-teer.png"));
         }
         Ok::<_, String>(data)
       });
