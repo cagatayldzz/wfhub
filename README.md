@@ -12,3 +12,7 @@ bun run dev:web       # Website at http://localhost:8000
 For prerequisites, iOS setup, and checks, see the [development guide](docs/development.md). The [documentation index](docs/README.md) covers architecture, integrations, and release notes.
 
 The desktop and iOS clients are under active development and do not yet have full feature parity. There is no Android client.
+
+## License
+
+Project code is available under the [MIT License](LICENSE). Third-party assets and trademarks have separate rights; see [asset notices](docs/assets.md).

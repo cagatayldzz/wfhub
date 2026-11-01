@@ -3,3 +3,16 @@
 /apps/wfhub-mobile/build/
 /apps/wfhub-mobile/*.xcodeproj/
 .DS_Store
+
+# Local credentials and signing material
+.env
+.env.*
+!.env.example
+!.env.*.example
+.dev.vars
+.dev.vars.*
+*.p12
+*.p8
+*.pem
+*.key
+*.mobileprovision
