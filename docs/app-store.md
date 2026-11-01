@@ -2,13 +2,10 @@
 
 ## What's New in This Version
 
-WFHub has been rebuilt for iOS with a refreshed look and native experience.
+Void Fissures and Nightwave are now easier to follow.
 
-- Explore an updated Home dashboard and navigation
-- Browse live activities, cycles, and item catalogue entries
-- Check recent Market buy and sell orders
-- Choose your platform and language in Settings
-- Enjoy improved loading, refresh, and overall usability
+- Filter Void Fissures by relic tier: Lith, Meso, Neo, Axi, Requiem, or Omnia
+- A redesigned Nightwave screen with the season countdown and every active challenge with its type and points
 
 ## Keywords
 
@@ -31,6 +28,8 @@ Keep up with live activities using WFHub, rebuilt for iOS with a refreshed nativ
 Stay up to date with live activities and world states:
 
 • Alerts, events, invasions, and news
+• Void Fissures with relic tier filters
+• Nightwave season progress and active challenges
 • Rotating missions and daily deals
 • Weekly challenges and special offers
 • World cycles and timers
