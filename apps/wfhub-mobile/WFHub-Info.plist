@@ -22,6 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-6626336739486650~2054337670</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your permission allows Google and its partners to use data across apps and websites to provide and measure personalized ads.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>SKAdNetworkItems</key>

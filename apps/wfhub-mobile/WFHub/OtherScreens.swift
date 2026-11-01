@@ -197,6 +197,10 @@ struct SettingsView: View {
           }
         }
 
+        Link(destination: URL(string: "https://wfhub.cagatayldzz.com/legal/privacy-policy")!) {
+          Label("Privacy Policy", systemImage: "hand.raised")
+        }
+
         Button {
           storedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
           storedPlatform = platform

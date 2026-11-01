@@ -24,6 +24,7 @@ targets:
       properties:
         CFBundleDisplayName: WFHub
         GADApplicationIdentifier: ca-app-pub-6626336739486650~2054337670
+        NSUserTrackingUsageDescription: Your permission allows Google and its partners to use data across apps and websites to provide and measure personalized ads.
         SKAdNetworkItems:
           - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
         ITSAppUsesNonExemptEncryption: false
@@ -45,7 +46,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         PRODUCT_BUNDLE_IDENTIFIER: com.wfhub.cagatayldzz
         MARKETING_VERSION: "2.1"
-        CURRENT_PROJECT_VERSION: "4"
+        CURRENT_PROJECT_VERSION: "5"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_OBJC_BRIDGING_HEADER: WFHub/Bridge.h
         LIBRARY_SEARCH_PATHS: '$(inherited) $(SRCROOT)/build/rust/$(PLATFORM_NAME)'

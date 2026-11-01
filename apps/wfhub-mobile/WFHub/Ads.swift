@@ -1,4 +1,5 @@
 import GoogleMobileAds
+import AppTrackingTransparency
 import SwiftUI
 import UserMessagingPlatform
 
@@ -7,6 +8,7 @@ final class AdsManager: ObservableObject {
   @Published private(set) var ready = false
   @Published private(set) var privacyOptionsRequired = false
   private var started = false
+  private var sdkStarted = false
   private var loadedWidth: CGFloat = 0
   private(set) lazy var banner: BannerView = {
     let view = BannerView()
@@ -44,10 +46,7 @@ final class AdsManager: ObservableObject {
       print("Ad privacy update failed: \(error.localizedDescription)")
     }
     privacyOptionsRequired = ConsentInformation.shared.privacyOptionsRequirementStatus == .required
-    if ConsentInformation.shared.canRequestAds {
-      await MobileAds.shared.start()
-      ready = true
-    }
+    await startAdsIfAllowed()
   }
 
   func showPrivacyOptions() async {
@@ -56,7 +55,22 @@ final class AdsManager: ObservableObject {
     } catch {
       print("Privacy options failed: \(error.localizedDescription)")
     }
-    ready = ConsentInformation.shared.canRequestAds
+    await startAdsIfAllowed()
+  }
+
+  private func startAdsIfAllowed() async {
+    guard ConsentInformation.shared.canRequestAds else {
+      ready = false
+      return
+    }
+    if !sdkStarted {
+      if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+        await ATTrackingManager.requestTrackingAuthorization()
+      }
+      await MobileAds.shared.start()
+      sdkStarted = true
+    }
+    ready = true
   }
 }
 

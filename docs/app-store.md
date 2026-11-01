@@ -42,3 +42,13 @@ Whether you’re checking the latest activities or looking up an item, WFHub hel
 ■ ABOUT
 WFHub is an independent community project. It is not affiliated with or endorsed by any game publisher or developer. All trademarks are the property of their respective owners.
 ```
+
+## App Review Notes
+
+```text
+WFHub is an unofficial Warframe information tracker. No login is required.
+
+In Activities, open Void Fissures to test the relic tier filter, Nightwave to view active challenges, and Construction Progress to check progress. Explore Market, Codex, and Settings from the navigation bar.
+
+Activity data depends on live game events and may be empty. Market links may open in a browser. WFHub is not affiliated with or endorsed by Digital Extremes.
+```
