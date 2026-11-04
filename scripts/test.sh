@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
+cargo fmt --all -- --check
+cargo clippy --locked --workspace --all-targets -- -D warnings
+cargo test --locked --workspace

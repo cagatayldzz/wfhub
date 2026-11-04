@@ -3,17 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "cf:build": "bun scripts/cf-build.mjs",
-    "cf:deploy": "bun run cf:build && bunx wrangler deploy",
-    "check": "cargo fmt --all -- --check && cargo clippy --locked --workspace --all-targets -- -D warnings && cargo test --locked --workspace",
-    "commit": "git add -A && oco --yes",
-    "dev:phone": "cargo run -p wfhub -- --phone",
-    "dev:web": "bun scripts/dev-web.mjs",
+    "cf:build": "bash scripts/cf-build.sh",
+    "cf:deploy": "bash scripts/cf-deploy.sh",
+    "commit": "bash scripts/commit.sh",
+    "dev:phone": "bash scripts/dev-phone.sh",
+    "dev:web": "bash scripts/dev-web.sh",
     "mobile:archive": "apps/wfhub-mobile/scripts/archive.sh",
     "mobile:project": "cd apps/wfhub-mobile && xcodegen generate",
-    "mobile:rust": "apps/wfhub-mobile/scripts/build-rust.sh",
     "mobile:simulator": "apps/wfhub-mobile/scripts/simulator.sh",
-    "test": "cargo test --locked --workspace",
+    "test": "bash scripts/test.sh",
     "update": "cargo update"
   }
 }

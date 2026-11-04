@@ -1,7 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+node --input-type=module - "$@" <<'NODE'
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 
-const output = new URL('../.cloudflare-build/', import.meta.url);
-const web = new URL('../apps/wfhub-web/', import.meta.url);
+const output = new URL('./.cloudflare-build/', `file://${process.cwd()}/`);
+const web = new URL('./apps/wfhub-web/', `file://${process.cwd()}/`);
 const categories = ['Arcanes', 'Arch-Gun', 'Arch-Melee', 'Archwing', 'Enemy', 'Fish', 'Gear', 'Glyphs', 'Melee', 'Misc', 'Mods', 'Node', 'Pets', 'Primary', 'Quests', 'Railjack', 'Relics', 'Resources', 'Secondary', 'Sentinels', 'SentinelWeapons', 'Sigils', 'Skins', 'Warframes'];
 const source = 'https://raw.githubusercontent.com/WFCD/warframe-items/master/data/';
 const fields = ['uniqueName', 'name', 'description', 'health', 'shield', 'armor', 'stamina', 'power', 'masteryReq', 'sprintSpeed', 'abilities', 'sprint', 'wikiaUrl', 'releaseDate'];
@@ -31,3 +35,4 @@ for (const category of categories) {
   await writeFile(new URL(`_api-data/${category.toLowerCase()}.json`, output), JSON.stringify({ list, details }));
   console.log(`${category}: ${list.length} items`);
 }
+NODE

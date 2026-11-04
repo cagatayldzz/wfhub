@@ -12,6 +12,6 @@ The `/api/events.json` endpoint serves the event banners maintained in `api/data
 
 The local Rust server needs a JSON dataset in `api/` (or the directory set by `WFHUB_API_DATA_DIR`). The Cloudflare build instead downloads category data from [WFCD / warframe-items](https://github.com/WFCD/warframe-items) and generates the API indexes.
 
-For Cloudflare Workers Builds, use the repository root as the root directory, `bun run cf:build` as the build command, and `bun run cf:deploy` as the deploy command. The build copies the website and generates API data in `.cloudflare-build`; the Worker serves JSON paths under `/api/`. The build requires network access to GitHub. `bun run cf:deploy` also builds and deploys locally.
+For Cloudflare Workers Builds, use the repository root as the root directory, `bash scripts/cf-build.sh` as the build command, and `bash scripts/cf-deploy.sh` as the deploy command. The build copies the website and generates API data in `.cloudflare-build`; the Worker serves JSON paths under `/api/`. The build requires network access to GitHub. `bash scripts/cf-deploy.sh` also builds and deploys locally.
 
 Warframe and related names and assets belong to their respective rights holders, including Digital Extremes. WFHub is an independent community project.
