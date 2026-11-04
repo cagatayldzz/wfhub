@@ -6,7 +6,7 @@ WFHub is a Warframe companion for browsing world state, activities, Codex conten
 
 ```sh
 cargo run -p wfhub    # Desktop app
-bash scripts/dev-web.sh       # Website at http://localhost:8000
+bash scripts/dev.sh web       # Website at http://localhost:8000
 ```
 
 For prerequisites, iOS setup, and checks, see the [development guide](docs/development.md). The [documentation index](docs/README.md) covers architecture, integrations, and release notes.

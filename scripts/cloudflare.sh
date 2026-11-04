@@ -1,7 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-node --input-type=module - "$@" <<'NODE'
+action="${1:-}"
+case "$action" in
+  build|deploy) shift ;;
+  *) echo "Usage: bash scripts/cloudflare.sh {build|deploy} [wrangler options]" >&2; exit 2 ;;
+esac
+node --input-type=module - <<'NODE'
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 
 const output = new URL('./.cloudflare-build/', `file://${process.cwd()}/`);
@@ -36,3 +41,7 @@ for (const category of categories) {
   console.log(`${category}: ${list.length} items`);
 }
 NODE
+
+if [ "$action" = deploy ]; then
+  npx wrangler deploy "$@"
+fi

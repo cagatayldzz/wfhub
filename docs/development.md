@@ -20,7 +20,7 @@ From the repository root, start the desktop app:
 cargo run -p wfhub
 ```
 
-The app opens in a phone-proportioned window. You can also run `bash scripts/dev-phone.sh`.
+The app opens in a phone-proportioned window. You can also run `bash scripts/dev.sh phone`.
 
 To generate the iOS project and open it in Xcode:
 
@@ -32,11 +32,11 @@ open WFHub.xcodeproj
 
 Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team. The Xcode build invokes `scripts/build-rust.sh` to build the Rust static library.
 
-Alternatively, from the repository root, `bash apps/wfhub-mobile/scripts/simulator.sh` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
+Alternatively, from the repository root, `bash scripts/mobile.sh simulator` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
 
 ## Website and API
 
-Run `bash scripts/dev-web.sh` from the repository root, then open `http://localhost:8000` for the landing page. API requests use locally generated data when available, otherwise they use the deployed API. Run `bash scripts/cf-build.sh` to generate local data; `bash scripts/cf-deploy.sh` builds and deploys the website and API to Cloudflare.
+Run `bash scripts/dev.sh web` from the repository root, then open `http://localhost:8000` for the landing page. API requests use locally generated data when available, otherwise they use the deployed API. Run `bash scripts/cloudflare.sh build` to generate local data; `bash scripts/cloudflare.sh deploy` builds and deploys the website and API to Cloudflare.
 
 The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-web/api/README.md) for configuration and dataset details.
 
@@ -54,6 +54,6 @@ cargo test --locked --workspace
 
 `target/`, the iOS `build/` directory, and generated `.xcodeproj` files are ignored by Git. Edit `apps/wfhub-mobile/project.yml` and regenerate the project instead of editing the generated project as the source of truth.
 
-`bash apps/wfhub-mobile/scripts/archive.sh` generates an iOS archive and increments `CURRENT_PROJECT_VERSION` in `project.yml` by default. Invoke the script directly with `--no-bump` to retain the current number. Archiving requires an appropriately configured signing team.
+`bash scripts/mobile.sh archive` generates an iOS archive and increments `CURRENT_PROJECT_VERSION` in `project.yml` by default. Invoke the script directly with `--no-bump` to retain the current number. Archiving requires an appropriately configured signing team.
 
 If Xcode reports a missing Rust target, install the target named in the error. If the simulator script cannot find iPhone 15, select an available simulator with `WFHUB_SIMULATOR`. Network-backed screens require access to the services listed in [Data and integrations](data-and-integrations.md).

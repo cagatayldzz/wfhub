@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "cf:build": "bash scripts/cf-build.sh",
-    "cf:deploy": "bash scripts/cf-deploy.sh",
+    "cf:build": "bash scripts/cloudflare.sh build",
+    "cf:deploy": "bash scripts/cloudflare.sh deploy",
     "commit": "bash scripts/commit.sh",
-    "dev:phone": "bash scripts/dev-phone.sh",
-    "dev:web": "bash scripts/dev-web.sh",
-    "mobile:archive": "apps/wfhub-mobile/scripts/archive.sh",
-    "mobile:project": "cd apps/wfhub-mobile && xcodegen generate",
-    "mobile:simulator": "apps/wfhub-mobile/scripts/simulator.sh",
+    "dev:phone": "bash scripts/dev.sh phone",
+    "dev:web": "bash scripts/dev.sh web",
+    "mobile:archive": "bash scripts/mobile.sh archive",
+    "mobile:project": "bash scripts/mobile.sh project",
+    "mobile:simulator": "bash scripts/mobile.sh simulator",
     "test": "bash scripts/test.sh",
     "update": "cargo update"
   }

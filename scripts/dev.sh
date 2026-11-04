@@ -1,6 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+action="${1:-}"
+case "$action" in
+  phone) shift; exec cargo run -p wfhub -- --phone "$@" ;;
+  web) shift ;;
+  *) echo "Usage: bash scripts/dev.sh {phone|web} [options]" >&2; exit 2 ;;
+esac
 node --input-type=module - "$@" <<'NODE'
 import { resolve, sep } from 'node:path';
 import worker from './apps/wfhub-web/api/worker.mjs';
@@ -37,7 +43,7 @@ async function handle(request) {
         } } });
       }
       try { return await fetch(`https://wfhub.cagatayldzz.com${url.pathname}${url.search}`); }
-      catch { return new Response('API data unavailable. Run bash scripts/cf-build.sh first.', { status: 503 }); }
+      catch { return new Response('API data unavailable. Run bash scripts/cloudflare.sh build first.', { status: 503 }); }
     }
     if (url.pathname.startsWith('/api') || url.pathname.startsWith('/_api-data')) return new Response('Not found', { status: 404 });
     let path = url.pathname;

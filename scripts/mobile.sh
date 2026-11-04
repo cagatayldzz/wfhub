@@ -1,12 +1,43 @@
 #!/bin/bash
-# Builds the iPhone app for the simulator, starts it there and brings the simulator window forward.
-# It uses iPhone 15 by default; set WFHUB_SIMULATOR to a name or id to pick another one.
-# Arguments are passed to the app at launch.
 set -euo pipefail
+cd "$(dirname "$0")/../apps/wfhub-mobile"
 
-here="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$here"
+archive() {
+if ! command -v xcodegen >/dev/null; then
+  echo "error: xcodegen not found; run: brew install xcodegen" >&2
+  exit 1
+fi
 
+if [ "${1:-}" = "--no-bump" ]; then
+  shift
+else
+  current="$(grep -E 'CURRENT_PROJECT_VERSION:' project.yml | grep -oE '[0-9]+' | head -1)"
+  next=$((current + 1))
+  sed -i '' "s/CURRENT_PROJECT_VERSION: \"$current\"/CURRENT_PROJECT_VERSION: \"$next\"/" project.yml
+  echo "Build number $current -> $next"
+fi
+
+xcodegen generate
+
+# Archives in this folder show up in the Organizer by themselves.
+folder="$HOME/Library/Developer/Xcode/Archives/$(date +%Y-%m-%d)"
+mkdir -p "$folder"
+archive="$folder/WFHub $(date '+%Y-%m-%d, %H.%M').xcarchive"
+
+xcodebuild archive \
+  -project WFHub.xcodeproj \
+  -scheme WFHub \
+  -destination 'generic/platform=iOS' \
+  -archivePath "$archive" \
+  -allowProvisioningUpdates \
+  "$@"
+
+echo "Archive ready: $archive"
+# Opening an archive starts Xcode and shows it in the Organizer.
+open "$archive"
+}
+
+simulator() {
 if command -v xcodegen >/dev/null; then
   xcodegen generate >/dev/null
 fi
@@ -49,3 +80,11 @@ for window in "$developer/Applications/Simulator.app" "$developer/../Application
     break
   fi
 done
+}
+
+action="${1:-}"
+case "$action" in
+  archive|simulator) shift; "$action" "$@" ;;
+  project) shift; xcodegen generate "$@" ;;
+  *) echo "Usage: bash scripts/mobile.sh {archive|project|simulator} [options]" >&2; exit 2 ;;
+esac
