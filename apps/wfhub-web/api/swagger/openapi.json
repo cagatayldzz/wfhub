@@ -73,10 +73,10 @@
         }
       }
     },
-    "/api/mastery/warframes.json": {
+    "/api/mastery/{category}.json": {
       "get": {
-        "summary": "List Warframes from the mastery checklist",
-        "operationId": "listMasteryWarframes",
+        "summary": "List items from a mastery checklist",
+        "operationId": "listMasteryItems",
         "responses": {
           "200": {
             "description": "Warframe mastery checklist",
@@ -90,8 +90,41 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Unknown category"
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "warframes",
+                "primary",
+                "secondary",
+                "melee",
+                "kitgun",
+                "zaw",
+                "amp",
+                "sentinel",
+                "moa",
+                "hound",
+                "beast",
+                "robotic",
+                "archwing",
+                "archgun",
+                "archmelee",
+                "necramech",
+                "railjack",
+                "k-drive"
+              ]
+            }
+          }
+        ]
       }
     }
   },
@@ -288,7 +321,8 @@
           },
           "image": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "nullable": true
           },
           "level": {
             "type": "integer",

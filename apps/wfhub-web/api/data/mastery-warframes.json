@@ -1,709 +1,709 @@
 [
   {
     "name": "Ash",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Ash.png",
+    "image": "https://wiki.warframe.com/images/thumb/Ash_Thumb.png/64px-Ash_Thumb.png?db305",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Ash Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/AshPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/AshPrime_Thumb.png/64px-AshPrime_Thumb.png?373a7",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Atlas",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Atlas.png",
+    "image": "https://wiki.warframe.com/images/thumb/Atlas_Thumb.png/64px-Atlas_Thumb.png?91499",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Atlas Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/AtlasPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/AtlasPrime_Thumb.png/64px-AtlasPrime_Thumb.png?25c96",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Banshee",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Banshee.png",
+    "image": "https://wiki.warframe.com/images/thumb/Banshee_Thumb.png/64px-Banshee_Thumb.png?1f779",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Banshee Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/BansheePrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/BansheePrime_Thumb.png/64px-BansheePrime_Thumb.png?5d57f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Baruuk",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Pacifist.png",
+    "image": "https://wiki.warframe.com/images/thumb/Baruuk_Thumb.png/64px-Baruuk_Thumb.png?30a1c",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Baruuk Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/BaruukPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/BaruukPrime_Thumb.png/64px-BaruukPrime_Thumb.png?b2420",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Caliban",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Caliban.png",
+    "image": "https://wiki.warframe.com/images/thumb/Caliban_Thumb.png/64px-Caliban_Thumb.png?c916e",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Caliban Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/CalibanPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/CalibanPrime_Thumb.png/64px-CalibanPrime_Thumb.png?feeeb",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Chroma",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Chroma.png",
+    "image": "https://wiki.warframe.com/images/thumb/Chroma_Thumb.png/64px-Chroma_Thumb.png?545f7",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Chroma Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/ChromaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/ChromaPrime_Thumb.png/64px-ChromaPrime_Thumb.png?71048",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Citrine",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Citrine.png",
+    "image": "https://wiki.warframe.com/images/thumb/Citrine_Thumb.png/64px-Citrine_Thumb.png?89b01",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Citrine Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/CitrinePrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/CitrinePrime_Thumb.png/64px-CitrinePrime_Thumb.png?bd6e5",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Cyte-09",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Frumentarius.png",
+    "image": "https://wiki.warframe.com/images/thumb/Cyte09_Thumb.png/64px-Cyte09_Thumb.png?b161b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Dagath",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Dagath.png",
+    "image": "https://wiki.warframe.com/images/thumb/Dagath_Thumb.png/64px-Dagath_Thumb.png?4b231",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Dante",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Pagemaster.png",
+    "image": "https://wiki.warframe.com/images/thumb/Dante_Thumb.png/64px-Dante_Thumb.png?c0761",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Ember",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Ember.png",
+    "image": "https://wiki.warframe.com/images/thumb/Ember_Thumb.png/64px-Ember_Thumb.png?20dac",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Ember Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/EmberPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/EmberPrime_Thumb.png/64px-EmberPrime_Thumb.png?f1136",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Equinox",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Equinox.png",
+    "image": "https://wiki.warframe.com/images/thumb/Equinox_Thumb.png/64px-Equinox_Thumb.png?62279",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Equinox Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/EquinoxPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/EquinoxPrime_Thumb.png/64px-EquinoxPrime_Thumb.png?7dc5f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Excalibur",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Excalibur.png",
+    "image": "https://wiki.warframe.com/images/thumb/Excalibur_Thumb.png/64px-Excalibur_Thumb.png?97103",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Excalibur Umbra",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/ExcaliburUmbra.png",
+    "image": "https://wiki.warframe.com/images/thumb/ExcaliburUmbra_Thumb.png/64px-ExcaliburUmbra_Thumb.png?73c5c",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Follie",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Inkblot.png",
+    "image": "https://wiki.warframe.com/images/thumb/Follie_Thumb.png/64px-Follie_Thumb.png?3674b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Frost",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Frost.png",
+    "image": "https://wiki.warframe.com/images/thumb/Frost_Thumb.png/64px-Frost_Thumb.png?32f8e",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Frost Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/FrostPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/FrostPrime_Thumb.png/64px-FrostPrime_Thumb.png?d491e",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Gara",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Gara.png",
+    "image": "https://wiki.warframe.com/images/thumb/Gara_Thumb.png/64px-Gara_Thumb.png?1c84b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Gara Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/GaraPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/GaraPrime_Thumb.png/64px-GaraPrime_Thumb.png?e380f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Garuda",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Garuda.png",
+    "image": "https://wiki.warframe.com/images/thumb/Garuda_Thumb.png/64px-Garuda_Thumb.png?0f856",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Garuda Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/GarudaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/GarudaPrime_Thumb.png/64px-GarudaPrime_Thumb.png?13f16",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Gauss",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Gauss.png",
+    "image": "https://wiki.warframe.com/images/thumb/Gauss_Thumb.png/64px-Gauss_Thumb.png?fb087",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Gauss Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/GaussPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/GaussPrime_Thumb.png/64px-GaussPrime_Thumb.png?aa6cc",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Grendel",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Grendel.png",
+    "image": "https://wiki.warframe.com/images/thumb/Grendel_Thumb.png/64px-Grendel_Thumb.png?f4a0b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Grendel Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/GrendelPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/GrendelPrime_Thumb.png/64px-GrendelPrime_Thumb.png?62987",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Gyre",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Gyre.png",
+    "image": "https://wiki.warframe.com/images/thumb/Gyre_Thumb.png/64px-Gyre_Thumb.png?f7a7f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Gyre Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/GyrePrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/GyrePrime_Thumb.png/64px-GyrePrime_Thumb.png?f6b14",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Harrow",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Harrow.png",
+    "image": "https://wiki.warframe.com/images/thumb/Harrow_Thumb.png/64px-Harrow_Thumb.png?6b992",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Harrow Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/HarrowPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/HarrowPrime_Thumb.png/64px-HarrowPrime_Thumb.png?9cd5a",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Hildryn",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/IronFrame.png",
+    "image": "https://wiki.warframe.com/images/thumb/Hildryn_Thumb.png/64px-Hildryn_Thumb.png?f6fc3",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Hildryn Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/HildrynPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/HildrynPrime_Thumb.png/64px-HildrynPrime_Thumb.png?36b86",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Hydroid",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Hydroid.png",
+    "image": "https://wiki.warframe.com/images/thumb/Hydroid_Thumb.png/64px-Hydroid_Thumb.png?48637",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Hydroid Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/HydroidPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/HydroidPrime_Thumb.png/64px-HydroidPrime_Thumb.png?170c3",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Inaros",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Inaros.png",
+    "image": "https://wiki.warframe.com/images/thumb/Inaros_Thumb.png/64px-Inaros_Thumb.png?a771a",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Inaros Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/InarosPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/InarosPrime_Thumb.png/64px-InarosPrime_Thumb.png?cd69a",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Ivara",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Ivara.png",
+    "image": "https://wiki.warframe.com/images/thumb/Ivara_Thumb.png/64px-Ivara_Thumb.png?3a915",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Ivara Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/IvaraPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/IvaraPrime_Thumb.png/64px-IvaraPrime_Thumb.png?59590",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Jade",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Jade.png",
+    "image": "https://wiki.warframe.com/images/thumb/Jade_Thumb.png/64px-Jade_Thumb.png?532ac",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Khora",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Khora.png",
+    "image": "https://wiki.warframe.com/images/thumb/Khora_Thumb.png/64px-Khora_Thumb.png?28137",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Khora Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/KhoraPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/KhoraPrime_Thumb.png/64px-KhoraPrime_Thumb.png?730fb",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Koumei",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Koumei.png",
+    "image": "https://wiki.warframe.com/images/thumb/Koumei_Thumb.png/64px-Koumei_Thumb.png?2085e",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Kullervo",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/PaxDuviricus.png",
+    "image": "https://wiki.warframe.com/images/thumb/Kullervo_Thumb.png/64px-Kullervo_Thumb.png?42424",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Lavos",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Lavos.png",
+    "image": "https://wiki.warframe.com/images/thumb/Lavos_Thumb.png/64px-Lavos_Thumb.png?8996d",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Lavos Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/LavosPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/LavosPrime_Thumb.png/64px-LavosPrime_Thumb.png?b1901",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Limbo",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Limbo.png",
+    "image": "https://wiki.warframe.com/images/thumb/Limbo_Thumb.png/64px-Limbo_Thumb.png?5b51a",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Limbo Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/LimboPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/LimboPrime_Thumb.png/64px-LimboPrime_Thumb.png?081f6",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Loki",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Loki.png",
+    "image": "https://wiki.warframe.com/images/thumb/Loki_Thumb.png/64px-Loki_Thumb.png?35af7",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Loki Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/LokiPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/LokiPrime_Thumb.png/64px-LokiPrime_Thumb.png?62a71",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Mag",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Mag.png",
+    "image": "https://wiki.warframe.com/images/thumb/Mag_Thumb.png/64px-Mag_Thumb.png?3a64c",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Mag Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/MagPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/MagPrime_Thumb.png/64px-MagPrime_Thumb.png?89603",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Mesa",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Mesa.png",
+    "image": "https://wiki.warframe.com/images/thumb/Mesa_Thumb.png/64px-Mesa_Thumb.png?fbb32",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Mesa Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/MesaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/MesaPrime_Thumb.png/64px-MesaPrime_Thumb.png?c5a03",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Mirage",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Mirage.png",
+    "image": "https://wiki.warframe.com/images/thumb/Mirage_Thumb.png/64px-Mirage_Thumb.png?c6c07",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Mirage Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/MiragePrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/MiragePrime_Thumb.png/64px-MiragePrime_Thumb.png?606b5",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Narin",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Narin.png",
+    "image": "https://wiki.warframe.com/images/thumb/Narin_Thumb.png/64px-Narin_Thumb.png?b878d",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nekros",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Nekros.png",
+    "image": "https://wiki.warframe.com/images/thumb/Nekros_Thumb.png/64px-Nekros_Thumb.png?0fa45",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nekros Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/NekrosPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/NekrosPrime_Thumb.png/64px-NekrosPrime_Thumb.png?29f4a",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nezha",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Nezha.png",
+    "image": "https://wiki.warframe.com/images/thumb/Nezha_Thumb.png/64px-Nezha_Thumb.png?23673",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nezha Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/NezhaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/NezhaPrime_Thumb.png/64px-NezhaPrime_Thumb.png?1d330",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nidus",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Nidus.png",
+    "image": "https://wiki.warframe.com/images/thumb/Nidus_Thumb.png/64px-Nidus_Thumb.png?d4fb6",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nidus Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/NidusPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/NidusPrime_Thumb.png/64px-NidusPrime_Thumb.png?b61c5",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nokko",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Nokko.png",
+    "image": "https://wiki.warframe.com/images/thumb/Nokko_Thumb.png/64px-Nokko_Thumb.png?34082",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nova",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Nova.png",
+    "image": "https://wiki.warframe.com/images/thumb/Nova_Thumb.png/64px-Nova_Thumb.png?a8d96",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nova Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/NovaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/NovaPrime_Thumb.png/64px-NovaPrime_Thumb.png?34d15",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nyx",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Nyx.png",
+    "image": "https://wiki.warframe.com/images/thumb/Nyx_Thumb.png/64px-Nyx_Thumb.png?00908",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Nyx Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/NyxPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/NyxPrime_Thumb.png/64px-NyxPrime_Thumb.png?10995",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Oberon",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Oberon.png",
+    "image": "https://wiki.warframe.com/images/thumb/Oberon_Thumb.png/64px-Oberon_Thumb.png?ea604",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Oberon Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/OberonPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/OberonPrime_Thumb.png/64px-OberonPrime_Thumb.png?bd523",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Octavia",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Octavia.png",
+    "image": "https://wiki.warframe.com/images/thumb/Octavia_Thumb.png/64px-Octavia_Thumb.png?aa13e",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Octavia Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/OctaviaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/OctaviaPrime_Thumb.png/64px-OctaviaPrime_Thumb.png?5a09d",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Oraxia",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Oraxia.png",
+    "image": "https://wiki.warframe.com/images/thumb/Oraxia_Thumb.png/64px-Oraxia_Thumb.png?f2ec1",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Protea",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Odalisk.png",
+    "image": "https://wiki.warframe.com/images/thumb/Protea_Thumb.png/64px-Protea_Thumb.png?5aaec",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Protea Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/ProteaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/ProteaPrime_Thumb.png/64px-ProteaPrime_Thumb.png?56831",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Qorvex",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Qorvex.png",
+    "image": "https://wiki.warframe.com/images/thumb/Qorvex_Thumb.png/64px-Qorvex_Thumb.png?815ba",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Revenant",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Revenant.png",
+    "image": "https://wiki.warframe.com/images/thumb/Revenant_Thumb.png/64px-Revenant_Thumb.png?fd975",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Revenant Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/RevenantPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/RevenantPrime_Thumb.png/64px-RevenantPrime_Thumb.png?e4097",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Rhino",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Rhino.png",
+    "image": "https://wiki.warframe.com/images/thumb/Rhino_Thumb.png/64px-Rhino_Thumb.png?ae954",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Rhino Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/RhinoPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/RhinoPrime_Thumb.png/64px-RhinoPrime_Thumb.png?b18c1",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Saryn",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Saryn.png",
+    "image": "https://wiki.warframe.com/images/thumb/Saryn_Thumb.png/64px-Saryn_Thumb.png?74464",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Saryn Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/SarynPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/SarynPrime_Thumb.png/64px-SarynPrime_Thumb.png?f437a",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Sevagoth",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Wraith.png",
+    "image": "https://wiki.warframe.com/images/thumb/Sevagoth_Thumb.png/64px-Sevagoth_Thumb.png?6863b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Sevagoth Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/SevagothPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/SevagothPrime_Thumb.png/64px-SevagothPrime_Thumb.png?2552c",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Sirius & Orion",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/SiriusOrion.png",
+    "image": "https://wiki.warframe.com/images/thumb/SiriusOrion.png/64px-SiriusOrion.png?3a1d6",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Styanax",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Styanax.png",
+    "image": "https://wiki.warframe.com/images/thumb/Styanax_Thumb.png/64px-Styanax_Thumb.png?60e60",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Styanax Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/StyanaxPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/StyanaxPrime_Thumb.png/64px-StyanaxPrime_Thumb.png?f0b23",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Temple",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Temple.png",
+    "image": "https://wiki.warframe.com/images/thumb/Temple_Thumb.png/64px-Temple_Thumb.png?1e14f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Titania",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Titania.png",
+    "image": "https://wiki.warframe.com/images/thumb/Titania_Thumb.png/64px-Titania_Thumb.png?58f33",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Titania Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/TitaniaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/TitaniaPrime_Thumb.png/64px-TitaniaPrime_Thumb.png?a33ec",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Trinity",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Trinity.png",
+    "image": "https://wiki.warframe.com/images/thumb/Trinity_Thumb.png/64px-Trinity_Thumb.png?ee30d",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Trinity Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/TrinityPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/TrinityPrime_Thumb.png/64px-TrinityPrime_Thumb.png?277fd",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Uriel",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Demonframe.png",
+    "image": "https://wiki.warframe.com/images/thumb/Uriel_Thumb.png/64px-Uriel_Thumb.png?08d7b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Valkyr",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Valkyr.png",
+    "image": "https://wiki.warframe.com/images/thumb/Valkyr_Thumb.png/64px-Valkyr_Thumb.png?d633f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Valkyr Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/ValkyrPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/ValkyrPrime_Thumb.png/64px-ValkyrPrime_Thumb.png?63221",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Vauban",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Vauban.png",
+    "image": "https://wiki.warframe.com/images/thumb/Vauban_Thumb.png/64px-Vauban_Thumb.png?4d2ec",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Vauban Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/VaubanPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/VaubanPrime_Thumb.png/64px-VaubanPrime_Thumb.png?d347f",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Volt",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Volt.png",
+    "image": "https://wiki.warframe.com/images/thumb/Volt_Thumb.png/64px-Volt_Thumb.png?6e107",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Volt Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/VoltPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/VoltPrime_Thumb.png/64px-VoltPrime_Thumb.png?35509",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Voruna",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Voruna.png",
+    "image": "https://wiki.warframe.com/images/thumb/Voruna_Thumb.png/64px-Voruna_Thumb.png?3ec67",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Voruna Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/VorunaPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/VorunaPrime_Thumb.png/64px-VorunaPrime_Thumb.png?5d60b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Wisp",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Wisp.png",
+    "image": "https://wiki.warframe.com/images/thumb/Wisp_Thumb.png/64px-Wisp_Thumb.png?e6cde",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Wisp Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/WispPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/WispPrime_Thumb.png/64px-WispPrime_Thumb.png?faa01",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Wukong",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Wukong.png",
+    "image": "https://wiki.warframe.com/images/thumb/Wukong_Thumb.png/64px-Wukong_Thumb.png?38036",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Wukong Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/WukongPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/WukongPrime_Thumb.png/64px-WukongPrime_Thumb.png?1dfa9",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Xaku",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/BrokenFrame.png",
+    "image": "https://wiki.warframe.com/images/thumb/Xaku_Thumb.png/64px-Xaku_Thumb.png?eb470",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Xaku Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/XakuPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/XakuPrime_Thumb.png/64px-XakuPrime_Thumb.png?ea7e1",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Yareli",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Yareli.png",
+    "image": "https://wiki.warframe.com/images/thumb/Yareli_Thumb.png/64px-Yareli_Thumb.png?a9e7b",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Yareli Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/YareliPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/YareliPrime_Thumb.png/64px-YareliPrime_Thumb.png?a28ee",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Zephyr",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Zephyr.png",
+    "image": "https://wiki.warframe.com/images/thumb/Zephyr_Thumb.png/64px-Zephyr_Thumb.png?d427c",
     "level": 30,
     "mastery": 6000
   },
   {
     "name": "Zephyr Prime",
-    "image": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/ZephyrPrime.png",
+    "image": "https://wiki.warframe.com/images/thumb/ZephyrPrime_Thumb.png/64px-ZephyrPrime_Thumb.png?192c6",
     "level": 30,
     "mastery": 6000
   }

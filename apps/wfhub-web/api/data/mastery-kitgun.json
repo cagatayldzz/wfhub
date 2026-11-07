@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Catchmoon",
+    "image": "https://wiki.warframe.com/images/thumb/Catchmoon.png/64px-Catchmoon.png?ec717",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Gaze",
+    "image": "https://wiki.warframe.com/images/thumb/Gaze.png/64px-Gaze.png?c5125",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Rattleguts",
+    "image": "https://wiki.warframe.com/images/thumb/Rattleguts.png/64px-Rattleguts.png?be70d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sporelacer",
+    "image": "https://wiki.warframe.com/images/thumb/Sporelacer.png/64px-Sporelacer.png?8af9a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tombfinger",
+    "image": "https://wiki.warframe.com/images/thumb/Tombfinger.png/64px-Tombfinger.png?775ff",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Vermisplicer",
+    "image": "https://wiki.warframe.com/images/thumb/Vermisplicer.png/64px-Vermisplicer.png?759c9",
+    "level": 30,
+    "mastery": 3000
+  }
+]

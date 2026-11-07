@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Agkuza",
+    "image": "https://wiki.warframe.com/images/thumb/Agkuza.png/64px-Agkuza.png?5cbfc",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Centaur",
+    "image": "https://wiki.warframe.com/images/thumb/Centaur.png/64px-Centaur.png?ad3fd",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kaszas",
+    "image": "https://wiki.warframe.com/images/thumb/Kaszas.png/64px-Kaszas.png?9fcb4",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Knux",
+    "image": "https://wiki.warframe.com/images/thumb/Knux.png/64px-Knux.png?2d0e0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Onorix",
+    "image": "https://wiki.warframe.com/images/thumb/Onorix.png/64px-Onorix.png?f4784",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Veritux",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaVeritux.png/64px-PrismaVeritux.png?571f6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Rathbone",
+    "image": "https://wiki.warframe.com/images/thumb/Rathbone.png/64px-Rathbone.png?255ff",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Veritux",
+    "image": "https://wiki.warframe.com/images/thumb/Veritux.png/64px-Veritux.png?e0827",
+    "level": 30,
+    "mastery": 3000
+  }
+]

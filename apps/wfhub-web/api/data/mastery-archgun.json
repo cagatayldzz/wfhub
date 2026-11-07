@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Arbucep",
+    "image": "https://wiki.warframe.com/images/thumb/Arbucep.png/64px-Arbucep.png?37aa2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cortege",
+    "image": "https://wiki.warframe.com/images/thumb/Cortege.png/64px-Cortege.png?b7e25",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Corvas",
+    "image": "https://wiki.warframe.com/images/thumb/Corvas.png/64px-Corvas.png?2ae6a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Corvas Prime",
+    "image": "https://wiki.warframe.com/images/thumb/CorvasPrime.png/64px-CorvasPrime.png?290fd",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cyngas",
+    "image": "https://wiki.warframe.com/images/thumb/Cyngas.png/64px-Cyngas.png?1a357",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Decurion",
+    "image": "https://wiki.warframe.com/images/thumb/DualDecurion.png/64px-DualDecurion.png?9569b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Fluctus",
+    "image": "https://wiki.warframe.com/images/thumb/Fluctus.png/64px-Fluctus.png?e32bf",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Grattler",
+    "image": "https://wiki.warframe.com/images/thumb/Grattler.png/64px-Grattler.png?fa336",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Imperator",
+    "image": "https://wiki.warframe.com/images/thumb/Imperator.png/64px-Imperator.png?3a6f3",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Imperator Vandal",
+    "image": "https://wiki.warframe.com/images/thumb/ImperatorVandal.png/64px-ImperatorVandal.png?a8014",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kuva Ayanga",
+    "image": "https://wiki.warframe.com/images/thumb/KuvaAyanga.png/64px-KuvaAyanga.png?098c6",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Kuva Grattler",
+    "image": "https://wiki.warframe.com/images/thumb/KuvaGrattler.png/64px-KuvaGrattler.png?baf07",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Larkspur",
+    "image": "https://wiki.warframe.com/images/thumb/Larkspur.png/64px-Larkspur.png?15f51",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Larkspur Prime",
+    "image": "https://wiki.warframe.com/images/thumb/LarkspurPrime.png/64px-LarkspurPrime.png?fdc3a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mandonel",
+    "image": "https://wiki.warframe.com/images/thumb/Mandonel.png/64px-Mandonel.png?e64d1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mausolon",
+    "image": "https://wiki.warframe.com/images/thumb/Mausolon.png/64px-Mausolon.png?65300",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Morgha",
+    "image": "https://wiki.warframe.com/images/thumb/Morgha.png/64px-Morgha.png?fc121",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Phaedra",
+    "image": "https://wiki.warframe.com/images/thumb/Phaedra.png/64px-Phaedra.png?154a1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Dual Decurions",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaDualDecurions.png/64px-PrismaDualDecurions.png?25327",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Velocitus",
+    "image": "https://wiki.warframe.com/images/thumb/Velocitus.png/64px-Velocitus.png?26b5b",
+    "level": 30,
+    "mastery": 3000
+  }
+]

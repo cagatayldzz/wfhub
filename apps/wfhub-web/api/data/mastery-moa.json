@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Lambeo Moa",
+    "image": "https://wiki.warframe.com/images/thumb/LambeoMOA.png/64px-LambeoMOA.png?bf1be",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Nychus Moa",
+    "image": "https://wiki.warframe.com/images/thumb/NychusMOA.png/64px-NychusMOA.png?42289",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Oloro Moa",
+    "image": "https://wiki.warframe.com/images/thumb/OloroMOA.png/64px-OloroMOA.png?ed998",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Para Moa",
+    "image": "https://wiki.warframe.com/images/thumb/ParaMOA.png/64px-ParaMOA.png?a199f",
+    "level": 30,
+    "mastery": 6000
+  }
+]

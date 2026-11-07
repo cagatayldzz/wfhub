@@ -1,0 +1,104 @@
+[
+  {
+    "name": "Carrier",
+    "image": "https://wiki.warframe.com/images/thumb/Carrier.png/64px-Carrier.png?fb038",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Carrier Prime",
+    "image": "https://wiki.warframe.com/images/thumb/CarrierPrime.png/64px-CarrierPrime.png?5bad8",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Dethcube",
+    "image": "https://wiki.warframe.com/images/thumb/Dethcube.png/64px-Dethcube.png?d7366",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Dethcube Prime",
+    "image": "https://wiki.warframe.com/images/thumb/DethcubePrime.png/64px-DethcubePrime.png?75332",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Diriga",
+    "image": "https://wiki.warframe.com/images/thumb/Diriga.png/64px-Diriga.png?95532",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Djinn",
+    "image": "https://wiki.warframe.com/images/thumb/Djinn.png/64px-Djinn.png?2bee3",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Helios",
+    "image": "https://wiki.warframe.com/images/thumb/Helios.png/64px-Helios.png?a5e25",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Helios Prime",
+    "image": "https://wiki.warframe.com/images/thumb/HeliosPrime.png/64px-HeliosPrime.png?c4d66",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Nautilus",
+    "image": "https://wiki.warframe.com/images/thumb/Nautilus.png/64px-Nautilus.png?f0f26",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Nautilus Prime",
+    "image": "https://wiki.warframe.com/images/thumb/NautilusPrime.png/64px-NautilusPrime.png?63a43",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Oxylus",
+    "image": "https://wiki.warframe.com/images/thumb/Oxylus.png/64px-Oxylus.png?464ff",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Prisma Shade",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaShade.png/64px-PrismaShade.png?4432c",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Shade",
+    "image": "https://wiki.warframe.com/images/thumb/Shade.png/64px-Shade.png?f0319",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Shade Prime",
+    "image": "https://wiki.warframe.com/images/thumb/ShadePrime.png/64px-ShadePrime.png?31cf5",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Taxon",
+    "image": "https://wiki.warframe.com/images/thumb/Taxon.png/64px-Taxon.png?fcad2",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Wyrm",
+    "image": "https://wiki.warframe.com/images/thumb/Wyrm.png/64px-Wyrm.png?8bf39",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Wyrm Prime",
+    "image": "https://wiki.warframe.com/images/thumb/WyrmPrime.png/64px-WyrmPrime.png?35ced",
+    "level": 30,
+    "mastery": 6000
+  }
+]

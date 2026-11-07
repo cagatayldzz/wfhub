@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Bhaira Hound",
+    "image": "https://wiki.warframe.com/images/thumb/BhairaHound.png/64px-BhairaHound.png?61430",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Dorma Hound",
+    "image": "https://wiki.warframe.com/images/thumb/DormaHound.png/64px-DormaHound.png?7de2c",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Hec Hound",
+    "image": "https://wiki.warframe.com/images/thumb/HecHound.png/64px-HecHound.png?ddd84",
+    "level": 30,
+    "mastery": 6000
+  }
+]

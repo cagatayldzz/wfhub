@@ -20,6 +20,30 @@ fn resolve_path(root: &Path, target: &str) -> Option<PathBuf> {
   Some(root.join(suffix))
 }
 
+fn mastery_data(target: &str) -> Option<&'static [u8]> {
+  match target.split('?').next()? {
+    "/api/mastery/warframes.json" => Some(include_bytes!("../data/mastery-warframes.json")),
+    "/api/mastery/primary.json" => Some(include_bytes!("../data/mastery-primary.json")),
+    "/api/mastery/secondary.json" => Some(include_bytes!("../data/mastery-secondary.json")),
+    "/api/mastery/melee.json" => Some(include_bytes!("../data/mastery-melee.json")),
+    "/api/mastery/kitgun.json" => Some(include_bytes!("../data/mastery-kitgun.json")),
+    "/api/mastery/zaw.json" => Some(include_bytes!("../data/mastery-zaw.json")),
+    "/api/mastery/amp.json" => Some(include_bytes!("../data/mastery-amp.json")),
+    "/api/mastery/sentinel.json" => Some(include_bytes!("../data/mastery-sentinel.json")),
+    "/api/mastery/moa.json" => Some(include_bytes!("../data/mastery-moa.json")),
+    "/api/mastery/hound.json" => Some(include_bytes!("../data/mastery-hound.json")),
+    "/api/mastery/beast.json" => Some(include_bytes!("../data/mastery-beast.json")),
+    "/api/mastery/robotic.json" => Some(include_bytes!("../data/mastery-robotic.json")),
+    "/api/mastery/archwing.json" => Some(include_bytes!("../data/mastery-archwing.json")),
+    "/api/mastery/archgun.json" => Some(include_bytes!("../data/mastery-archgun.json")),
+    "/api/mastery/archmelee.json" => Some(include_bytes!("../data/mastery-archmelee.json")),
+    "/api/mastery/necramech.json" => Some(include_bytes!("../data/mastery-necramech.json")),
+    "/api/mastery/railjack.json" => Some(include_bytes!("../data/mastery-railjack.json")),
+    "/api/mastery/k-drive.json" => Some(include_bytes!("../data/mastery-k-drive.json")),
+    _ => None,
+  }
+}
+
 fn serve(mut stream: TcpStream, root: &Path) -> io::Result<()> {
   stream.set_read_timeout(Some(Duration::from_secs(5)))?;
   let mut request = String::new();
@@ -31,8 +55,8 @@ fn serve(mut stream: TcpStream, root: &Path) -> io::Result<()> {
     ("405 Method Not Allowed", "text/plain; charset=utf-8", b"Method not allowed\n".to_vec())
   } else if target.split('?').next() == Some("/api/events.json") {
     ("200 OK", "application/json; charset=utf-8", include_bytes!("../data/events.json").to_vec())
-  } else if target.split('?').next() == Some("/api/mastery/warframes.json") {
-    ("200 OK", "application/json; charset=utf-8", include_bytes!("../data/mastery-warframes.json").to_vec())
+  } else if let Some(data) = mastery_data(target) {
+    ("200 OK", "application/json; charset=utf-8", data.to_vec())
   } else if let Some(path) = resolve_path(root, target) {
     match fs::read(path) {
       Ok(data) => ("200 OK", "application/json; charset=utf-8", data),

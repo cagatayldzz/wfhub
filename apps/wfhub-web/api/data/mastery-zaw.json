@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Balla",
+    "image": "https://wiki.warframe.com/images/thumb/Balla.png/64px-Balla.png?3df29",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cyath",
+    "image": "https://wiki.warframe.com/images/thumb/Cyath.png/64px-Cyath.png?02b17",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dehtat",
+    "image": "https://wiki.warframe.com/images/thumb/Dehtat.png/64px-Dehtat.png?4999e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dokrahm",
+    "image": "https://wiki.warframe.com/images/thumb/Dokrahm.png/64px-Dokrahm.png?ca7fa",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kronsh",
+    "image": "https://wiki.warframe.com/images/thumb/Kronsh.png/64px-Kronsh.png?8a416",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mewan",
+    "image": "https://wiki.warframe.com/images/thumb/Mewan.png/64px-Mewan.png?c84ff",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ooltha",
+    "image": "https://wiki.warframe.com/images/thumb/Ooltha.png/64px-Ooltha.png?2d710",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Plague Keewar",
+    "image": "https://wiki.warframe.com/images/thumb/PlagueKeewar.png/64px-PlagueKeewar.png?9d7ee",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Plague Kripath",
+    "image": "https://wiki.warframe.com/images/thumb/PlagueKripath.png/64px-PlagueKripath.png?3949e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Rabvee",
+    "image": "https://wiki.warframe.com/images/thumb/Rabvee.png/64px-Rabvee.png?de34e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sepfahn",
+    "image": "https://wiki.warframe.com/images/thumb/Sepfahn.png/64px-Sepfahn.png?cc3e1",
+    "level": 30,
+    "mastery": 3000
+  }
+]

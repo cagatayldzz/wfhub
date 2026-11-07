@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Amesha",
+    "image": "https://wiki.warframe.com/images/thumb/Amesha.png/64px-Amesha.png?bb937",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Elytron",
+    "image": "https://wiki.warframe.com/images/thumb/Elytron.png/64px-Elytron.png?95527",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Itzal",
+    "image": "https://wiki.warframe.com/images/thumb/Itzal.png/64px-Itzal.png?472fe",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Odonata",
+    "image": "https://wiki.warframe.com/images/thumb/Odonata.png/64px-Odonata.png?63361",
+    "level": 30,
+    "mastery": 6000
+  },
+  {
+    "name": "Odonata Prime",
+    "image": "https://wiki.warframe.com/images/thumb/OdonataPrime.png/64px-OdonataPrime.png?7b651",
+    "level": 30,
+    "mastery": 6000
+  }
+]

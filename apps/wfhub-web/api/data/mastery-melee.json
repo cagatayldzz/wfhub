@@ -1,0 +1,1346 @@
+[
+  {
+    "name": "Ack & Brunt",
+    "image": "https://wiki.warframe.com/images/thumb/Ack%26Brunt.png/64px-Ack%26Brunt.png?85472",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Amanata",
+    "image": "https://wiki.warframe.com/images/thumb/Amanata.png/64px-Amanata.png?75649",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Amphis",
+    "image": "https://wiki.warframe.com/images/thumb/Amphis.png/64px-Amphis.png?fb18b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Anku",
+    "image": "https://wiki.warframe.com/images/thumb/Anku.png/64px-Anku.png?6a32d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ankyros",
+    "image": "https://wiki.warframe.com/images/thumb/Ankyros.png/64px-Ankyros.png?e40f8",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ankyros Prime",
+    "image": "https://wiki.warframe.com/images/thumb/AnkyrosPrime.png/64px-AnkyrosPrime.png?3beee",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Arca Titron",
+    "image": "https://wiki.warframe.com/images/thumb/ArcaTitron.png/64px-ArcaTitron.png?125c4",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Argo & Vel",
+    "image": "https://wiki.warframe.com/images/thumb/Argo%26Vel.png/64px-Argo%26Vel.png?5fc6d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Arum Spinosa",
+    "image": "https://wiki.warframe.com/images/thumb/ArumSpinosa.png/64px-ArumSpinosa.png?896a4",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Atterax",
+    "image": "https://wiki.warframe.com/images/thumb/Atterax.png/64px-Atterax.png?0c706",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Azothane",
+    "image": "https://wiki.warframe.com/images/thumb/Azothane.png/64px-Azothane.png?129e3",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Bo",
+    "image": "https://wiki.warframe.com/images/thumb/Bo.png/64px-Bo.png?583e5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Bo Prime",
+    "image": "https://wiki.warframe.com/images/thumb/BoPrime.png/64px-BoPrime.png?0e231",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Boltace",
+    "image": "https://wiki.warframe.com/images/thumb/Boltace.png/64px-Boltace.png?debdb",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Broken Scepter",
+    "image": "https://wiki.warframe.com/images/thumb/BrokenScepter.png/64px-BrokenScepter.png?325b2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Broken War",
+    "image": "https://wiki.warframe.com/images/thumb/BrokenWar.png/64px-BrokenWar.png?f9cf1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cadus",
+    "image": "https://wiki.warframe.com/images/thumb/Cadus.png/64px-Cadus.png?bd981",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cassowar",
+    "image": "https://wiki.warframe.com/images/thumb/Cassowar.png/64px-Cassowar.png?c342d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Caustacyst",
+    "image": "https://wiki.warframe.com/images/thumb/Caustacyst.png/64px-Caustacyst.png?71317",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ceramic Dagger",
+    "image": "https://wiki.warframe.com/images/thumb/CeramicDagger.png/64px-CeramicDagger.png?063e0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cerata",
+    "image": "https://wiki.warframe.com/images/thumb/Cerata.png/64px-Cerata.png?74108",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ceti Lacera",
+    "image": "https://wiki.warframe.com/images/thumb/CetiLacera.png/64px-CetiLacera.png?55f56",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cobra & Crane",
+    "image": "https://wiki.warframe.com/images/thumb/Cobra%26Crane.png/64px-Cobra%26Crane.png?db4e0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cobra & Crane Prime",
+    "image": "https://wiki.warframe.com/images/thumb/Cobra%26CranePrime.png/64px-Cobra%26CranePrime.png?e1c1e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Coda Caustacyst",
+    "image": "https://wiki.warframe.com/images/thumb/CodaCaustacyst.png/64px-CodaCaustacyst.png?f76ee",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Coda Hirudo",
+    "image": "https://wiki.warframe.com/images/thumb/CodaHirudo.png/64px-CodaHirudo.png?f76ee",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Coda Mire",
+    "image": "https://wiki.warframe.com/images/thumb/CodaMire.png/64px-CodaMire.png?2ea1f",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Coda Motovore",
+    "image": "https://wiki.warframe.com/images/thumb/CodaMotovore.png/64px-CodaMotovore.png?2ea1f",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Coda Pathocyst",
+    "image": "https://wiki.warframe.com/images/thumb/CodaPathocyst.png/64px-CodaPathocyst.png?2ea1f",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Corufell",
+    "image": "https://wiki.warframe.com/images/thumb/Corufell.png/64px-Corufell.png?5fe41",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Corufell Prime",
+    "image": "https://wiki.warframe.com/images/thumb/CorufellPrime.png/64px-CorufellPrime.png?4bbbc",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Cronus",
+    "image": "https://wiki.warframe.com/images/thumb/Cronus.png/64px-Cronus.png?b7485",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dakra Prime",
+    "image": "https://wiki.warframe.com/images/thumb/DakraPrime.png/64px-DakraPrime.png?2c888",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dark Dagger",
+    "image": "https://wiki.warframe.com/images/thumb/DarkDagger.png/64px-DarkDagger.png?7fd23",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dark Split-Sword",
+    "image": "https://wiki.warframe.com/images/thumb/DarkSplitSwordHeavyBlade.png/64px-DarkSplitSwordHeavyBlade.png?f19ff",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dark Sword",
+    "image": "https://wiki.warframe.com/images/thumb/DarkSword.png/64px-DarkSword.png?18126",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Destreza",
+    "image": "https://wiki.warframe.com/images/thumb/Destreza.png/64px-Destreza.png?52b66",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Destreza Prime",
+    "image": "https://wiki.warframe.com/images/thumb/DestrezaPrime.png/64px-DestrezaPrime.png?ad25e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dex Dakra",
+    "image": "https://wiki.warframe.com/images/thumb/DexDakra.png/64px-DexDakra.png?05557",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dex Nikana",
+    "image": "https://wiki.warframe.com/images/thumb/DexNikana.png/64px-DexNikana.png?3e3b7",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dorrclave",
+    "image": "https://wiki.warframe.com/images/thumb/Dorrclave.png/64px-Dorrclave.png?30250",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dragon Nikana",
+    "image": "https://wiki.warframe.com/images/thumb/DragonNikana.png/64px-DragonNikana.png?20efa",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Cleavers",
+    "image": "https://wiki.warframe.com/images/thumb/DualCleavers.png/64px-DualCleavers.png?547b9",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Ether",
+    "image": "https://wiki.warframe.com/images/thumb/DualEther.png/64px-DualEther.png?e911b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Heat Swords",
+    "image": "https://wiki.warframe.com/images/thumb/DualHeatSwords.png/64px-DualHeatSwords.png?bd93b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Ichor",
+    "image": "https://wiki.warframe.com/images/thumb/DualIchor.png/64px-DualIchor.png?caea1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Kamas",
+    "image": "https://wiki.warframe.com/images/thumb/DualKamas.png/64px-DualKamas.png?9ed01",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Kamas Prime",
+    "image": "https://wiki.warframe.com/images/thumb/DualKamasPrime.png/64px-DualKamasPrime.png?17c92",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Keres",
+    "image": "https://wiki.warframe.com/images/thumb/DualKeres.png/64px-DualKeres.png?600a2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Keres Prime",
+    "image": "https://wiki.warframe.com/images/thumb/DualKeresPrime.png/64px-DualKeresPrime.png?e0ad8",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Raza",
+    "image": "https://wiki.warframe.com/images/thumb/DualRaza.png/64px-DualRaza.png?3d9af",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Skana",
+    "image": "https://wiki.warframe.com/images/thumb/DualSkana.png/64px-DualSkana.png?96f23",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Viciss",
+    "image": "https://wiki.warframe.com/images/thumb/DualViciss.png/64px-DualViciss.png?be8ed",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Zoren",
+    "image": "https://wiki.warframe.com/images/thumb/DualZoren.png/64px-DualZoren.png?ac109",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Dual Zoren Prime",
+    "image": "https://wiki.warframe.com/images/thumb/DualZorenPrime.png/64px-DualZorenPrime.png?1d21b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Edun",
+    "image": "https://wiki.warframe.com/images/thumb/Edun.png/64px-Edun.png?09a1a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ekhein",
+    "image": "https://wiki.warframe.com/images/thumb/Ekhein.png/64px-Ekhein.png?4ac5d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Endura",
+    "image": "https://wiki.warframe.com/images/thumb/Endura.png/64px-Endura.png?6c6f0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ether Daggers",
+    "image": "https://wiki.warframe.com/images/thumb/EtherDaggers.png/64px-EtherDaggers.png?70d49",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ether Reaper",
+    "image": "https://wiki.warframe.com/images/thumb/EtherReaper.png/64px-EtherReaper.png?145af",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ether Sword",
+    "image": "https://wiki.warframe.com/images/thumb/EtherSword.png/64px-EtherSword.png?76f1e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Falcor",
+    "image": "https://wiki.warframe.com/images/thumb/Falcor.png/64px-Falcor.png?4acc7",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Fang",
+    "image": "https://wiki.warframe.com/images/thumb/Fang.png/64px-Fang.png?dbd6b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Fang Prime",
+    "image": "https://wiki.warframe.com/images/thumb/FangPrime.png/64px-FangPrime.png?73eaa",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Fragor",
+    "image": "https://wiki.warframe.com/images/thumb/Fragor.png/64px-Fragor.png?36f9b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Fragor Prime",
+    "image": "https://wiki.warframe.com/images/thumb/FragorPrime.png/64px-FragorPrime.png?e97e2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Furax",
+    "image": "https://wiki.warframe.com/images/thumb/Furax.png/64px-Furax.png?e515a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Furax Wraith",
+    "image": "https://wiki.warframe.com/images/thumb/FuraxWraith.png/64px-FuraxWraith.png?ec8d7",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Galariak Prime",
+    "image": "https://wiki.warframe.com/images/thumb/GalariakPrime.png/64px-GalariakPrime.png?af707",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Galatine",
+    "image": "https://wiki.warframe.com/images/thumb/Galatine.png/64px-Galatine.png?ffdee",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Galatine Prime",
+    "image": "https://wiki.warframe.com/images/thumb/GalatinePrime.png/64px-GalatinePrime.png?3dd53",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Galvacord",
+    "image": "https://wiki.warframe.com/images/thumb/Galvacord.png/64px-Galvacord.png?43869",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Gazal Machete",
+    "image": "https://wiki.warframe.com/images/thumb/GazalMachete.png/64px-GazalMachete.png?f75b4",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ghoulsaw",
+    "image": "https://wiki.warframe.com/images/thumb/Ghoulsaw.png/64px-Ghoulsaw.png?0ee00",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Glaive",
+    "image": "https://wiki.warframe.com/images/thumb/Glaive.png/64px-Glaive.png?a7f2a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Glaive Prime",
+    "image": "https://wiki.warframe.com/images/thumb/GlaivePrime.png/64px-GlaivePrime.png?fd8a2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Gram",
+    "image": "https://wiki.warframe.com/images/thumb/Gram.png/64px-Gram.png?ff14e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Gram Prime",
+    "image": "https://wiki.warframe.com/images/thumb/GramPrime.png/64px-GramPrime.png?89383",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Guandao",
+    "image": "https://wiki.warframe.com/images/thumb/Guandao.png/64px-Guandao.png?846dd",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Guandao Prime",
+    "image": "https://wiki.warframe.com/images/thumb/GuandaoPrime.png/64px-GuandaoPrime.png?2a02e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Gunsen",
+    "image": "https://wiki.warframe.com/images/thumb/Gunsen.png/64px-Gunsen.png?31e8a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Gunsen Prime",
+    "image": "https://wiki.warframe.com/images/thumb/GunsenPrime.png/64px-GunsenPrime.png?3d9f9",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Halikar",
+    "image": "https://wiki.warframe.com/images/thumb/Halikar.png/64px-Halikar.png?99ebd",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Halikar Wraith",
+    "image": "https://wiki.warframe.com/images/thumb/HalikarWraith.png/64px-HalikarWraith.png?ada65",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Harmony",
+    "image": "https://wiki.warframe.com/images/thumb/Harmony.png/64px-Harmony.png?30099",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Hate",
+    "image": "https://wiki.warframe.com/images/thumb/Hate.png/64px-Hate.png?bbaf9",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Heat Dagger",
+    "image": "https://wiki.warframe.com/images/thumb/HeatDagger.png/64px-HeatDagger.png?179da",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Heat Sword",
+    "image": "https://wiki.warframe.com/images/thumb/HeatSword.png/64px-HeatSword.png?4bd81",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Heliocor",
+    "image": "https://wiki.warframe.com/images/thumb/Heliocor.png/64px-Heliocor.png?47879",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Hespar",
+    "image": "https://wiki.warframe.com/images/thumb/Hespar.png/64px-Hespar.png?d6897",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Hirudo",
+    "image": "https://wiki.warframe.com/images/thumb/Hirudo.png/64px-Hirudo.png?b7b83",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Innodem",
+    "image": "https://wiki.warframe.com/images/thumb/Innodem.png/64px-Innodem.png?24109",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Jat Kittag",
+    "image": "https://wiki.warframe.com/images/thumb/JatKittag.png/64px-JatKittag.png?23945",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Jat Kusar",
+    "image": "https://wiki.warframe.com/images/thumb/JatKusar.png/64px-JatKusar.png?69aa5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Jaw Sword",
+    "image": "https://wiki.warframe.com/images/thumb/JawSword.png/64px-JawSword.png?82748",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kama",
+    "image": "https://wiki.warframe.com/images/thumb/Kama.png/64px-Kama.png?1f972",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Karyst",
+    "image": "https://wiki.warframe.com/images/thumb/Karyst.png/64px-Karyst.png?02c04",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Karyst Prime",
+    "image": "https://wiki.warframe.com/images/thumb/KarystPrime.png/64px-KarystPrime.png?ba1c9",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Keratinos",
+    "image": "https://wiki.warframe.com/images/thumb/Keratinos.png/64px-Keratinos.png?be85c",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kesheg",
+    "image": "https://wiki.warframe.com/images/thumb/Kesheg.png/64px-Kesheg.png?53247",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kestrel",
+    "image": "https://wiki.warframe.com/images/thumb/Kestrel.png/64px-Kestrel.png?d398c",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kestrel Prime",
+    "image": "https://wiki.warframe.com/images/thumb/KestrelPrime.png/64px-KestrelPrime.png?707c8",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kogake",
+    "image": "https://wiki.warframe.com/images/thumb/Kogake.png/64px-Kogake.png?d2579",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kogake Prime",
+    "image": "https://wiki.warframe.com/images/thumb/KogakePrime.png/64px-KogakePrime.png?ad6ea",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Korrudo",
+    "image": "https://wiki.warframe.com/images/thumb/Korrudo.png/64px-Korrudo.png?ab27b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Korumm",
+    "image": "https://wiki.warframe.com/images/thumb/Korumm.png/64px-Korumm.png?96fd2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kreska",
+    "image": "https://wiki.warframe.com/images/thumb/Kreska.png/64px-Kreska.png?fb4c9",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Krohkur",
+    "image": "https://wiki.warframe.com/images/thumb/Krohkur.png/64px-Krohkur.png?eb7cd",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kronen",
+    "image": "https://wiki.warframe.com/images/thumb/Kronen.png/64px-Kronen.png?03309",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kronen Prime",
+    "image": "https://wiki.warframe.com/images/thumb/KronenPrime.png/64px-KronenPrime.png?badf1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Kuva Ghoulsaw",
+    "image": "https://wiki.warframe.com/images/thumb/KuvaGhoulsaw.png/64px-KuvaGhoulsaw.png?938a6",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Kuva Shildeg",
+    "image": "https://wiki.warframe.com/images/thumb/KuvaShildeg.png/64px-KuvaShildeg.png?4038c",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Lacera",
+    "image": "https://wiki.warframe.com/images/thumb/Lacera.png/64px-Lacera.png?2d024",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Lecta",
+    "image": "https://wiki.warframe.com/images/thumb/Lecta.png/64px-Lecta.png?90873",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Lesion",
+    "image": "https://wiki.warframe.com/images/thumb/Lesion.png/64px-Lesion.png?5e555",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Machete",
+    "image": "https://wiki.warframe.com/images/thumb/Machete.png/64px-Machete.png?0b037",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Machete Wraith",
+    "image": "https://wiki.warframe.com/images/thumb/MacheteWraith.png/64px-MacheteWraith.png?1c3b6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Magistar",
+    "image": "https://wiki.warframe.com/images/thumb/Magistar.png/64px-Magistar.png?0fd31",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Masseter",
+    "image": "https://wiki.warframe.com/images/thumb/Masseter.png/64px-Masseter.png?8e624",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Masseter Prime",
+    "image": "https://wiki.warframe.com/images/thumb/MasseterPrime.png/64px-MasseterPrime.png?434ac",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mios",
+    "image": "https://wiki.warframe.com/images/thumb/Mios.png/64px-Mios.png?98255",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mire",
+    "image": "https://wiki.warframe.com/images/thumb/Mire.png/64px-Mire.png?a4c1e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mk1-Bo",
+    "image": "https://wiki.warframe.com/images/thumb/MK1-Bo.png/64px-MK1-Bo.png?19de3",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mk1-Furax",
+    "image": "https://wiki.warframe.com/images/thumb/MK1-Furax.png/64px-MK1-Furax.png?0b91a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Nami Skyla",
+    "image": "https://wiki.warframe.com/images/thumb/NamiSkyla.png/64px-NamiSkyla.png?63a97",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Nami Skyla Prime",
+    "image": "https://wiki.warframe.com/images/thumb/NamiSkylaPrime.png/64px-NamiSkylaPrime.png?93606",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Nami Solo",
+    "image": "https://wiki.warframe.com/images/thumb/NamiSolo.png/64px-NamiSolo.png?9b269",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Nepheri",
+    "image": "https://wiki.warframe.com/images/thumb/Nepheri.png/64px-Nepheri.png?24dbb",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Nikana",
+    "image": "https://wiki.warframe.com/images/thumb/Nikana.png/64px-Nikana.png?b9996",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Nikana Prime",
+    "image": "https://wiki.warframe.com/images/thumb/NikanaPrime.png/64px-NikanaPrime.png?5dadf",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ninkondi",
+    "image": "https://wiki.warframe.com/images/thumb/Ninkondi.png/64px-Ninkondi.png?4caef",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ninkondi Prime",
+    "image": "https://wiki.warframe.com/images/thumb/NinkondiPrime.png/64px-NinkondiPrime.png?551b0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Obex",
+    "image": "https://wiki.warframe.com/images/thumb/Obex.png/64px-Obex.png?78ef5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ohma",
+    "image": "https://wiki.warframe.com/images/thumb/Ohma.png/64px-Ohma.png?a0d9c",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Okina",
+    "image": "https://wiki.warframe.com/images/thumb/Okina.png/64px-Okina.png?6bf0d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Okina Prime",
+    "image": "https://wiki.warframe.com/images/thumb/OkinaPrime.png/64px-OkinaPrime.png?bf801",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Orthos",
+    "image": "https://wiki.warframe.com/images/thumb/Orthos.png/64px-Orthos.png?86c84",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Orthos Prime",
+    "image": "https://wiki.warframe.com/images/thumb/OrthosPrime.png/64px-OrthosPrime.png?c2a65",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Orvius",
+    "image": "https://wiki.warframe.com/images/thumb/Orvius.png/64px-Orvius.png?d4116",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Pangolin Prime",
+    "image": "https://wiki.warframe.com/images/thumb/PangolinPrime.png/64px-PangolinPrime.png?51917",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Pangolin Sword",
+    "image": "https://wiki.warframe.com/images/thumb/PangolinSword.png/64px-PangolinSword.png?a9948",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Paracesis",
+    "image": "https://wiki.warframe.com/images/thumb/Paracesis.png/64px-Paracesis.png?f1231",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Pathocyst",
+    "image": "https://wiki.warframe.com/images/thumb/Pathocyst.png/64px-Pathocyst.png?a51a6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Pennant",
+    "image": "https://wiki.warframe.com/images/thumb/Pennant.png/64px-Pennant.png?e55f5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Plasma Sword",
+    "image": "https://wiki.warframe.com/images/thumb/PlasmaSword.png/64px-PlasmaSword.png?a7944",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Praedos",
+    "image": "https://wiki.warframe.com/images/thumb/Praedos.png/64px-Praedos.png?217dc",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Pride",
+    "image": "https://wiki.warframe.com/images/thumb/Pride.png/64px-Pride.png?917b2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Dual Cleavers",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaDualCleavers.png/64px-PrismaDualCleavers.png?20b93",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Machete",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaMachete.png/64px-PrismaMachete.png?02d9d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Obex",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaObex.png/64px-PrismaObex.png?ff26a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Ohma",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaOhma.png/64px-PrismaOhma.png?5eedd",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prisma Skana",
+    "image": "https://wiki.warframe.com/images/thumb/PrismaSkana.png/64px-PrismaSkana.png?517e0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prova",
+    "image": "https://wiki.warframe.com/images/thumb/Prova.png/64px-Prova.png?1e046",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Prova Vandal",
+    "image": "https://wiki.warframe.com/images/thumb/ProvaVandal.png/64px-ProvaVandal.png?8a8cb",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Pulmonars",
+    "image": "https://wiki.warframe.com/images/thumb/Pulmonars.png/64px-Pulmonars.png?17ee7",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Pupacyst",
+    "image": "https://wiki.warframe.com/images/thumb/Pupacyst.png/64px-Pupacyst.png?dea83",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Quassus",
+    "image": "https://wiki.warframe.com/images/thumb/Quassus.png/64px-Quassus.png?c5024",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Quassus Prime",
+    "image": "https://wiki.warframe.com/images/thumb/QuassusPrime.png/64px-QuassusPrime.png?a9584",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Rakta Dark Dagger",
+    "image": "https://wiki.warframe.com/images/thumb/RaktaDarkDagger.png/64px-RaktaDarkDagger.png?3d82b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Reaper Prime",
+    "image": "https://wiki.warframe.com/images/thumb/ReaperPrime.png/64px-ReaperPrime.png?95e53",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Redeemer",
+    "image": "https://wiki.warframe.com/images/thumb/Redeemer.png/64px-Redeemer.png?7a716",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Redeemer Prime",
+    "image": "https://wiki.warframe.com/images/thumb/RedeemerPrime.png/64px-RedeemerPrime.png?aa29f",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ripkas",
+    "image": "https://wiki.warframe.com/images/thumb/Ripkas.png/64px-Ripkas.png?56db5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Rumblejack",
+    "image": "https://wiki.warframe.com/images/thumb/Rumblejack.png/64px-Rumblejack.png?867de",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Ruvox",
+    "image": "https://wiki.warframe.com/images/thumb/Ruvox.png/64px-Ruvox.png?01731",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sampotes",
+    "image": "https://wiki.warframe.com/images/thumb/Sampotes.png/64px-Sampotes.png?3d0bf",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sancti Magistar",
+    "image": "https://wiki.warframe.com/images/thumb/SanctiMagistar.png/64px-SanctiMagistar.png?7cde2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sarofang",
+    "image": "https://wiki.warframe.com/images/thumb/Sarofang.png/64px-Sarofang.png?ddb75",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sarofang Prime",
+    "image": "https://wiki.warframe.com/images/thumb/SarofangPrime.png/64px-SarofangPrime.png?a466a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sarpa",
+    "image": "https://wiki.warframe.com/images/thumb/Sarpa.png/64px-Sarpa.png?5a43c",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Scindo",
+    "image": "https://wiki.warframe.com/images/thumb/Scindo.png/64px-Scindo.png?12fd7",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Scindo Prime",
+    "image": "https://wiki.warframe.com/images/thumb/ScindoPrime.png/64px-ScindoPrime.png?fefd2",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Scoliac",
+    "image": "https://wiki.warframe.com/images/thumb/Scoliac.png/64px-Scoliac.png?857e0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Secura Lecta",
+    "image": "https://wiki.warframe.com/images/thumb/SecuraLecta.png/64px-SecuraLecta.png?d2e7c",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Serro",
+    "image": "https://wiki.warframe.com/images/thumb/Serro.png/64px-Serro.png?44619",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Shaku",
+    "image": "https://wiki.warframe.com/images/thumb/Shaku.png/64px-Shaku.png?8bb96",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sheev",
+    "image": "https://wiki.warframe.com/images/thumb/Sheev.png/64px-Sheev.png?bd022",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sibear",
+    "image": "https://wiki.warframe.com/images/thumb/Sibear.png/64px-Sibear.png?a5886",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sigma & Octantis",
+    "image": "https://wiki.warframe.com/images/thumb/Sigma%26Octantis.png/64px-Sigma%26Octantis.png?b2a47",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Silva & Aegis",
+    "image": "https://wiki.warframe.com/images/thumb/Silva%26Aegis.png/64px-Silva%26Aegis.png?4e7e6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Silva & Aegis Prime",
+    "image": "https://wiki.warframe.com/images/thumb/Silva%26AegisPrime.png/64px-Silva%26AegisPrime.png?4f770",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Skana",
+    "image": "https://wiki.warframe.com/images/thumb/Skana.png/64px-Skana.png?67dfa",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Skiajati",
+    "image": "https://wiki.warframe.com/images/thumb/Skiajati.png/64px-Skiajati.png?929c5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Slaytra",
+    "image": "https://wiki.warframe.com/images/thumb/Slaytra.png/64px-Slaytra.png?a775f",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Spinnerex",
+    "image": "https://wiki.warframe.com/images/thumb/Spinnerex.png/64px-Spinnerex.png?7d5c8",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Stropha",
+    "image": "https://wiki.warframe.com/images/thumb/Stropha.png/64px-Stropha.png?f8de6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sun & Moon",
+    "image": "https://wiki.warframe.com/images/thumb/Sun%26Moon.png/64px-Sun%26Moon.png?58a53",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Syam",
+    "image": "https://wiki.warframe.com/images/thumb/Syam.png/64px-Syam.png?3e7f0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sydon",
+    "image": "https://wiki.warframe.com/images/thumb/Sydon.png/64px-Sydon.png?f87f3",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Synoid Heliocor",
+    "image": "https://wiki.warframe.com/images/thumb/SynoidHeliocor.png/64px-SynoidHeliocor.png?f02b7",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tak & Lug",
+    "image": "https://wiki.warframe.com/images/thumb/Tak%26Lug.png/64px-Tak%26Lug.png?bda79",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tatsu",
+    "image": "https://wiki.warframe.com/images/thumb/Tatsu.png/64px-Tatsu.png?f6108",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tatsu Prime",
+    "image": "https://wiki.warframe.com/images/thumb/TatsuPrime.png/64px-TatsuPrime.png?7a830",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tekko",
+    "image": "https://wiki.warframe.com/images/thumb/Tekko.png/64px-Tekko.png?d6651",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tekko Prime",
+    "image": "https://wiki.warframe.com/images/thumb/TekkoPrime.png/64px-TekkoPrime.png?ce007",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Telos Boltace",
+    "image": "https://wiki.warframe.com/images/thumb/TelosBoltace.png/64px-TelosBoltace.png?edee0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tenet Agendus",
+    "image": "https://wiki.warframe.com/images/thumb/TenetAgendus.png/64px-TenetAgendus.png?f0d3b",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Tenet Exec",
+    "image": "https://wiki.warframe.com/images/thumb/TenetExec.png/64px-TenetExec.png?0ea03",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Tenet Grigori",
+    "image": "https://wiki.warframe.com/images/thumb/TenetGrigori.png/64px-TenetGrigori.png?f7e09",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Tenet Livia",
+    "image": "https://wiki.warframe.com/images/thumb/TenetLivia.png/64px-TenetLivia.png?db146",
+    "level": 40,
+    "mastery": 4000
+  },
+  {
+    "name": "Thalys",
+    "image": "https://wiki.warframe.com/images/thumb/Thalys.png/64px-Thalys.png?5535b",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tipedo",
+    "image": "https://wiki.warframe.com/images/thumb/Tipedo.png/64px-Tipedo.png?3ee6e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tipedo Prime",
+    "image": "https://wiki.warframe.com/images/thumb/TipedoPrime.png/64px-TipedoPrime.png?57cc6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tonbo",
+    "image": "https://wiki.warframe.com/images/thumb/Tonbo.png/64px-Tonbo.png?e141d",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Tonkkatt",
+    "image": "https://wiki.warframe.com/images/thumb/Tonkkatt.png/64px-Tonkkatt.png?363a0",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Twin Basolk",
+    "image": "https://wiki.warframe.com/images/thumb/TwinBasolk.png/64px-TwinBasolk.png?ad177",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Twin Krohkur",
+    "image": "https://wiki.warframe.com/images/thumb/TwinKrohkur.png/64px-TwinKrohkur.png?9e026",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Vastilok",
+    "image": "https://wiki.warframe.com/images/thumb/Vastilok.png/64px-Vastilok.png?fdf3e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Vaykor Sydon",
+    "image": "https://wiki.warframe.com/images/thumb/VaykorSydon.png/64px-VaykorSydon.png?1524e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Venato",
+    "image": "https://wiki.warframe.com/images/thumb/Venato.png/64px-Venato.png?56f40",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Venato Prime",
+    "image": "https://wiki.warframe.com/images/thumb/VenatoPrime.png/64px-VenatoPrime.png?eb0e1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Venka",
+    "image": "https://wiki.warframe.com/images/thumb/Venka.png/64px-Venka.png?03dd1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Venka Prime",
+    "image": "https://wiki.warframe.com/images/thumb/VenkaPrime.png/64px-VenkaPrime.png?7ea5c",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Verdilac",
+    "image": "https://wiki.warframe.com/images/thumb/Verdilac.png/64px-Verdilac.png?6e3c1",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Vericres",
+    "image": "https://wiki.warframe.com/images/thumb/Vericres.png/64px-Vericres.png?bcc94",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Vitrica",
+    "image": "https://wiki.warframe.com/images/thumb/Vitrica.png/64px-Vitrica.png?54002",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Volnus",
+    "image": "https://wiki.warframe.com/images/thumb/Volnus.png/64px-Volnus.png?18bd9",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Volnus Prime",
+    "image": "https://wiki.warframe.com/images/thumb/VolnusPrime.png/64px-VolnusPrime.png?34775",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "War",
+    "image": "https://wiki.warframe.com/images/thumb/War.png/64px-War.png?42c4e",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "War Prime",
+    "image": "https://wiki.warframe.com/images/thumb/WarPrime.png/64px-WarPrime.png?e3f3a",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Wolf Sledge",
+    "image": "https://wiki.warframe.com/images/thumb/WolfSledge.png/64px-WolfSledge.png?02419",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Wrath",
+    "image": "https://wiki.warframe.com/images/thumb/Wrath.png/64px-Wrath.png?ff3cf",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Xoris",
+    "image": "https://wiki.warframe.com/images/thumb/Xoris.png/64px-Xoris.png?5c2e5",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Zenistar",
+    "image": "https://wiki.warframe.com/images/thumb/Zenistar.png/64px-Zenistar.png?27d70",
+    "level": 30,
+    "mastery": 3000
+  }
+]

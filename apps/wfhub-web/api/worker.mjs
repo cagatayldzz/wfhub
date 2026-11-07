@@ -1,47 +1,75 @@
+const BASE_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'X-Content-Type-Options': 'nosniff',
+};
+
+const JSON_HEADERS = { ...BASE_HEADERS, 'Content-Type': 'application/json; charset=utf-8' };
+const SWAGGER_PATHS = new Set(['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json']);
+const MASTERY_CATEGORIES = new Set([
+  'warframes', 'primary', 'secondary', 'melee', 'kitgun', 'zaw', 'amp', 'sentinel',
+  'moa', 'hound', 'beast', 'robotic', 'archwing', 'archgun', 'archmelee',
+  'necramech', 'railjack', 'k-drive',
+]);
+
+function notFound() {
+  return new Response('Not found\n', { status: 404, headers: BASE_HEADERS });
+}
+
+async function fetchAsset(request, env, path) {
+  const url = new URL(request.url);
+  url.pathname = path;
+  return env.ASSETS.fetch(new Request(url, { method: 'GET' }));
+}
+
+function jsonResponse(request, body) {
+  return new Response(request.method === 'HEAD' ? null : body, { headers: JSON_HEADERS });
+}
+
+async function serveJsonAsset(request, env, path) {
+  const response = await fetchAsset(request, env, path);
+  return response.ok ? jsonResponse(request, response.body) : notFound();
+}
+
+async function serveCatalogue(request, env, path) {
+  const match = /^\/api\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\.json$/.exec(path);
+  if (!match) return notFound();
+
+  const [, category, slug] = match;
+  const response = await fetchAsset(request, env, `/_api-data/${category}.json`);
+  if (!response.ok) return notFound();
+
+  const data = await response.json();
+  const item = slug ? data.details[slug] : data.list;
+  return item ? jsonResponse(request, JSON.stringify(item)) : notFound();
+}
+
 export default {
   async fetch(request, env) {
-    const path = new URL(request.url).pathname;
-    const headers = {
-      'Access-Control-Allow-Origin': '*',
-      'X-Content-Type-Options': 'nosniff',
-    };
+    const url = new URL(request.url);
+    const path = url.pathname;
 
     if (request.method !== 'GET' && request.method !== 'HEAD') {
-      return new Response('Method not allowed\n', { status: 405, headers });
+      return new Response('Method not allowed\n', { status: 405, headers: BASE_HEADERS });
     }
+
     if (path === '/api/swagger') {
-      const url = new URL(request.url);
       url.pathname += '/';
       return Response.redirect(url, 308);
     }
-    if (['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json'].includes(path)) {
-      const url = new URL(request.url);
+    if (SWAGGER_PATHS.has(path)) {
       if (path.endsWith('/index.html')) url.pathname = '/api/swagger/';
       return env.ASSETS.fetch(new Request(url, request));
     }
-    if (path === '/api/events.json' || path === '/api/mastery/warframes.json') {
-      const url = new URL(request.url);
-      url.pathname = path === '/api/events.json' ? '/_api-data/events.json' : '/_api-data/mastery-warframes.json';
-      const response = await env.ASSETS.fetch(new Request(url, { method: 'GET' }));
-      if (!response.ok) return new Response('Not found\n', { status: 404, headers });
-      headers['Content-Type'] = 'application/json; charset=utf-8';
-      return new Response(request.method === 'HEAD' ? null : response.body, { headers });
+
+    if (path === '/api/events.json') {
+      return serveJsonAsset(request, env, '/_api-data/events.json');
     }
-    const suffix = path.slice('/api/'.length);
-    if (!path.startsWith('/api/') || !suffix.endsWith('.json') ||
-        !suffix.split('/').every(part => part !== '.' && part !== '..' && /^[a-zA-Z0-9._-]+$/.test(part))) {
-      return new Response('Not found\n', { status: 404, headers });
+
+    const mastery = /^\/api\/mastery\/([a-z-]+)\.json$/.exec(path);
+    if (mastery && MASTERY_CATEGORIES.has(mastery[1])) {
+      return serveJsonAsset(request, env, `/_api-data/mastery-${mastery[1]}.json`);
     }
-    const match = /^([a-z0-9-]+)(?:\/([a-z0-9-]+))?\.json$/.exec(suffix);
-    if (!match) return new Response('Not found\n', { status: 404, headers });
-    const url = new URL(request.url);
-    url.pathname = `/_api-data/${match[1]}.json`;
-    const response = await env.ASSETS.fetch(new Request(url, { method: 'GET' }));
-    if (!response.ok) return new Response('Not found\n', { status: 404, headers });
-    const data = await response.json();
-    const result = match[2] ? data.details[match[2]] : data.list;
-    if (!result) return new Response('Not found\n', { status: 404, headers });
-    headers['Content-Type'] = 'application/json; charset=utf-8';
-    return new Response(request.method === 'HEAD' ? null : JSON.stringify(result), { headers });
+
+    return serveCatalogue(request, env, path);
   },
 };

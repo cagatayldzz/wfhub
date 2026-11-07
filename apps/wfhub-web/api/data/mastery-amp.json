@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Cantic Prism",
+    "image": "https://wiki.warframe.com/images/thumb/CanticPrism.png/64px-CanticPrism.png?decca",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Granmu Prism",
+    "image": "https://wiki.warframe.com/images/thumb/GranmuPrism.png/64px-GranmuPrism.png?cfe20",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Klamora Prism",
+    "image": "https://wiki.warframe.com/images/thumb/KlamoraPrism.png/64px-KlamoraPrism.png?b4b73",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Lega Prism",
+    "image": "https://wiki.warframe.com/images/thumb/LegaPrism.png/64px-LegaPrism.png?30eff",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Mote Amp",
+    "image": "https://wiki.warframe.com/images/thumb/MoteAmp.png/64px-MoteAmp.png?a1576",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Rahn Prism",
+    "image": "https://wiki.warframe.com/images/thumb/RahnPrism.png/64px-RahnPrism.png?bd439",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Raplak Prism",
+    "image": "https://wiki.warframe.com/images/thumb/RaplakPrism.png/64px-RaplakPrism.png?360b6",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Shwaak Prism",
+    "image": "https://wiki.warframe.com/images/thumb/ShwaakPrism.png/64px-ShwaakPrism.png?29bee",
+    "level": 30,
+    "mastery": 3000
+  },
+  {
+    "name": "Sirocco",
+    "image": "https://wiki.warframe.com/images/thumb/Sirocco.png/64px-Sirocco.png?76b26",
+    "level": 30,
+    "mastery": 3000
+  }
+]
