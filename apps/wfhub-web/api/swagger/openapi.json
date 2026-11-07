@@ -72,6 +72,27 @@
           }
         }
       }
+    },
+    "/api/mastery/warframes.json": {
+      "get": {
+        "summary": "List Warframes from the mastery checklist",
+        "operationId": "listMasteryWarframes",
+        "responses": {
+          "200": {
+            "description": "Warframe mastery checklist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MasteryWarframe"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -158,26 +179,125 @@
           "slug"
         ],
         "properties": {
-          "uniqueName": { "type": ["string", "null"] },
-          "name": { "type": "string", "example": "Ash" },
-          "description": { "type": ["string", "null"] },
-          "health": { "type": ["number", "null"] },
-          "shield": { "type": ["number", "null"] },
-          "armor": { "type": ["number", "null"] },
-          "stamina": { "type": ["number", "null"] },
-          "power": { "type": ["number", "null"] },
-          "masteryReq": { "type": ["number", "null"] },
-          "sprintSpeed": { "type": ["number", "null"] },
-          "abilities": { "type": "array", "items": {} },
-          "sprint": { "type": ["number", "null"] },
-          "wikiaUrl": { "type": ["string", "null"], "format": "uri" },
-          "releaseDate": { "type": ["string", "null"], "format": "date" },
+          "uniqueName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "example": "Ash"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "health": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "shield": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "armor": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "stamina": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "power": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "masteryReq": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "sprintSpeed": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "abilities": {
+            "type": "array",
+            "items": {}
+          },
+          "sprint": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "wikiaUrl": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "releaseDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
           "imageName": {
             "type": "string",
             "format": "uri",
             "example": "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/Ash.png"
           },
-          "slug": { "type": "string", "example": "ash" }
+          "slug": {
+            "type": "string",
+            "example": "ash"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MasteryWarframe": {
+        "type": "object",
+        "required": [
+          "name",
+          "image",
+          "level",
+          "mastery"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Ash"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "level": {
+            "type": "integer",
+            "example": 30
+          },
+          "mastery": {
+            "type": "integer",
+            "example": 6000
+          }
         },
         "additionalProperties": false
       }

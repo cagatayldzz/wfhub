@@ -19,9 +19,9 @@ export default {
       if (path.endsWith('/index.html')) url.pathname = '/api/swagger/';
       return env.ASSETS.fetch(new Request(url, request));
     }
-    if (path === '/api/events.json') {
+    if (path === '/api/events.json' || path === '/api/mastery/warframes.json') {
       const url = new URL(request.url);
-      url.pathname = '/_api-data/events.json';
+      url.pathname = path === '/api/events.json' ? '/_api-data/events.json' : '/_api-data/mastery-warframes.json';
       const response = await env.ASSETS.fetch(new Request(url, { method: 'GET' }));
       if (!response.ok) return new Response('Not found\n', { status: 404, headers });
       headers['Content-Type'] = 'application/json; charset=utf-8';

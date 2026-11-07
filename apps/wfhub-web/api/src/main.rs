@@ -31,6 +31,8 @@ fn serve(mut stream: TcpStream, root: &Path) -> io::Result<()> {
     ("405 Method Not Allowed", "text/plain; charset=utf-8", b"Method not allowed\n".to_vec())
   } else if target.split('?').next() == Some("/api/events.json") {
     ("200 OK", "application/json; charset=utf-8", include_bytes!("../data/events.json").to_vec())
+  } else if target.split('?').next() == Some("/api/mastery/warframes.json") {
+    ("200 OK", "application/json; charset=utf-8", include_bytes!("../data/mastery-warframes.json").to_vec())
   } else if let Some(path) = resolve_path(root, target) {
     match fs::read(path) {
       Ok(data) => ("200 OK", "application/json; charset=utf-8", data),

@@ -29,9 +29,9 @@ async function handle(request) {
       return file && await exists(file) ? await fileResponse(file) : new Response('Not found', { status: 404 });
     }
     if (url.pathname.startsWith('/api/')) {
-      if (url.pathname === '/api/events.json') {
+      if (url.pathname === '/api/events.json' || url.pathname === '/api/mastery/warframes.json') {
         return worker.fetch(request, { ASSETS: { async fetch() {
-          return await fileResponse(resolve(root, 'api/data/events.json'));
+          return await fileResponse(resolve(root, url.pathname === '/api/events.json' ? 'api/data/events.json' : 'api/data/mastery-warframes.json'));
         } } });
       }
       const category = url.pathname.split('/')[2]?.replace(/\.json$/, '');
