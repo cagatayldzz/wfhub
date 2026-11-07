@@ -120,11 +120,27 @@
                 "archmelee",
                 "necramech",
                 "railjack",
-                "k-drive"
+                "k-drive",
+                "railjack-intrinsic",
+                "drifter-intrinsic",
+                "starchart",
+                "steel-path",
+                "founders",
+                "china-founders"
               ]
             }
           }
         ]
+      }
+    },
+    "/api/mastery/updated.json": {
+      "get": {
+        "summary": "Get checklist snapshot dates",
+        "responses": {
+          "200": {
+            "description": "Snapshot and wiki update dates"
+          }
+        }
       }
     }
   },
@@ -326,11 +342,19 @@
           },
           "level": {
             "type": "integer",
-            "example": 30
+            "example": 30,
+            "nullable": true
           },
           "mastery": {
             "type": "integer",
             "example": 6000
+          },
+          "id": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

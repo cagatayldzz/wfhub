@@ -1,0 +1,322 @@
+[
+  {
+    "id": "Combat:1",
+    "name": "Deadly Decrees",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:2",
+    "name": "Adrenaline Surge",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:3",
+    "name": "Transference Sync",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:4",
+    "name": "Swifter Strike",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:5",
+    "name": "Swifter Abilities",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:6",
+    "name": "Neural Pulse",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:7",
+    "name": "Weaponmaster",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:8",
+    "name": "Transference Synergy",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:9",
+    "name": "Muscle Mass",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Combat:10",
+    "name": "Overpowering Abilities",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Combat"
+  },
+  {
+    "id": "Riding:1",
+    "name": "Summon Kaithe",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:2",
+    "name": "Cavalier Strength",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:3",
+    "name": "Hoof Stomp",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:4",
+    "name": "Fast Travel",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:5",
+    "name": "Smooth Path",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:6",
+    "name": "Steadfast Dismount",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:7",
+    "name": "Endurance Racer",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:8",
+    "name": "Unique Identity",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:9",
+    "name": "Equestrian Bond",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Riding:10",
+    "name": "Herd Travel",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Riding"
+  },
+  {
+    "id": "Opportunity:1",
+    "name": "Expanded Decrees",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:2",
+    "name": "Expanded Arsenal",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:3",
+    "name": "Lucky Opener",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:4",
+    "name": "Warframe Abundance",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:5",
+    "name": "Treasure Finder",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:6",
+    "name": "Fresh Hand",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:7",
+    "name": "Maximized Arsenal",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:8",
+    "name": "Warframe Diversity",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:9",
+    "name": "High Value Vendor",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Opportunity:10",
+    "name": "Stranger in Black",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Opportunity"
+  },
+  {
+    "id": "Endurance:1",
+    "name": "Fortifying Decrees",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:2",
+    "name": "Restorative Decree",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:3",
+    "name": "Determination",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:4",
+    "name": "Deft Defender",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:5",
+    "name": "Born Survivor",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:6",
+    "name": "Precision Power",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:7",
+    "name": "Sharpshooter’s Bounty",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:8",
+    "name": "Tenacity",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:9",
+    "name": "Tough As Old Boots",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Endurance"
+  },
+  {
+    "id": "Endurance:10",
+    "name": "Cheat Death",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Endurance"
+  }
+]

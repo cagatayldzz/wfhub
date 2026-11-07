@@ -1,0 +1,2322 @@
+[
+  {
+    "id": "Earth:SolNode79",
+    "name": "Cambria",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode75",
+    "name": "Cervantes",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:ClanNode2",
+    "name": "Coba",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode27",
+    "name": "E Prime",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode903",
+    "name": "Erpo",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode59",
+    "name": "Eurasia",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode39",
+    "name": "Everest",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode85",
+    "name": "Gaia",
+    "image": null,
+    "level": null,
+    "mastery": 20,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode26",
+    "name": "Lith",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode63",
+    "name": "Mantle",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode89",
+    "name": "Mariana",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:EarthToMarsJunction",
+    "name": "Mars Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode24",
+    "name": "Oro",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode15",
+    "name": "Pacific",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode228",
+    "name": "Plains of Eidolon",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:SolNode451",
+    "name": "Saya's Visions",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:ClanNode3",
+    "name": "Tikal",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Earth"
+  },
+  {
+    "id": "Earth:EarthToVenusJunction",
+    "name": "Venus Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Earth"
+  },
+  {
+    "id": "Venus:SolNode2",
+    "name": "Aphrodite",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode23",
+    "name": "Cytherean",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:NokkoColony",
+    "name": "Deepmines",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode128",
+    "name": "E Gate",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode104",
+    "name": "Fossa",
+    "image": null,
+    "level": null,
+    "mastery": 41,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode61",
+    "name": "Ishtar",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode101",
+    "name": "Kiliken",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode109",
+    "name": "Linea",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:ClanNode1",
+    "name": "Malva",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:VenusToMercuryJunction",
+    "name": "Mercury Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode902",
+    "name": "Montes",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode129",
+    "name": "Orb Vallis",
+    "image": null,
+    "level": null,
+    "mastery": 24,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:ClanNode0",
+    "name": "Romula",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode22",
+    "name": "Tessera",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode66",
+    "name": "Unda",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode123",
+    "name": "V Prime",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode107",
+    "name": "Venera",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Venus"
+  },
+  {
+    "id": "Venus:SolNode239",
+    "name": "Vesper Relay",
+    "image": null,
+    "level": null,
+    "mastery": 50,
+    "group": "Venus"
+  },
+  {
+    "id": "Mercury:SolNode94",
+    "name": "Apollodorus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode223",
+    "name": "Boethius",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode119",
+    "name": "Caloris",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode12",
+    "name": "Elion",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode130",
+    "name": "Lares",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode103",
+    "name": "M Prime",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode224",
+    "name": "Odin",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode226",
+    "name": "Pantheon",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode225",
+    "name": "Suisei",
+    "image": null,
+    "level": null,
+    "mastery": 3,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode28",
+    "name": "Terminus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mercury:SolNode108",
+    "name": "Tolstoj",
+    "image": null,
+    "level": null,
+    "mastery": 25,
+    "group": "Mercury"
+  },
+  {
+    "id": "Mars:SolNode106",
+    "name": "Alator",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode45",
+    "name": "Ara",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode113",
+    "name": "Ares",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode41",
+    "name": "Arval",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode16",
+    "name": "Augustus",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:MarsToCeresJunction",
+    "name": "Ceres Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode65",
+    "name": "Gradivus",
+    "image": null,
+    "level": null,
+    "mastery": 45,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode58",
+    "name": "Hellas",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:ClanNode8",
+    "name": "Kadesh",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode36",
+    "name": "Martialis",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode30",
+    "name": "Olympus",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:MarsToPhobosJunction",
+    "name": "Phobos Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode46",
+    "name": "Spear",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode904",
+    "name": "Syrtis",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode11",
+    "name": "Tharsis",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode450",
+    "name": "Tyana Pass",
+    "image": null,
+    "level": null,
+    "mastery": 18,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode14",
+    "name": "Ultor",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode68",
+    "name": "Vallis",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:ClanNode9",
+    "name": "Wahiba",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Mars"
+  },
+  {
+    "id": "Mars:SolNode99",
+    "name": "War",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Mars"
+  },
+  {
+    "id": "Deimos:SolNode721",
+    "name": "Armatus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode229",
+    "name": "Cambion Drift",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode718",
+    "name": "Cambire",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode709",
+    "name": "Dirus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode715",
+    "name": "Effervo",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode713",
+    "name": "Exequias",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode710",
+    "name": "Formido",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode706",
+    "name": "Horend",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode707",
+    "name": "Hyf",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:CeresToJupiterJunction",
+    "name": "Jupiter Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode712",
+    "name": "Magnacidium",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode719",
+    "name": "Munio",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode716",
+    "name": "Nex",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode717",
+    "name": "Persto",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode708",
+    "name": "Phlegyas",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode711",
+    "name": "Terrorem",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Deimos:SolNode720",
+    "name": "Testudo",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Deimos"
+  },
+  {
+    "id": "Phobos:SettlementNode11",
+    "name": "Gulliver",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode20",
+    "name": "Iliad",
+    "image": null,
+    "level": null,
+    "mastery": 100,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode10",
+    "name": "Kepler",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:ClanNode10",
+    "name": "Memphis",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode12",
+    "name": "Monolith",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode1",
+    "name": "Roche",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode15",
+    "name": "Sharpless",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode14",
+    "name": "Shklovsky",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode2",
+    "name": "Skyresh",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:SettlementNode3",
+    "name": "Stickney",
+    "image": null,
+    "level": null,
+    "mastery": 157,
+    "group": "Phobos"
+  },
+  {
+    "id": "Phobos:ClanNode11",
+    "name": "Zeugma",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Phobos"
+  },
+  {
+    "id": "Ceres:/Lotus/Types/Keys/SyndicateCacheHuntBaseKeyItem",
+    "name": "Abyssal Zone",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode132",
+    "name": "Bode",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode149",
+    "name": "Casta",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode147",
+    "name": "Cinxia",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode146",
+    "name": "Draco",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode144",
+    "name": "Exta",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:ClanNode23",
+    "name": "Gabii",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode141",
+    "name": "Ker",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode140",
+    "name": "Kiste",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode139",
+    "name": "Lex",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode138",
+    "name": "Ludi",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode137",
+    "name": "Nuovo",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode131",
+    "name": "Pallas",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:ClanNode22",
+    "name": "Seimeni",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Ceres"
+  },
+  {
+    "id": "Ceres:SolNode135",
+    "name": "Thon",
+    "image": null,
+    "level": null,
+    "mastery": 163,
+    "group": "Ceres"
+  },
+  {
+    "id": "Jupiter:SolNode88",
+    "name": "Adrastea",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode97",
+    "name": "Amalthea",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode73",
+    "name": "Ananke",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode25",
+    "name": "Callisto",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:ClanNode5",
+    "name": "Cameria",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode74",
+    "name": "Carme",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode121",
+    "name": "Carpo",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode100",
+    "name": "Elara",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:JupiterToEuropaJunction",
+    "name": "Europa Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode905",
+    "name": "Galilea",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode87",
+    "name": "Ganymede",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode125",
+    "name": "Io",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode126",
+    "name": "Metis",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:JupiterToSaturnJunction",
+    "name": "Saturn Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:ClanNode4",
+    "name": "Sinai",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode740",
+    "name": "The Ropalolyst",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode10",
+    "name": "Thebe",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Jupiter:SolNode53",
+    "name": "Themisto",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Jupiter"
+  },
+  {
+    "id": "Europa:SolNode203",
+    "name": "Abaddon",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:GrendelKeyBMissionName",
+    "name": "Archaeo-freighter",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode204",
+    "name": "Armaros",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode205",
+    "name": "Baal",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:ClanNode7",
+    "name": "Cholistan",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:GrendelKeyAMissionName",
+    "name": "Icefields of Riddah",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode220",
+    "name": "Kokabiel",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:ClanNode6",
+    "name": "Larzac",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:GrendelKeyCMissionName",
+    "name": "Mines of Karishh",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode209",
+    "name": "Morax",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode210",
+    "name": "Naamah",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode217",
+    "name": "Orias",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode211",
+    "name": "Ose",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode212",
+    "name": "Paimon",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode214",
+    "name": "Sorath",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode215",
+    "name": "Valac",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Europa:SolNode216",
+    "name": "Valefor",
+    "image": null,
+    "level": null,
+    "mastery": 138,
+    "group": "Europa"
+  },
+  {
+    "id": "Saturn:SolNode31",
+    "name": "Anthe",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode82",
+    "name": "Calypso",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:ClanNode12",
+    "name": "Caracol",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode70",
+    "name": "Cassini",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode67",
+    "name": "Dione",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode19",
+    "name": "Enceladus",
+    "image": null,
+    "level": null,
+    "mastery": 49,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode42",
+    "name": "Helene",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode93",
+    "name": "Keeler",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode50",
+    "name": "Numa",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode906",
+    "name": "Pandora",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:ClanNode13",
+    "name": "Piscinas",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode18",
+    "name": "Rhea",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode20",
+    "name": "Telesto",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode32",
+    "name": "Tethys",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SolNode96",
+    "name": "Titan",
+    "image": null,
+    "level": null,
+    "mastery": 55,
+    "group": "Saturn"
+  },
+  {
+    "id": "Saturn:SaturnToUranusJunction",
+    "name": "Uranus Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Saturn"
+  },
+  {
+    "id": "Uranus:SolNode33",
+    "name": "Ariel",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:ClanNode17",
+    "name": "Assur",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode723",
+    "name": "Brutus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode907",
+    "name": "Caelus",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode60",
+    "name": "Caliban",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode83",
+    "name": "Cressida",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode98",
+    "name": "Desdemona",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:UranusToNeptuneJunction",
+    "name": "Neptune Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode69",
+    "name": "Ophelia",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode114",
+    "name": "Puck",
+    "image": null,
+    "level": null,
+    "mastery": 44,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode9",
+    "name": "Rosalind",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode122",
+    "name": "Stephano",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode34",
+    "name": "Sycorax",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode105",
+    "name": "Titania",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:SolNode64",
+    "name": "Umbriel",
+    "image": null,
+    "level": null,
+    "mastery": 69,
+    "group": "Uranus"
+  },
+  {
+    "id": "Uranus:ClanNode16",
+    "name": "Ur",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Uranus"
+  },
+  {
+    "id": "Neptune:SolNode6",
+    "name": "Despina",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode1",
+    "name": "Galatea",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:ClanNode21",
+    "name": "Kelashin",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode118",
+    "name": "Laomedeia",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode49",
+    "name": "Larissa",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode84",
+    "name": "Nereid",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode62",
+    "name": "Neso",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:NeptuneToPlutoJunction",
+    "name": "Pluto Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode17",
+    "name": "Proteus",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode127",
+    "name": "Psamathe",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode908",
+    "name": "Salacia",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode57",
+    "name": "Sao",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:EventNode763",
+    "name": "The Index: Endurance",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:SolNode78",
+    "name": "Triton",
+    "image": null,
+    "level": null,
+    "mastery": 52,
+    "group": "Neptune"
+  },
+  {
+    "id": "Neptune:ClanNode20",
+    "name": "Yursa",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Neptune"
+  },
+  {
+    "id": "Pluto:SolNode4",
+    "name": "Acheron",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode43",
+    "name": "Cerberus",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode56",
+    "name": "Cypress",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:PlutoToErisJunction",
+    "name": "Eris Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode51",
+    "name": "Hades",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:ClanNode25",
+    "name": "Hieracon",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode76",
+    "name": "Hydra",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode38",
+    "name": "Minthe",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode21",
+    "name": "Narcissus",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode102",
+    "name": "Oceanum",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode72",
+    "name": "Outer Terminus",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode81",
+    "name": "Palus",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:SolNode48",
+    "name": "Regna",
+    "image": null,
+    "level": null,
+    "mastery": 51,
+    "group": "Pluto"
+  },
+  {
+    "id": "Pluto:ClanNode24",
+    "name": "Sechura",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Pluto"
+  },
+  {
+    "id": "Eris:ClanNode18",
+    "name": "Akkad",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode153",
+    "name": "Brugia",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode162",
+    "name": "Isos",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode701",
+    "name": "Jordas Golem Assassinate",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode164",
+    "name": "Kala-azar",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode705",
+    "name": "Mutalist Alad V Assassinate",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode175",
+    "name": "Naeglar",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode166",
+    "name": "Nimus",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode167",
+    "name": "Oestrus",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode171",
+    "name": "Saxis",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:ErisToSednaJunction",
+    "name": "Sedna Junction",
+    "image": null,
+    "level": null,
+    "mastery": 1000,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode173",
+    "name": "Solium",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:SolNode172",
+    "name": "Xini",
+    "image": null,
+    "level": null,
+    "mastery": 279,
+    "group": "Eris"
+  },
+  {
+    "id": "Eris:ClanNode19",
+    "name": "Zabala",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Eris"
+  },
+  {
+    "id": "Sedna:SolNode181",
+    "name": "Adaro",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:ClanNode14",
+    "name": "Amarna",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode185",
+    "name": "Berehynia",
+    "image": null,
+    "level": null,
+    "mastery": 50,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode196",
+    "name": "Charybdis",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode195",
+    "name": "Hydron",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode177",
+    "name": "Kappa",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode188",
+    "name": "Kelpie",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode191",
+    "name": "Marid",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode193",
+    "name": "Merrow",
+    "image": null,
+    "level": null,
+    "mastery": 100,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode189",
+    "name": "Naga",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode190",
+    "name": "Nakki",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode184",
+    "name": "Rusalka",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:ClanNode15",
+    "name": "Sangeru",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode187",
+    "name": "Selkie",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode183",
+    "name": "Vodyanoi",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Sedna:SolNode199",
+    "name": "Yam",
+    "image": null,
+    "level": null,
+    "mastery": 177,
+    "group": "Sedna"
+  },
+  {
+    "id": "Lua:SolNode308",
+    "name": "Apollo",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode310",
+    "name": "Circulus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode304",
+    "name": "Copernicus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode301",
+    "name": "Grimaldi",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode306",
+    "name": "Pavlov",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode300",
+    "name": "Plato",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode305",
+    "name": "Stöfler",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode302",
+    "name": "Tycho",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode309",
+    "name": "Yuvarium",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Lua:SolNode307",
+    "name": "Zeipel",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Lua"
+  },
+  {
+    "id": "Kuva Fortress:SolNode746",
+    "name": "Dakata",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode748",
+    "name": "Garus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode741",
+    "name": "Koro",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode742",
+    "name": "Nabuk",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode747",
+    "name": "Pago",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode743",
+    "name": "Rotuma",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode745",
+    "name": "Tamu",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Kuva Fortress:SolNode744",
+    "name": "Taveuni",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Kuva Fortress"
+  },
+  {
+    "id": "Void:SolNode405",
+    "name": "Ani",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode410",
+    "name": "Aten",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode408",
+    "name": "Belenus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode401",
+    "name": "Hepit",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode411",
+    "name": "Marduk",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode412",
+    "name": "Mithra",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode409",
+    "name": "Mot",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode407",
+    "name": "Oxomoco",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode404",
+    "name": "Stribog",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode402",
+    "name": "Taranis",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode400",
+    "name": "Teshub",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode403",
+    "name": "Tiwaz",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Void:SolNode406",
+    "name": "Ukko",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Void"
+  },
+  {
+    "id": "Zariman Ten Zero:SolNode230",
+    "name": "Everview Arc",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Zariman Ten Zero"
+  },
+  {
+    "id": "Zariman Ten Zero:SolNode231",
+    "name": "Halako Perimeter",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Zariman Ten Zero"
+  },
+  {
+    "id": "Zariman Ten Zero:SolNode233",
+    "name": "Oro Works",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Zariman Ten Zero"
+  },
+  {
+    "id": "Zariman Ten Zero:SolNode235",
+    "name": "The Greenway",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Zariman Ten Zero"
+  },
+  {
+    "id": "Zariman Ten Zero:SolNode232",
+    "name": "Tuvul Commons",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Zariman Ten Zero"
+  },
+  {
+    "id": "Höllvania:SolNode850",
+    "name": "Köbinn West",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode855",
+    "name": "Lower Vehrvod",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode853",
+    "name": "Mausoleum East",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode851",
+    "name": "Mischta Ramparts",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode852",
+    "name": "Old Konderuk",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode854",
+    "name": "Rhu Manor",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode858",
+    "name": "Solstice Square",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode857",
+    "name": "Vehrvod District",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Höllvania:SolNode856",
+    "name": "Victory Plaza",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Höllvania"
+  },
+  {
+    "id": "Dark Refractory:SolNode251",
+    "name": "Recall: Dactolyst",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Dark Refractory"
+  },
+  {
+    "id": "Dark Refractory:SolNode250",
+    "name": "Recall: Hunhullus",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Dark Refractory"
+  },
+  {
+    "id": "Dark Refractory:SolNode252",
+    "name": "Recall: Prime Vanguard",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Dark Refractory"
+  },
+  {
+    "id": "Dark Refractory:SolNode253",
+    "name": "The Descendia",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Dark Refractory"
+  },
+  {
+    "id": "Dark Refractory:SolNode257",
+    "name": "The Guilty",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Dark Refractory"
+  },
+  {
+    "id": "Duviri:SolNode236:Isleweaver",
+    "name": "Isleweaver",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Duviri"
+  },
+  {
+    "id": "Duviri:SolNode238",
+    "name": "The Circuit",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Duviri"
+  },
+  {
+    "id": "Duviri:SolNode236:The Duviri Experience",
+    "name": "The Duviri Experience",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Duviri"
+  },
+  {
+    "id": "Duviri:SolNode237",
+    "name": "The Lone Story (Duviri)",
+    "image": null,
+    "level": null,
+    "mastery": 0,
+    "group": "Duviri"
+  }
+]

@@ -2,9 +2,14 @@ import SwiftUI
 
 private struct MasteryWarframe: Identifiable, Codable {
   let name: String
-  let slug: String
-  let imageName: String?
-  var id: String { slug }
+  let image: String?
+  let level: Int?
+  let mastery: Int
+  let group: String?
+  private let sourceID: String?
+  var slug: String { name.folding(options: [.diacriticInsensitive, .widthInsensitive], locale: Locale(identifier: "en_US_POSIX")).lowercased().replacingOccurrences(of: "[^a-z0-9]+", with: "-", options: .regularExpression).trimmingCharacters(in: CharacterSet(charactersIn: "-")) }
+  var id: String { sourceID ?? slug }
+  enum CodingKeys: String, CodingKey { case name, image, level, mastery, group; case sourceID = "id" }
 }
 
 private struct MasteryMark: Codable {
@@ -17,6 +22,8 @@ private struct MasteryMark: Codable {
   private let localKey = "mastery.warframes.marks.v1"
   private let prefix = "mastery.warframe.v1."
   private let cloud = NSUbiquitousKeyValueStore.default
+  private let groupPrefix = "mastery.group.v1."
+  private let legacyCategories: Set<String> = ["warframes", "primary", "secondary", "melee"]
   private var observer: NSObjectProtocol?
 
   init() {
@@ -40,6 +47,10 @@ private struct MasteryMark: Codable {
   }
 
   private func mergeCloud() {
+    for (key, value) in cloud.dictionaryRepresentation where key.hasPrefix(groupPrefix) {
+      guard let data = value as? Data, let remote = try? JSONDecoder().decode([String: MasteryMark].self, from: data) else { continue }
+      for (id, mark) in remote where marks[id] == nil || marks[id]!.modified < mark.modified { marks[id] = mark }
+    }
     for (key, value) in cloud.dictionaryRepresentation where key.hasPrefix(prefix) {
       guard let data = value as? Data, let remote = try? JSONDecoder().decode(MasteryMark.self, from: data) else { continue }
       let id = String(key.dropFirst(prefix.count))
@@ -47,7 +58,9 @@ private struct MasteryMark: Codable {
       marks[id] = remote
     }
     saveLocal()
-    for (id, mark) in marks {
+    let groups = Set(marks.keys.compactMap { group(for: $0) })
+    for group in groups { writeGroup(group) }
+    for (id, mark) in marks where group(for: id) == nil {
       let remote = cloud.data(forKey: prefix + id).flatMap { try? JSONDecoder().decode(MasteryMark.self, from: $0) }
       if remote == nil || mark.modified > remote!.modified { writeCloud(mark, id: id) }
     }
@@ -57,22 +70,47 @@ private struct MasteryMark: Codable {
     if let data = try? JSONEncoder().encode(marks) { UserDefaults.standard.set(data, forKey: localKey) }
   }
 
+  private func group(for id: String) -> String? {
+    guard let separator = id.firstIndex(of: ":") else { return nil }
+    let category = String(id[..<separator])
+    return legacyCategories.contains(category) ? nil : category
+  }
+
+  private func writeGroup(_ group: String) {
+    let local = marks.filter { self.group(for: $0.key) == group }
+    let remote = cloud.data(forKey: groupPrefix + group).flatMap { try? JSONDecoder().decode([String: MasteryMark].self, from: $0) } ?? [:]
+    var merged = remote
+    for (id, mark) in local where merged[id] == nil || merged[id]!.modified < mark.modified { merged[id] = mark }
+    if let data = try? JSONEncoder().encode(merged) { cloud.set(data, forKey: groupPrefix + group) }
+  }
+
   private func writeCloud(_ mark: MasteryMark, id: String) {
-    if let data = try? JSONEncoder().encode(mark) { cloud.set(data, forKey: prefix + id) }
+    if let group = group(for: id) { writeGroup(group) }
+    else if let data = try? JSONEncoder().encode(mark) { cloud.set(data, forKey: prefix + id) }
   }
 }
 
 struct MasteryChecklistView: View {
   @StateObject private var store = MasteryStore()
+  @AppStorage("mastery.snapshot.updated") private var updatedAt = ""
+  private let categories = ["warframes", "primary", "secondary", "melee", "kitgun", "zaw", "amp", "sentinel", "moa", "hound", "beast", "robotic", "archwing", "archgun", "archmelee", "necramech", "railjack", "k-drive", "railjack-intrinsic", "drifter-intrinsic", "starchart", "steel-path", "founders", "china-founders"]
 
   var body: some View {
     ScrollView {
       VStack(spacing: 12) {
-        ForEach(["warframes", "primary", "secondary", "melee"], id: \.self) { category in
+        if !updatedAt.isEmpty {
+          HStack { Text("Checklist updated"); Spacer(); Text(updatedAt).monospacedDigit() }
+            .font(.caption).foregroundStyle(.secondary).padding(.horizontal, 4)
+        }
+        ForEach(categories, id: \.self) { category in
           MasteryCategoryCard(category: category, store: store)
         }
       }.padding(12)
     }.navigationTitle("Mastery Rank Checklist").navigationBarTitleDisplayMode(.inline)
+      .task {
+        let url = URL(string: "https://wfhub.cagatayldzz.com/api/mastery/updated.json")!
+        if let metadata = try? await API.fetch(url) as? [String: Any], let date = metadata["updatedAt"] as? String { updatedAt = date }
+      }
   }
 }
 
@@ -111,25 +149,21 @@ private struct MasteryCategoryCard: View {
   }
 
   private func load() async {
-    let cacheKey = "mastery.\(category).catalogue.v1"
+    let cacheKey = "mastery.\(category).checklist.v2"
     if let data = UserDefaults.standard.data(forKey: cacheKey), let cached = try? JSONDecoder().decode([MasteryWarframe].self, from: data) { items = cached }
     do {
-      let url = URL(string: "https://wfhub.cagatayldzz.com/api/\(category).json")!
+      let url = URL(string: "https://wfhub.cagatayldzz.com/api/mastery/\(category).json")!
       guard let raw = try await API.fetch(url) as? [[String: Any]] else { throw URLError(.cannotParseResponse) }
-      let result = raw.compactMap { entry -> MasteryWarframe? in
-        guard let name = entry["name"] as? String, let slug = entry["slug"] as? String else { return nil }
-        if category == "warframes" && MasteryCategoryList.excluded.contains(slug) { return nil }
-        if category == "melee" && MasteryCategoryList.meleeParts.contains(slug) { return nil }
-        if category == "primary" && ["sirocco", "purgator-1"].contains(slug) { return nil }
-        return MasteryWarframe(name: name, slug: slug, imageName: entry["imageName"] as? String)
-      }.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+      let data = try JSONSerialization.data(withJSONObject: raw)
+      let result = try JSONDecoder().decode([MasteryWarframe].self, from: data)
       guard !result.isEmpty else { throw URLError(.cannotParseResponse) }
       guard !Task.isCancelled else { return }
       items = result
-      if let data = try? JSONEncoder().encode(result) { UserDefaults.standard.set(data, forKey: cacheKey) }
+      UserDefaults.standard.set(data, forKey: cacheKey)
       failed = false
     } catch { if !Task.isCancelled { failed = items.isEmpty } }
   }
+
 }
 
 private struct MasteryCategoryList: View {
@@ -139,22 +173,11 @@ private struct MasteryCategoryList: View {
   @State private var search = ""
   @State private var filter = 0
   static func title(for category: String) -> LocalizedStringKey {
-    switch category {
-    case "primary": return "Primary"
-    case "secondary": return "Secondary"
-    case "melee": return "Melee"
-    default: return "Warframes"
-    }
+    let names: [String: String] = ["warframes": "Warframes", "primary": "Primary", "secondary": "Secondary", "melee": "Melee", "kitgun": "Kitgun", "zaw": "Zaw", "amp": "Amp", "sentinel": "Sentinel", "moa": "MOA", "hound": "Hound", "beast": "Beast", "robotic": "Robotic", "archwing": "Archwing", "archgun": "Archgun", "archmelee": "Archmelee", "necramech": "Necramech", "railjack": "Railjack", "k-drive": "K-Drive", "railjack-intrinsic": "Railjack Intrinsic", "drifter-intrinsic": "Drifter Intrinsic", "starchart": "Starchart", "steel-path": "The Steel Path", "founders": "Founders Pack", "china-founders": "China Founders Pack"]
+    return LocalizedStringKey(names[category] ?? category)
   }
-  static func markID(_ item: MasteryWarframe, category: String) -> String { category == "warframes" ? item.id : "\(category):\(item.id)" }
-  static func maxRank(_ item: MasteryWarframe, category: String) -> Int {
-    let name = item.name.lowercased()
-    return category != "warframes" && (name.hasPrefix("kuva ") || name.hasPrefix("tenet ") || name.hasPrefix("coda ") || name.hasPrefix("dual coda ") || name == "paracesis") ? 40 : 30
-  }
-  static func mastery(_ item: MasteryWarframe, category: String) -> Int { category == "warframes" ? 6000 : maxRank(item, category: category) * 100 }
-  static let meleeParts: Set<String> = ["balla", "cyath", "dehtat", "dokrahm", "kronsh", "mewan", "ooltha", "plague-keewar", "plague-kripath", "rabvee", "sepfahn", "ekwana-ii-jai", "ekwana-ii-ruhang", "ekwana-jai", "ekwana-jai-ii", "ekwana-ruhang", "ekwana-ruhang-ii", "jai", "jai-ii", "jayap", "korb", "kwath", "laka", "peye", "plague-akwin", "plague-bokwin", "ruhang", "ruhang-ii", "seekalla", "shtung", "vargeet-ii-jai", "vargeet-ii-ruhang", "vargeet-jai", "vargeet-jai-ii", "vargeet-ruhang", "vargeet-ruhang-ii"]
-  // The upstream Warframes category also contains Necramechs, Helminth and an alternate form.
-  static let excluded: Set<String> = ["bonewidow", "voidrig", "helminth", "orion-sirius"]
+  static func markID(_ item: MasteryWarframe, category: String) -> String { category == "warframes" ? item.slug : "\(category):\(item.id)" }
+  static func mastery(_ item: MasteryWarframe, category: String) -> Int { item.mastery }
   private var visible: [MasteryWarframe] {
     items.filter { item in
       let done = store.marks[Self.markID(item, category: category)]?.completed == true
@@ -180,10 +203,12 @@ private struct MasteryCategoryList: View {
               let done = store.marks[Self.markID(item, category: category)]?.completed == true
               Button { store.toggle(Self.markID(item, category: category)) } label: {
                 HStack(spacing: 12) {
-                  ThumbnailImage(url: item.imageName.flatMap(URL.init(string:)), maxPixelSize: 160).frame(width: 52, height: 52)
+                  ThumbnailImage(url: item.image.flatMap(URL.init(string:)), maxPixelSize: 160).frame(width: 52, height: 52)
                   VStack(alignment: .leading, spacing: 4) {
                     Text(item.name).font(.headline).foregroundStyle(.primary)
-                    Text("Rank \(Self.maxRank(item, category: category)) · \(Self.mastery(item, category: category), format: .number) mastery").font(.caption).foregroundStyle(.secondary)
+                    if let group = item.group { Text(group).font(.caption).foregroundStyle(.secondary) }
+                    if let level = item.level { Text("Rank \(level) · \(item.mastery, format: .number) mastery").font(.caption).foregroundStyle(.secondary) }
+                    else { Text("\(item.mastery, format: .number) mastery").font(.caption).foregroundStyle(.secondary) }
                   }
                   Spacer()
                   Image(systemName: done ? "checkmark.circle.fill" : "circle")

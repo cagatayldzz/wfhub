@@ -1,0 +1,26 @@
+[
+  {
+    "id": "Excalibur Prime",
+    "name": "Excalibur Prime",
+    "image": "https://wiki.warframe.com/images/thumb/ExcaliburPrime_Thumb.png/64px-ExcaliburPrime_Thumb.png?0ba1d",
+    "level": null,
+    "mastery": 6000,
+    "group": null
+  },
+  {
+    "id": "Lato Prime",
+    "name": "Lato Prime",
+    "image": "https://wiki.warframe.com/images/thumb/LatoPrime.png/64px-LatoPrime.png?ec016",
+    "level": null,
+    "mastery": 3000,
+    "group": null
+  },
+  {
+    "id": "Skana Prime",
+    "name": "Skana Prime",
+    "image": "https://wiki.warframe.com/images/thumb/SkanaPrime.png/64px-SkanaPrime.png?2d1ba",
+    "level": null,
+    "mastery": 3000,
+    "group": null
+  }
+]

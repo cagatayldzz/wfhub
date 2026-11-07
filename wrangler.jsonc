@@ -21,6 +21,6 @@
   "assets": {
     "directory": "./.cloudflare-build",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*", "/_api-data/*"]
+    "run_worker_first": ["/api", "/api/*", "/_api-data/*"]
   }
 }

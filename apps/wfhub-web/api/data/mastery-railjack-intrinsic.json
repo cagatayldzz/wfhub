@@ -1,0 +1,402 @@
+[
+  {
+    "id": "Tactical:1",
+    "name": "Tactical System",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:2",
+    "name": "Ability Kinesis and Overseer",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:3",
+    "name": "Command Link",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:4",
+    "name": "Recall Warp",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:5",
+    "name": "Deploy Necramechs",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:6",
+    "name": "Tactical Efficiency",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:7",
+    "name": "Tactical Response",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:8",
+    "name": "AW Blink & Mech Cooldown",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:9",
+    "name": "Swift Tactics",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Tactical:10",
+    "name": "Join Warp",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Tactical"
+  },
+  {
+    "id": "Piloting:1",
+    "name": "Boost",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:2",
+    "name": "Vector Maneuver",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:3",
+    "name": "Vectored Evasion",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:4",
+    "name": "Drift Maneuver",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:5",
+    "name": "Boosted Scavenger",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:6",
+    "name": "Ram Jammer",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:7",
+    "name": "Necramech Haste",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:8",
+    "name": "Aeronaut",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:9",
+    "name": "Ramming Speed",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Piloting:10",
+    "name": "Railjack Blink",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Piloting"
+  },
+  {
+    "id": "Gunnery:1",
+    "name": "Energized Barrel",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:2",
+    "name": "Phantom Eye",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:3",
+    "name": "Archwing Slingshot",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:4",
+    "name": "Archwing Fury",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:5",
+    "name": "Necramech Fury",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:6",
+    "name": "Cold Trigger",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:7",
+    "name": "Advanced Gunnery",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:8",
+    "name": "Vengeful Archwing",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:9",
+    "name": "Flush Heat Sinks",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Gunnery:10",
+    "name": "Reflex Aim",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Gunnery"
+  },
+  {
+    "id": "Engineering:1",
+    "name": "Applied Omni",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:2",
+    "name": "Rapid Support",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:3",
+    "name": "Ordnance Forge",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:4",
+    "name": "Dome Charge Forge",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:5",
+    "name": "Optimized Forge",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:6",
+    "name": "Forge Accelerator",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:7",
+    "name": "Full Optimization",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:8",
+    "name": "Vigilant Archwing",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:9",
+    "name": "Vigilant Necramech",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Engineering:10",
+    "name": "Anastasis",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Engineering"
+  },
+  {
+    "id": "Command:1",
+    "name": "1st Crew Member",
+    "image": null,
+    "level": 1,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:2",
+    "name": "Competency Gain",
+    "image": null,
+    "level": 2,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:3",
+    "name": "2nd Crew Member",
+    "image": null,
+    "level": 3,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:4",
+    "name": "Competency Gain",
+    "image": null,
+    "level": 4,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:5",
+    "name": "3rd Crew Member",
+    "image": null,
+    "level": 5,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:6",
+    "name": "Competency Gain",
+    "image": null,
+    "level": 6,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:7",
+    "name": "Competency Retraining",
+    "image": null,
+    "level": 7,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:8",
+    "name": "Unusual Crewmates",
+    "image": null,
+    "level": 8,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:9",
+    "name": "On Call",
+    "image": null,
+    "level": 9,
+    "mastery": 1500,
+    "group": "Command"
+  },
+  {
+    "id": "Command:10",
+    "name": "Elite Crewmates",
+    "image": null,
+    "level": 10,
+    "mastery": 1500,
+    "group": "Command"
+  }
+]
