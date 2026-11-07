@@ -68,15 +68,21 @@ struct SettingsView: View {
           }.tint(.primary).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 14))
         }
 
-        if ads.privacyOptionsRequired {
-          Button { Task { await ads.showPrivacyOptions() } } label: {
-            Label("Privacy options", systemImage: "hand.raised")
+        VStack(spacing: 0) {
+          NavigationLink { FeedbackView() } label: {
+            SettingsLinkRow(icon: "bubble.left.and.bubble.right", title: "Feedback")
           }
-        }
-
-        Link(destination: URL(string: "https://wfhub.cagatayldzz.com/legal/privacy-policy")!) {
-          Label("Privacy Policy", systemImage: "hand.raised")
-        }
+          Divider().padding(.leading, 60)
+          Link(destination: URL(string: "https://wfhub.cagatayldzz.com/legal/privacy-policy")!) {
+            SettingsLinkRow(icon: "hand.raised", title: "Privacy Policy")
+          }
+          if ads.privacyOptionsRequired {
+            Divider().padding(.leading, 60)
+            Button { Task { await ads.showPrivacyOptions() } } label: {
+              SettingsLinkRow(icon: "hand.raised", title: "Privacy options")
+            }
+          }
+        }.tint(.primary).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 14))
 
         Button {
           storedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -115,6 +121,20 @@ private struct SettingsRow: View {
       }
       Spacer(minLength: 8)
       Image(systemName: "chevron.up.chevron.down").font(.caption.weight(.semibold)).foregroundStyle(Color(uiColor: .secondaryLabel))
+    }.padding(16).contentShape(Rectangle())
+  }
+}
+
+private struct SettingsLinkRow: View {
+  let icon: String
+  let title: LocalizedStringKey
+
+  var body: some View {
+    HStack(spacing: 12) {
+      SettingsIcon(name: icon)
+      Text(title).font(.body.weight(.semibold)).foregroundStyle(Color(uiColor: .label))
+      Spacer(minLength: 8)
+      Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Color(uiColor: .secondaryLabel))
     }.padding(16).contentShape(Rectangle())
   }
 }

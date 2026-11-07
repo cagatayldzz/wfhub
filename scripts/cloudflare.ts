@@ -69,6 +69,28 @@ async function build() {
   }));
 }
 
+// Apply migrations against the same configuration and environment as the deploy.
+function migrationOptions(args: string[]): string[] {
+  const options: string[] = [];
+  const withValue = new Set(['--env', '-e', '--config', '-c', '--cwd', '--env-file', '--profile']);
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (withValue.has(arg)) {
+      if (!args[i + 1] || args[i + 1].startsWith('-')) throw new Error(`Missing value for ${arg}`);
+      options.push(arg, args[++i]);
+    } else if ([...withValue].some(option => arg.startsWith(`${option}=`))) {
+      options.push(arg);
+    }
+  }
+  return options;
+}
+
+function runWrangler(args: string[]): void {
+  const result = spawnSync('bunx', ['wrangler', ...args], { cwd: root, stdio: 'inherit' });
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error(`Wrangler failed (${result.status ?? 'interrupted'}): ${args[0]}`);
+}
+
 async function main() {
   const [action, ...args] = process.argv.slice(2);
   if (action !== 'build' && action !== 'deploy') {
@@ -78,9 +100,10 @@ async function main() {
   }
   await build();
   if (action === 'deploy') {
-    const result = spawnSync('bunx', ['wrangler', 'deploy', ...args], { cwd: root, stdio: 'inherit' });
-    if (result.error) throw result.error;
-    process.exitCode = result.status ?? 1;
+    if (!args.includes('--dry-run')) {
+      runWrangler(['d1', 'migrations', 'apply', 'DB', '--remote', ...migrationOptions(args)]);
+    }
+    runWrangler(['deploy', ...args]);
   }
 }
 

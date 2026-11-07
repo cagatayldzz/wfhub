@@ -1,9 +1,6 @@
-const BASE_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'X-Content-Type-Options': 'nosniff',
-};
+import { BASE_HEADERS, JSON_HEADERS } from './http.mjs';
+import { submitFeedback } from './feedback.mjs';
 
-const JSON_HEADERS = { ...BASE_HEADERS, 'Content-Type': 'application/json; charset=utf-8' };
 const SWAGGER_PATHS = new Set(['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json']);
 const MASTERY_CATEGORIES = new Set([
   'warframes', 'primary', 'secondary', 'melee', 'kitgun', 'zaw', 'amp', 'sentinel',
@@ -51,6 +48,10 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
+
+    if (path === '/api/feedback' && request.method === 'POST') {
+      return submitFeedback(request, env);
+    }
 
     if (request.method !== 'GET' && request.method !== 'HEAD') {
       return new Response('Method not allowed\n', { status: 405, headers: BASE_HEADERS });

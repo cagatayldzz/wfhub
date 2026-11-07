@@ -21,6 +21,18 @@
   "assets": {
     "directory": "./.cloudflare-build",
     "binding": "ASSETS",
-    "run_worker_first": ["/api", "/api/*", "/_api-data/*"]
-  }
+    "run_worker_first": [
+      "/api",
+      "/api/*",
+      "/_api-data/*"
+    ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "wfhub",
+      "database_id": "8340891c-14c6-40cd-918d-87802e131d5b",
+      "migrations_dir": "apps/wfhub-web/api/migrations"
+    }
+  ]
 }
