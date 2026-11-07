@@ -1,18 +1,20 @@
 # WFHub
 
-WFHub is a Warframe companion for browsing world state, activities, Codex content, and recent market orders. It includes a Rust/GPUI desktop app, a SwiftUI iOS app, and a website with an API.
+WFHub is a Warframe companion for exploring world state, activities, Codex content, and recent market orders. The project includes a Rust desktop app, a SwiftUI iOS app, and a website with an API.
 
-## Quick start
+## Getting started
+
+Install [Rust](https://rustup.rs/) and [Bun](https://bun.sh/), then run a client from the repository root:
 
 ```sh
-cargo run -p wfhub    # Desktop app
-bun scripts/dev.ts web       # Website at http://localhost:8000
+cargo run -p wfhub       # Desktop app
+bun run dev:web          # Website: http://localhost:8000
 ```
 
-For prerequisites, iOS setup, and checks, see the [development guide](docs/development.md). The [documentation index](docs/README.md) covers architecture, integrations, and release notes.
+For iOS setup, prerequisites, and development checks, see the [development guide](docs/development.md). More information is available in the [documentation](docs/README.md).
 
-The desktop and iOS clients are under active development and do not yet have full feature parity. There is no Android client.
+The desktop and iOS apps are under active development and do not yet have full feature parity.
 
 ## License
 
-Project code is available under the [MIT License](LICENSE). Third-party assets and trademarks have separate rights; see [asset notices](docs/assets.md).
+The project is licensed under the [MIT License](LICENSE). Third-party assets and trademarks have separate rights; see the [asset notices](docs/assets.md).
