@@ -185,6 +185,11 @@ private struct MasteryCategoryList: View {
     }
   }
 
+  private var groupNames: [String] {
+    var seen = Set<String>()
+    return items.compactMap(\.group).filter { seen.insert($0).inserted }
+  }
+
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 16) {
@@ -198,28 +203,57 @@ private struct MasteryCategoryList: View {
         } else if visible.isEmpty {
           ContentUnavailableView("No items found", systemImage: "magnifyingglass")
         } else {
-          LazyVStack(spacing: 8) {
-            ForEach(visible) { item in
-              let done = store.marks[Self.markID(item, category: category)]?.completed == true
-              Button { store.toggle(Self.markID(item, category: category)) } label: {
-                HStack(spacing: 12) {
-                  ThumbnailImage(url: item.image.flatMap(URL.init(string:)), maxPixelSize: 160).frame(width: 52, height: 52)
-                  VStack(alignment: .leading, spacing: 4) {
-                    Text(item.name).font(.headline).foregroundStyle(.primary)
-                    if let group = item.group { Text(group).font(.caption).foregroundStyle(.secondary) }
-                    if let level = item.level { Text("Rank \(level) · \(item.mastery, format: .number) mastery").font(.caption).foregroundStyle(.secondary) }
-                    else { Text("\(item.mastery, format: .number) mastery").font(.caption).foregroundStyle(.secondary) }
+          LazyVStack(alignment: .leading, spacing: 16) {
+            if groupNames.isEmpty {
+              itemRows(visible)
+            } else {
+              ForEach(groupNames, id: \.self) { group in
+                let allItems = items.filter { $0.group == group }
+                let matching = visible.filter { $0.group == group }
+                if !matching.isEmpty {
+                  Section {
+                    itemRows(matching)
+                  } header: {
+                    let completed = allItems.filter { store.marks[Self.markID($0, category: category)]?.completed == true }.count
+                    HStack {
+                      Text(LocalizedStringKey(group)).font(.headline)
+                      Spacer()
+                      Text("\(completed) / \(allItems.count)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                    }.padding(.horizontal, 4).padding(.bottom, 2)
                   }
-                  Spacer()
-                  Image(systemName: done ? "checkmark.circle.fill" : "circle")
-                    .font(.title2).foregroundStyle(done ? WFStyle.accent : Color.secondary)
-                }.padding(12).background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
-              }.buttonStyle(.plain).accessibilityLabel(item.name).accessibilityValue(done ? "Completed" : "Not completed")
+                }
+              }
+              let ungrouped = visible.filter { $0.group == nil }
+              if !ungrouped.isEmpty { itemRows(ungrouped) }
             }
           }
+
         }
       }.padding(12)
     }.navigationTitle(Self.title(for: category)).navigationBarTitleDisplayMode(.inline)
       .searchable(text: $search)
   }
+
+  private func itemRows(_ rows: [MasteryWarframe]) -> some View {
+    ForEach(rows) { item in
+      let done = store.marks[Self.markID(item, category: category)]?.completed == true
+      Button { store.toggle(Self.markID(item, category: category)) } label: {
+        HStack(spacing: 12) {
+          if let image = item.image, let url = URL(string: image) {
+            ThumbnailImage(url: url, maxPixelSize: 160).frame(width: 52, height: 52)
+          }
+          VStack(alignment: .leading, spacing: 4) {
+            Text(item.name).font(.headline).foregroundStyle(.primary)
+            if let level = item.level { Text("Rank \(level) · \(item.mastery, format: .number) mastery").font(.caption).foregroundStyle(.secondary) }
+            else { Text("\(item.mastery, format: .number) mastery").font(.caption).foregroundStyle(.secondary) }
+          }
+          Spacer()
+          Image(systemName: done ? "checkmark.circle.fill" : "circle")
+            .font(.title2).foregroundStyle(done ? WFStyle.accent : Color.secondary)
+        }.padding(12).frame(maxWidth: .infinity, alignment: .leading)
+          .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
+      }.buttonStyle(.plain).accessibilityLabel(item.name).accessibilityValue(done ? "Completed" : "Not completed")
+    }
+  }
+
 }

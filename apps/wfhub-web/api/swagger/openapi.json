@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "WFHub API",
-    "description": "Static Warframe data API generated from WFCD items.",
+    "description": "Browse the Codex catalogue, mastery checklists, and event banners used by WFHub.",
     "version": "1.0.0"
   },
   "servers": [
@@ -13,7 +13,7 @@
   "paths": {
     "/api/{category}.json": {
       "get": {
-        "summary": "List items in a category",
+        "summary": "List Codex items",
         "operationId": "listCategoryItems",
         "parameters": [
           {
@@ -33,13 +33,20 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Category not found"
           }
-        }
+        },
+        "tags": [
+          "Codex"
+        ],
+        "description": "Returns the items available in a Codex category. Use the returned slug to request an item’s details."
       }
     },
     "/api/{category}/{slug}.json": {
       "get": {
-        "summary": "Get a single item",
+        "summary": "Get Codex item details",
         "operationId": "getCategoryItem",
         "parameters": [
           {
@@ -70,16 +77,20 @@
           "404": {
             "description": "Item not found"
           }
-        }
+        },
+        "tags": [
+          "Codex"
+        ],
+        "description": "Returns the details of one item using its category and slug."
       }
     },
     "/api/mastery/{category}.json": {
       "get": {
-        "summary": "List items from a mastery checklist",
+        "summary": "List checklist entries",
         "operationId": "listMasteryItems",
         "responses": {
           "200": {
-            "description": "Warframe mastery checklist",
+            "description": "Checklist entries",
             "content": {
               "application/json": {
                 "schema": {
@@ -128,17 +139,94 @@
                 "founders",
                 "china-founders"
               ]
-            }
+            },
+            "description": "Checklist category, such as warframes, primary, starchart, or railjack-intrinsic."
           }
-        ]
+        ],
+        "tags": [
+          "Mastery Checklist"
+        ],
+        "description": "Returns the entries, maximum levels, and mastery points for one checklist category. The image can be null when the wiki table has no image."
       }
     },
     "/api/mastery/updated.json": {
       "get": {
-        "summary": "Get checklist snapshot dates",
+        "summary": "Get checklist update dates",
         "responses": {
           "200": {
-            "description": "Snapshot and wiki update dates"
+            "description": "Snapshot and wiki update dates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "updatedAt",
+                    "wikiUpdatedAt"
+                  ],
+                  "properties": {
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date",
+                      "example": "2026-11-07"
+                    },
+                    "wikiUpdatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2026-10-23T03:20:57Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mastery Checklist"
+        ],
+        "operationId": "getMasteryUpdateDates",
+        "description": "Returns the date WFHub last updated the snapshot and the source wiki page’s update timestamp."
+      }
+    },
+    "/api/events.json": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "List event banners",
+        "operationId": "listEvents",
+        "description": "Returns the event banners and links shown on the home screen.",
+        "responses": {
+          "200": {
+            "description": "Event banners",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "title",
+                      "imageLink",
+                      "link"
+                    ],
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "example": "Tau 2026"
+                      },
+                      "imageLink": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "link": {
+                        "type": "string",
+                        "description": "Destination URL; {lang} is replaced by the selected language."
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -360,5 +448,19 @@
         "additionalProperties": false
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Codex",
+      "description": "Browse item categories and their details. Data comes from WFCD warframe-items."
+    },
+    {
+      "name": "Mastery Checklist",
+      "description": "Explore the checklist snapshot and its update dates. Completion progress is stored separately on your device."
+    },
+    {
+      "name": "Events",
+      "description": "Banners and links maintained for the WFHub home screen."
+    }
+  ]
 }
