@@ -92,6 +92,6 @@ else if (action === 'phone') {
   child.on('error', error => { console.error(error); process.exitCode = 1; });
   child.on('exit', (code, signal) => { if (signal) process.kill(process.pid, signal); else process.exitCode = code ?? 1; });
 } else {
-  console.error('Usage: node scripts/dev.ts {phone|web} [options]');
+  console.error('Usage: bun scripts/dev.ts {phone|web} [options]');
   process.exitCode = 2;
 }

@@ -72,13 +72,13 @@ async function build() {
 async function main() {
   const [action, ...args] = process.argv.slice(2);
   if (action !== 'build' && action !== 'deploy') {
-    console.error('Usage: node scripts/cloudflare.ts {build|deploy} [wrangler options]');
+    console.error('Usage: bun scripts/cloudflare.ts {build|deploy} [wrangler options]');
     process.exitCode = 2;
     return;
   }
   await build();
   if (action === 'deploy') {
-    const result = spawnSync('npx', ['wrangler', 'deploy', ...args], { cwd: root, stdio: 'inherit' });
+    const result = spawnSync('bunx', ['wrangler', 'deploy', ...args], { cwd: root, stdio: 'inherit' });
     if (result.error) throw result.error;
     process.exitCode = result.status ?? 1;
   }

@@ -16,3 +16,5 @@
 *.pem
 *.key
 *.mobileprovision
+
+/node_modules/

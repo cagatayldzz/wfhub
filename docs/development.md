@@ -20,7 +20,7 @@ From the repository root, start the desktop app:
 cargo run -p wfhub
 ```
 
-The app opens in a phone-proportioned window. You can also run `node scripts/dev.ts phone`.
+The app opens in a phone-proportioned window. You can also run `bun scripts/dev.ts phone`.
 
 To generate the iOS project and open it in Xcode:
 
@@ -36,7 +36,7 @@ Alternatively, from the repository root, `bash scripts/mobile.sh simulator` gene
 
 ## Website and API
 
-Run `node scripts/dev.ts web` from the repository root, then open `http://localhost:8000` for the landing page. API requests use locally generated data when available, otherwise they use the deployed API. Run `node scripts/cloudflare.ts build` to generate local data; `node scripts/cloudflare.ts deploy` builds and deploys the website and API to Cloudflare.
+Run `bun scripts/dev.ts web` from the repository root, then open `http://localhost:8000` for the landing page. API requests use locally generated data when available, otherwise they use the deployed API. Run `bun scripts/cloudflare.ts build` to generate local data; `bun scripts/cloudflare.ts deploy` builds and deploys the website and API to Cloudflare.
 
 The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-web/api/README.md) for configuration and dataset details.
 
@@ -58,4 +58,4 @@ cargo test --locked --workspace
 
 If Xcode reports a missing Rust target, install the target named in the error. If the simulator script cannot find iPhone 15, select an available simulator with `WFHUB_SIMULATOR`. Network-backed screens require access to the services listed in [Data and integrations](data-and-integrations.md).
 
-The TypeScript development and Cloudflare scripts require Node.js 22.18 or newer.
+The TypeScript development and Cloudflare scripts use Bun.

@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "cf:build": "node scripts/cloudflare.ts build",
-    "cf:deploy": "node scripts/cloudflare.ts deploy",
+    "cf:build": "bun scripts/cloudflare.ts build",
+    "cf:deploy": "bun scripts/cloudflare.ts deploy",
     "commit": "bash scripts/commit.sh",
-    "dev:phone": "node scripts/dev.ts phone",
-    "dev:web": "node scripts/dev.ts web",
+    "dev:phone": "bun scripts/dev.ts phone",
+    "dev:web": "bun scripts/dev.ts web",
     "mobile:archive": "bash scripts/mobile.sh archive",
     "mobile:project": "bash scripts/mobile.sh project",
     "mobile:simulator": "bash scripts/mobile.sh simulator",
     "test": "bash scripts/test.sh",
     "update": "cargo update"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "typescript": "^7.0.2"
   }
 }
