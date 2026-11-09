@@ -3,6 +3,7 @@ import SwiftUI
 struct MarketView: View {
   @State private var orders: [[String: Any]] = []
   @State private var items: [String: [String: Any]] = [:]
+  @State private var catalogueUpdatedAt: Date?
   @State private var type = "sell"
   @State private var error: String?
   @State private var loading = true
@@ -84,22 +85,26 @@ struct MarketView: View {
     defer { isRefreshing = false }
     do {
       async let orderResponse = API.fetch(URL(string: "https://api.warframe.market/v2/orders/recent")!)
-      async let itemResponse = API.fetch(URL(string: "https://api.warframe.market/v2/items")!)
+      let needsCatalogue = catalogueUpdatedAt.map { Date().timeIntervalSince($0) >= 3600 } ?? true
+      async let itemResponse: Any? = needsCatalogue ? API.fetch(URL(string: "https://api.warframe.market/v2/items")!) : nil
       let (rawOrders, rawItems) = try await (orderResponse, itemResponse)
-      guard let orderData = (rawOrders as? [String: Any])?["data"] as? [[String: Any]],
-        let itemData = (rawItems as? [String: Any])?["data"] as? [[String: Any]]
-      else { throw URLError(.cannotParseResponse) }
+      guard let orderData = (rawOrders as? [String: Any])?["data"] as? [[String: Any]] else { throw URLError(.cannotParseResponse) }
+      var catalogue = items
+      if needsCatalogue {
+        guard let itemData = (rawItems as? [String: Any])?["data"] as? [[String: Any]] else { throw URLError(.cannotParseResponse) }
+        catalogue = Dictionary(
+          itemData.compactMap { item in
+            guard let id = item["id"] as? String else { return nil }
+            return (id, item)
+          }, uniquingKeysWith: { first, _ in first })
+      }
       guard !Task.isCancelled else { return }
       let visibleOrders = ["sell", "buy"].flatMap { type in
         orderData.lazy.filter { ($0["type"] as? String) == type }.prefix(35)
       }
-      let itemIDs = Set(visibleOrders.compactMap { $0["itemId"] as? String })
       orders = visibleOrders
-      items = Dictionary(
-        itemData.compactMap { item in
-          guard let id = item["id"] as? String, itemIDs.contains(id) else { return nil }
-          return (id, item)
-        }, uniquingKeysWith: { first, _ in first })
+      items = catalogue
+      if needsCatalogue { catalogueUpdatedAt = Date() }
       error = nil
     } catch {
       guard !Task.isCancelled else { return }
