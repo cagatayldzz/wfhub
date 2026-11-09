@@ -6,7 +6,7 @@ WFHub has two native clients in a Rust workspace. They share a route catalogue, 
                   crates/core
                  /           \
      apps/wfhub               crates/ffi
-       Rust + GPUI                |
+    Rust + GPUI Fast              |
                          apps/wfhub-mobile
                             SwiftUI + C bridge
 ```
@@ -17,7 +17,7 @@ WFHub has two native clients in a Rust workspace. They share a route catalogue, 
 
 ## Desktop client
 
-`apps/wfhub/src/main.rs` creates the GPUI application, window, and embedded navigation icon assets. The UI is under `apps/wfhub/src/ui`:
+`apps/wfhub/src/main.rs` creates the GPUI Fast application, window, and embedded navigation icon assets. The UI is under `apps/wfhub/src/ui`:
 
 - `mod.rs` owns application state, page navigation, and asynchronous loading.
 - `screens.rs` renders the screens and reusable card components.

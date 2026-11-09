@@ -1,4 +1,4 @@
-use gpui::{App, Application, Bounds, Pixels, Size, WindowBounds, WindowOptions, prelude::*, px, size};
+use gpui::{App, Bounds, Pixels, Size, WindowBounds, WindowOptions, prelude::*, px, size};
 mod ui;
 
 use ui::Root;
@@ -29,7 +29,7 @@ fn initial_window_size(cx: &App) -> Size<Pixels> {
 }
 
 fn main() {
-  Application::new().with_assets(Assets).run(move |cx| {
+  gpui_platform::application().with_assets(Assets).run(move |cx| {
     let bounds = Bounds::centered(None, initial_window_size(cx), cx);
     let result = cx.open_window(
       WindowOptions { window_bounds: Some(WindowBounds::Windowed(bounds)), window_min_size: Some(size(px(240.), px(320.))), ..Default::default() },
@@ -40,7 +40,7 @@ fn main() {
       cx.quit();
       return;
     }
-    cx.on_window_closed(|cx| cx.quit()).detach();
+    cx.on_window_closed(|cx, _| cx.quit()).detach();
     cx.activate(true);
   });
 }

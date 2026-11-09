@@ -64,7 +64,7 @@ impl Root {
             .bg(rgb(self.card()))
             .text_color(rgb(0x999999))
             .child(format!("⌕   {}", if self.search.is_empty() { "Search activities" } else { &self.search }))
-            .on_click(move |_, window, _| window.focus(&focus))
+            .on_click(move |_, window, cx| window.focus(&focus, cx))
             .on_key_down(cx.listener(|this, event: &gpui::KeyDownEvent, _, cx| {
               if event.keystroke.key == "backspace" {
                 this.search.pop();
@@ -176,7 +176,7 @@ impl Root {
           .track_focus(&focus)
           .cursor_text()
           .child(self.settings_row("⊙", "Tenno Name", &self.name, false))
-          .on_click(move |_, window, _| window.focus(&focus))
+          .on_click(move |_, window, cx| window.focus(&focus, cx))
           .on_key_down(cx.listener(|this, event: &gpui::KeyDownEvent, _, cx| {
             if event.keystroke.key == "backspace" {
               this.name.pop();
