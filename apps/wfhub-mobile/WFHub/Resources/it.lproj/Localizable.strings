@@ -21,7 +21,7 @@
 "chinaFoundersPack" = "Pacchetto Fondatore Cina";
 "clanWeeklyInitiative" = "Iniziativa settimanale del clan";
 "codex" = "Codice";
-"codexCatalogue" = "Catalogo del Codex";
+"codexCatalogue" = "Codice";
 "codexContent" = "Contenuto del Codice";
 "cold" = "Freddo";
 "completed" = "Completato";
@@ -66,7 +66,7 @@
 "light" = "Chiaro";
 "market" = "Mercato";
 "masteryPoints" = "%@ maestria";
-"masteryRankChecklist" = "Checklist del rango maestria";
+"masteryRankChecklist" = "Livello maestria";
 "masteryRequirement" = "Maestria richiesta";
 "melee" = "Mischia";
 "message" = "MESSAGGIO";

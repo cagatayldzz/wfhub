@@ -21,7 +21,7 @@
 "chinaFoundersPack" = "中国版ファウンダーズパック";
 "clanWeeklyInitiative" = "クラン週間イニシアチブ";
 "codex" = "コーデックス";
-"codexCatalogue" = "コーデックスカタログ";
+"codexCatalogue" = "コーデックス";
 "codexContent" = "コーデックス内容";
 "cold" = "寒い";
 "completed" = "完了";
@@ -66,7 +66,7 @@
 "light" = "ライト";
 "market" = "マーケット";
 "masteryPoints" = "マスタリー %@";
-"masteryRankChecklist" = "マスタリーランクチェックリスト";
+"masteryRankChecklist" = "マスタリーレベル";
 "masteryRequirement" = "必要マスタリー";
 "melee" = "近接";
 "message" = "メッセージ";

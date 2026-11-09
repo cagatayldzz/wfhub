@@ -44,10 +44,14 @@ async function prepareAssets() {
   const dataDir = join(web, 'api/data');
   const snapshots = (await readdir(dataDir)).filter(name => name === 'events.json' || /^mastery-[a-z-]+\.json$/.test(name));
   await Promise.all([
-    cp(web, output, { recursive: true, filter: path => path !== join(web, 'api') }),
-    cp(join(web, 'api/swagger'), join(output, 'api/swagger'), { recursive: true }),
+    cp(web, output, { recursive: true, filter: path => path !== join(web, 'api') && path !== join(web, 'theme.ts') }),
+    cp(join(web, 'api/swagger'), join(output, 'api/swagger'), { recursive: true, filter: path => !path.endsWith('.ts') }),
     ...snapshots.map(name => cp(join(dataDir, name), join(assetData, name))),
   ]);
+  const theme = await Bun.build({ entrypoints: [join(web, 'theme.ts')], outdir: output, target: 'browser' });
+  if (!theme.success) throw new Error(`Failed to build theme: ${theme.logs.join('\n')}`);
+  const swagger = await Bun.build({ entrypoints: [join(web, 'api/swagger/init.ts')], outdir: join(output, 'api/swagger'), target: 'browser' });
+  if (!swagger.success) throw new Error(`Failed to build Swagger: ${swagger.logs.join('\n')}`);
 }
 
 async function buildCategory(category: string) {

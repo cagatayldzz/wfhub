@@ -21,7 +21,7 @@
 "chinaFoundersPack" = "Набор основателя (Китай)";
 "clanWeeklyInitiative" = "Еженедельная инициатива клана";
 "codex" = "Кодекс";
-"codexCatalogue" = "Каталог Кодекса";
+"codexCatalogue" = "Кодекс";
 "codexContent" = "Содержимое кодекса";
 "cold" = "Холод";
 "completed" = "Завершено";
@@ -66,7 +66,7 @@
 "light" = "Светлая";
 "market" = "Рынок";
 "masteryPoints" = "%@ мастерства";
-"masteryRankChecklist" = "Список ранга мастерства";
+"masteryRankChecklist" = "Уровень мастерства";
 "masteryRequirement" = "Требуемый ранг";
 "melee" = "Ближний бой";
 "message" = "Сообщение";

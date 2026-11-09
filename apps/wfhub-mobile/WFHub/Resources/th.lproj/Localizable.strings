@@ -21,7 +21,7 @@
 "chinaFoundersPack" = "ชุดผู้ก่อตั้งจีน";
 "clanWeeklyInitiative" = "ภารกิจประจำสัปดาห์ของแคลน";
 "codex" = "โค้ดเด็กซ์";
-"codexCatalogue" = "แคตตาล็อกโคเด็กซ์";
+"codexCatalogue" = "โค้ดเด็กซ์";
 "codexContent" = "เนื้อหาโค้ดเด็กซ์";
 "cold" = "หนาว";
 "completed" = "เสร็จสิ้น";
@@ -66,7 +66,7 @@
 "light" = "สว่าง";
 "market" = "ตลาด";
 "masteryPoints" = "มาสเตอรี %@";
-"masteryRankChecklist" = "เช็กลิสต์แรงก์มาสเตอรี";
+"masteryRankChecklist" = "ระดับมาสเตอรี";
 "masteryRequirement" = "ระดับมาสเตอรีที่ต้องการ";
 "melee" = "ระยะประชิด";
 "message" = "ข้อความ";

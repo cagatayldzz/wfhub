@@ -20,8 +20,8 @@
 "checklistUpdated" = "Liste güncellendi";
 "chinaFoundersPack" = "Çin Kurucu Paketi";
 "clanWeeklyInitiative" = "Haftalık Klan Girişimi";
-"codex" = "Kodex";
-"codexCatalogue" = "Kodeks Kataloğu";
+"codex" = "Kodeks";
+"codexCatalogue" = "Kodeks";
 "codexContent" = "Kodex içerik";
 "cold" = "Soğuk";
 "completed" = "Tamamlanan";
@@ -64,9 +64,9 @@
 "latestEvents" = "Son Etkinlikler";
 "latestNews" = "Son haberler";
 "light" = "Açık";
-"market" = "Pazar";
+"market" = "Market";
 "masteryPoints" = "%@ ustalık";
-"masteryRankChecklist" = "Ustalık Rütbesi Kontrol Listesi";
+"masteryRankChecklist" = "Ustalık Seviyesi";
 "masteryRequirement" = "Ustalık Gereksinimi";
 "melee" = "Yakın dövüş";
 "message" = "MESAJ";

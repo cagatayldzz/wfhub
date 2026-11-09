@@ -21,7 +21,7 @@
 "chinaFoundersPack" = "Pakiet Założyciela (Chiny)";
 "clanWeeklyInitiative" = "Tygodniowa inicjatywa klanu";
 "codex" = "Kodeks";
-"codexCatalogue" = "Katalog Kodeksu";
+"codexCatalogue" = "Kodeks";
 "codexContent" = "Zawartość Kodeksu";
 "cold" = "Zimno";
 "completed" = "Ukończone";
@@ -66,7 +66,7 @@
 "light" = "Jasny";
 "market" = "Rynek";
 "masteryPoints" = "%@ mistrzostwa";
-"masteryRankChecklist" = "Lista rang mistrzostwa";
+"masteryRankChecklist" = "Poziom mistrzostwa";
 "masteryRequirement" = "Wymagany poziom mistrzostwa";
 "melee" = "Biała broń";
 "message" = "WIADOMOŚĆ";

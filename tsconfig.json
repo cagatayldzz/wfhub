@@ -5,10 +5,8 @@
     "moduleResolution": "Bundler",
     "types": ["bun"],
     "strict": true,
-    "allowJs": true,
-    "checkJs": false,
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["scripts/**/*.ts"]
+  "include": ["scripts/**/*.ts", "apps/wfhub-web/**/*.ts"]
 }

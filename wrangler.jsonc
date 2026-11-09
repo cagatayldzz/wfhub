@@ -3,7 +3,7 @@
   "name": "wfhub",
   "workers_dev": false,
   "preview_urls": false,
-  "main": "apps/wfhub-web/api/worker.mjs",
+  "main": "apps/wfhub-web/api/worker.ts",
   "compatibility_date": "2026-10-29",
   "observability": {
     "logs": {

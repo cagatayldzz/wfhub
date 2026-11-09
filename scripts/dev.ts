@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
-import worker from '../apps/wfhub-web/api/worker.mjs';
+import worker from '../apps/wfhub-web/api/worker';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const web = join(root, 'apps/wfhub-web');
@@ -45,6 +45,12 @@ const assets = {
 async function handle(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname;
+  if (path === '/theme.js' || path === '/api/swagger/init.js') {
+    const source = await readFile(join(web, path === '/theme.js' ? 'theme.ts' : 'api/swagger/init.ts'), 'utf8');
+    return new Response(new Bun.Transpiler({ loader: 'ts', target: 'browser' }).transformSync(source), {
+      headers: { 'Content-Type': 'text/javascript' },
+    });
+  }
   if (path === '/api') return Response.redirect(`${url.origin}/api/${url.search}`, 308);
   if (path === '/api/') return fileResponse(join(web, 'api/swagger/index.html'));
   if (path === '/api/swagger') return Response.redirect(`${url.origin}/api/swagger/`, 308);

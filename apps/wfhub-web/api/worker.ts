@@ -1,7 +1,7 @@
-import { BASE_HEADERS, JSON_HEADERS } from './http.mjs';
-import { submitFeedback } from './feedback.mjs';
+import { BASE_HEADERS, JSON_HEADERS } from './http';
+import { submitFeedback, type WorkerEnv } from './feedback';
 
-const SWAGGER_PATHS = new Set(['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json']);
+const SWAGGER_PATHS = new Set(['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json', '/api/swagger/init.js']);
 const MASTERY_CATEGORIES = new Set([
   'warframes', 'primary', 'secondary', 'melee', 'kitgun', 'zaw', 'amp', 'sentinel',
   'moa', 'hound', 'beast', 'robotic', 'archwing', 'archgun', 'archmelee',
@@ -14,24 +14,24 @@ function notFound() {
 }
 
 /** Fetches a bundled asset using GET, including for incoming HEAD requests. */
-async function fetchAsset(request, env, path) {
+async function fetchAsset(request: Request, env: WorkerEnv, path: string) {
   const url = new URL(request.url);
   url.pathname = path;
   return env.ASSETS.fetch(new Request(url, { method: 'GET' }));
 }
 
 /** Omits the body for HEAD while retaining the JSON response headers. */
-function jsonResponse(request, body) {
+function jsonResponse(request: Request, body: BodyInit | null) {
   return new Response(request.method === 'HEAD' ? null : body, { headers: JSON_HEADERS });
 }
 
-async function serveJsonAsset(request, env, path) {
+async function serveJsonAsset(request: Request, env: WorkerEnv, path: string) {
   const response = await fetchAsset(request, env, path);
   return response.ok ? jsonResponse(request, response.body) : notFound();
 }
 
 /** Resolves a category list or item from its bundled catalogue index. */
-async function serveCatalogue(request, env, path) {
+async function serveCatalogue(request: Request, env: WorkerEnv, path: string) {
   const match = /^\/api\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\.json$/.exec(path);
   if (!match) return notFound();
 
@@ -39,13 +39,13 @@ async function serveCatalogue(request, env, path) {
   const response = await fetchAsset(request, env, `/_api-data/${category}.json`);
   if (!response.ok) return notFound();
 
-  const data = await response.json();
+  const data = await response.json() as { details: Record<string, unknown>; list: unknown };
   const item = slug ? data.details[slug] : data.list;
   return item ? jsonResponse(request, JSON.stringify(item)) : notFound();
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request: Request, env: WorkerEnv) {
     const url = new URL(request.url);
     const path = url.pathname;
 

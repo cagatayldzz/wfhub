@@ -21,7 +21,7 @@
 "chinaFoundersPack" = "中国创始人礼包";
 "clanWeeklyInitiative" = "氏族每周计划";
 "codex" = "数据典";
-"codexCatalogue" = "典籍目录";
+"codexCatalogue" = "数据典";
 "codexContent" = "数据典内容";
 "cold" = "寒冷";
 "completed" = "已完成";
@@ -66,7 +66,7 @@
 "light" = "浅色";
 "market" = "市场";
 "masteryPoints" = "精通 %@";
-"masteryRankChecklist" = "精通等级清单";
+"masteryRankChecklist" = "精通等级";
 "masteryRequirement" = "精通要求";
 "melee" = "近战";
 "message" = "消息";

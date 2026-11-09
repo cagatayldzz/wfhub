@@ -1,4 +1,19 @@
-import { JSON_HEADERS } from './http.mjs';
+import { JSON_HEADERS } from './http';
+
+interface D1Statement {
+  bind(...values: (string | number)[]): D1Statement;
+  first(): Promise<unknown | null>;
+  run(): Promise<unknown>;
+}
+
+export interface WorkerEnv {
+  ASSETS: { fetch(request: Request): Promise<Response> };
+  DB?: { prepare(query: string): D1Statement };
+  FEEDBACK_RATE_LIMIT_SECRET?: string;
+}
+
+type Database = NonNullable<WorkerEnv['DB']>;
+type Feedback = { title: string; message: string; category: string };
 
 const MAX_BODY_BYTES = 8192;
 const RATE_WINDOW_SECONDS = 60 * 60;
@@ -8,13 +23,14 @@ const FIELDS = new Set(['title', 'category', 'message']);
 const CONTROL_CHARACTERS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/;
 
 class RequestError extends Error {
-  constructor(status, message) {
+  status: number;
+  constructor(status: number, message: string) {
     super(message);
     this.status = status;
   }
 }
 
-function response(status, error) {
+function response(status: number, error?: string) {
   const body = error ? { error } : { ok: true };
   return new Response(JSON.stringify(body), {
     status,
@@ -22,7 +38,7 @@ function response(status, error) {
   });
 }
 
-function validateHeaders(request) {
+function validateHeaders(request: Request) {
   if (!/^application\/json(?:\s*;|$)/i.test(request.headers.get('Content-Type') || '')) {
     throw new RequestError(415, 'Unsupported content type');
   }
@@ -32,7 +48,7 @@ function validateHeaders(request) {
 
 }
 
-async function readJson(request) {
+async function readJson(request: Request): Promise<unknown> {
   const reader = request.body?.getReader();
   if (!reader) throw new RequestError(400, 'Invalid request');
 
@@ -63,11 +79,13 @@ async function readJson(request) {
   }
 }
 
-function validateFeedback(data) {
+function validateFeedback(value: unknown): Feedback {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new RequestError(400, 'Invalid feedback');
+  const data = value as Record<string, unknown>;
   if (!data || typeof data !== 'object' || Array.isArray(data) ||
       Object.keys(data).some(key => !FIELDS.has(key)) ||
       typeof data.title !== 'string' || typeof data.message !== 'string' ||
-      !CATEGORIES.has(data.category)) {
+      typeof data.category !== 'string' || !CATEGORIES.has(data.category)) {
     throw new RequestError(400, 'Invalid feedback');
   }
 
@@ -82,7 +100,7 @@ function validateFeedback(data) {
   return { title, message, category: data.category };
 }
 
-async function clientRateKey(secret, ip) {
+async function clientRateKey(secret: string, ip: string) {
   const encoder = new TextEncoder();
   const day = new Date().toISOString().slice(0, 10);
   const key = await crypto.subtle.importKey(
@@ -92,7 +110,7 @@ async function clientRateKey(secret, ip) {
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-async function consumeRateLimit(db, clientKey, now) {
+async function consumeRateLimit(db: Database, clientKey: string, now: number) {
   const windowStart = now - RATE_WINDOW_SECONDS;
   const result = await db.prepare(`
     INSERT INTO feedback_rate_limits (client_key, window_start, count)
@@ -106,14 +124,14 @@ async function consumeRateLimit(db, clientKey, now) {
   return result !== null;
 }
 
-async function saveFeedback(db, feedback) {
+async function saveFeedback(db: Database, feedback: Feedback) {
   await db.prepare(`
     INSERT INTO feedback (id, category, title, message)
     VALUES (?, ?, ?, ?)
   `).bind(crypto.randomUUID(), feedback.category, feedback.title, feedback.message).run();
 }
 
-async function cleanRateLimits(db, now) {
+async function cleanRateLimits(db: Database, now: number) {
   try {
     await db.prepare('DELETE FROM feedback_rate_limits WHERE window_start < ?')
       .bind(now - RATE_RETENTION_SECONDS).run();
@@ -122,14 +140,14 @@ async function cleanRateLimits(db, now) {
   }
 }
 
-export async function submitFeedback(request, env) {
+export async function submitFeedback(request: Request, env: WorkerEnv) {
   try {
     validateHeaders(request);
     const ip = request.headers.get('CF-Connecting-IP');
     if (!ip) throw new RequestError(403, 'Request unavailable');
 
     const feedback = validateFeedback(await readJson(request));
-    if (!env.FEEDBACK_RATE_LIMIT_SECRET) throw new RequestError(503, 'Service unavailable');
+    if (!env.FEEDBACK_RATE_LIMIT_SECRET || !env.DB) throw new RequestError(503, 'Service unavailable');
 
     // Rotate the keyed IP hash daily so the database does not contain raw IP addresses.
     const clientKey = await clientRateKey(env.FEEDBACK_RATE_LIMIT_SECRET, ip);
