@@ -15,22 +15,58 @@ struct Route: Identifiable, Hashable {
 }
 
 enum Catalogue {
-  static let routes: (activities: [Route], categories: [Route]) = {
-    guard let pointer = wfhub_catalogue() else { return ([], []) }
-    defer { wfhub_free(pointer) }
-    let lines = String(cString: pointer).split(separator: "\n")
-    var activities: [Route] = []
-    var categories: [Route] = []
-    for line in lines {
-      let fields = line.split(separator: "\t").map(String.init)
-      if fields.count == 3 && fields[0] == "activity" {
-        activities.append(Route(title: fields[1], endpoint: fields[2]))
-      } else if fields.count == 2 && fields[0] == "category" {
-        categories.append(Route(title: fields[1].replacingOccurrences(of: "-", with: " ").capitalized, endpoint: fields[1]))
-      }
-    }
-    return (activities, categories)
-  }()
+  static let routes: (activities: [Route], categories: [Route]) = (
+    activities: [
+      Route(title: "Alerts", endpoint: "alerts"),
+      Route(title: "Baro Ki'Teer", endpoint: "voidTrader"),
+      Route(title: "Fissures", endpoint: "fissures"),
+      Route(title: "Nightwave", endpoint: "nightwave"),
+      Route(title: "Events", endpoint: "events"),
+      Route(title: "Invasions", endpoint: "invasions"),
+      Route(title: "Arbitration", endpoint: "arbitration"),
+      Route(title: "Archon Hunt", endpoint: "archonHunt"),
+      Route(title: "Steel Path", endpoint: "steelPath"),
+      Route(title: "Sentient Outposts", endpoint: "sentientOutposts"),
+      Route(title: "Simaris", endpoint: "simaris"),
+      Route(title: "Construction Progress", endpoint: "constructionProgress"),
+      Route(title: "News", endpoint: "news"),
+      Route(title: "Market", endpoint: "flashSales"),
+      Route(title: "Sortie", endpoint: "sortie"),
+      Route(title: "Daily Deals", endpoint: "dailyDeals"),
+      Route(title: "Earth Cycle", endpoint: "earthCycle"),
+      Route(title: "Cetus Cycle", endpoint: "cetusCycle"),
+      Route(title: "Vallis Cycle", endpoint: "vallisCycle"),
+      Route(title: "Cambion Cycle", endpoint: "cambionCycle"),
+      Route(title: "Duviri Cycle", endpoint: "duviriCycle"),
+      Route(title: "Zariman Cycle", endpoint: "zarimanCycle"),
+    ],
+    categories: [
+      "arcanes",
+      "arch-gun",
+      "arch-melee",
+      "archwing",
+      "enemy",
+      "fish",
+      "gear",
+      "glyphs",
+      "melee",
+      "misc",
+      "mods",
+      "node",
+      "pets",
+      "primary",
+      "quests",
+      "railjack",
+      "relics",
+      "resources",
+      "secondary",
+      "sentinels",
+      "sentinelweapons",
+      "sigils",
+      "skins",
+      "warframes",
+    ].map { Route(title: $0.replacingOccurrences(of: "-", with: " ").capitalized, endpoint: $0) }
+  )
 }
 
 struct RootView: View {

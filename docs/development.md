@@ -4,14 +4,6 @@
 
 Install Rust through `rustup` and install Bun and Node.js for web development. Desktop development on macOS also needs Xcode and its command-line tools. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
 
-For an Apple Silicon iOS build:
-
-```sh
-rustup target add aarch64-apple-ios aarch64-apple-ios-sim
-```
-
-For an Intel simulator, add `x86_64-apple-ios` as well.
-
 ## Run the clients
 
 From the repository root, start the desktop app:
@@ -30,7 +22,7 @@ xcodegen generate
 open WFHub.xcodeproj
 ```
 
-Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team. The Xcode build invokes `scripts/build-rust.sh` to build the Rust static library.
+Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team. The iOS app does not require Rust.
 
 Alternatively, from the repository root, `bash scripts/mobile.sh simulator` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
 
@@ -57,6 +49,6 @@ cargo test --locked --workspace
 
 `bash scripts/mobile.sh archive` generates an iOS archive and increments `CURRENT_PROJECT_VERSION` in `project.yml` by default. Invoke the script directly with `--no-bump` to retain the current number. Archiving requires an appropriately configured signing team.
 
-If Xcode reports a missing Rust target, install the target named in the error. If the simulator script cannot find iPhone 15, select an available simulator with `WFHUB_SIMULATOR`. Network-backed screens require access to the services listed in [Data and integrations](data-and-integrations.md).
+If the simulator script cannot find iPhone 15, select an available simulator with `WFHUB_SIMULATOR`. Network-backed screens require access to the services listed in [Data and integrations](data-and-integrations.md).
 
 The TypeScript development and Cloudflare scripts use Bun.

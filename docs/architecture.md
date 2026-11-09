@@ -1,19 +1,15 @@
 # Architecture
 
-WFHub has two native clients in a Rust workspace. They share a route catalogue, but each owns its UI, state, network requests, and platform-specific behavior.
+WFHub has independent Rust desktop and SwiftUI iOS clients. Each owns its route catalogue, UI, state, and network requests.
 
 ```text
-                  crates/core
-                 /           \
-     apps/wfhub               crates/ffi
-    Rust + GPUI Fast              |
-                         apps/wfhub-mobile
-                            SwiftUI + C bridge
+    crates/core → apps/wfhub (Rust + GPUI Fast)
+    apps/wfhub-mobile (SwiftUI)
 ```
 
-## Shared code
+## Desktop core
 
-`crates/core/src/lib.rs` defines activity routes, Codex categories, and platform validation. `crates/ffi` exposes the catalogue to iOS through `wfhub_catalogue` and `wfhub_free`. The catalogue is returned as an owned UTF-8 string; callers must free it with `wfhub_free`. The corresponding C declarations live in `apps/wfhub-mobile/WFHub/Bridge/wfhub.h`.
+`crates/core/src/lib.rs` defines the desktop activity routes, Codex categories, and platform validation.
 
 ## Desktop client
 
@@ -32,10 +28,10 @@ The root state tracks the selected tab, each tab's current page and navigation h
 
 ## iOS client
 
-`apps/wfhub-mobile/WFHub/WFHubApp.swift` creates the SwiftUI tab view and reads the shared catalogue through the bridge. `Screens/` contains the main views, `Components/` contains shared detail views and visual components, and `Core/` contains shared services. The Rust headers are in `Bridge/`; localized strings are in language-specific `.lproj` directories under `Resources/`.
+`apps/wfhub-mobile/WFHub/WFHubApp.swift` creates the SwiftUI tab view and defines the mobile catalogue. `Screens/` contains the main views, `Components/` contains shared detail views and visual components, and `Core/` contains shared services. Localized strings are in language-specific `.lproj` directories under `Resources/`.
 
-`project.yml` is the source for the generated Xcode project. An Xcode pre-build script compiles `wfhub-ffi` as a static library for the selected iOS platform and architecture.
+`project.yml` is the source for the generated Xcode project. The iOS app does not depend on the Rust toolchain.
 
 ## Boundaries
 
-The two clients do not currently share a networking layer or UI implementation. A change to one client does not automatically update the other. Keep the shared route catalogue and C interface compatible with both consumers when changing them.
+The clients do not share a catalogue, networking layer, or UI implementation. A change to one client does not automatically update the other; update both catalogues when a change applies to both apps.
