@@ -16,17 +16,6 @@ private func imageURL(_ value: Any?) -> URL? {
       withAllowedCharacters: .urlPathAllowed)!)
 }
 
-struct CodexRow: View {
-  let item: [String: Any]
-  var body: some View {
-    HStack(spacing: 12) {
-      ThumbnailImage(url: imageURL(item["imageName"]), maxPixelSize: 256)
-        .frame(width: 64, height: 64).clipped()
-      Text(itemTitle(item)).font(.headline)
-    }.padding(.vertical, 4)
-  }
-}
-
 struct CodexTile: View {
   let item: [String: Any]
   var body: some View { ArtworkCard(title: itemTitle(item), image: imageURL(item["imageName"])) }

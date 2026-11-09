@@ -65,8 +65,6 @@
 "latestNews" = "ข่าวล่าสุด";
 "light" = "สว่าง";
 "market" = "ตลาด";
-"markWarframesDescription" = "ทำเครื่องหมาย Warframe ที่ถึงแรงก์ 30";
-"markWeaponsDescription" = "ทำเครื่องหมายอาวุธที่ถึงแรงก์สูงสุด";
 "masteryPoints" = "มาสเตอรี %@";
 "masteryRankChecklist" = "เช็กลิสต์แรงก์มาสเตอรี";
 "masteryRequirement" = "ระดับมาสเตอรีที่ต้องการ";
@@ -75,12 +73,9 @@
 "news" = "ข่าว";
 "night" = "กลางคืน";
 "nightwave" = "Nightwave";
-"noDataFound" = "ไม่พบข้อมูล!";
 "node" = "โหนด";
-"noItemsFound" = "ไม่พบรายการ";
 "norasMixSeason" = "ฤดูกาลของโนร่า";
 "notCompleted" = "ยังไม่เสร็จ";
-"noWarframesFound" = "ไม่พบ Warframe";
 "ok" = "ตกลง";
 "orderType" = "ประเภทคำสั่ง";
 "other" = "อื่น ๆ";
@@ -97,7 +92,6 @@
 "rankAndMastery" = "แรงก์ %lld · มาสเตอรี %@";
 "razorbackProgress" = "ความคืบหน้า Razorback";
 "remaining" = "คงเหลือ";
-"requestFailed" = "คำขอล้มเหลว";
 "retry" = "ลองอีกครั้ง";
 "robotic" = "หุ่นยนต์";
 "rotation" = "การหมุนเวียน";

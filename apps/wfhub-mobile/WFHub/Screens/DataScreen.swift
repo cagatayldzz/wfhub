@@ -196,23 +196,6 @@ func itemTitle(_ item: [String: Any]) -> String {
   return "Details"
 }
 
-struct JsonRow: View {
-  let value: [String: Any]
-  var body: some View {
-    VStack(alignment: .leading, spacing: 6) {
-      Text(itemTitle(value)).font(.headline)
-      ForEach(value.keys.sorted().filter { !["id", "name", "title"].contains($0) }, id: \.self) { key in
-        if let text = value[key] as? String, !text.isEmpty, text.count < 300 {
-          LabeledContent(key, value: text)
-            .font(.caption).foregroundStyle(.secondary)
-        } else if let number = value[key] as? NSNumber {
-          LabeledContent(key, value: number.stringValue).font(.caption).foregroundStyle(.secondary)
-        }
-      }
-    }.padding(.vertical, 4)
-  }
-}
-
 enum API {
   static func fetch(_ url: URL) async throws -> Any {
     var request = URLRequest(url: url)

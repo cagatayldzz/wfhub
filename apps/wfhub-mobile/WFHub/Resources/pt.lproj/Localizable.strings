@@ -65,8 +65,6 @@
 "latestNews" = "Últimas notícias";
 "light" = "Claro";
 "market" = "Mercado";
-"markWarframesDescription" = "Marque os Warframes que alcançaram o rank 30.";
-"markWeaponsDescription" = "Marque as armas que alcançaram o rank máximo.";
 "masteryPoints" = "%@ de maestria";
 "masteryRankChecklist" = "Checklist de rank de maestria";
 "masteryRequirement" = "Requisito de maestria";
@@ -75,12 +73,9 @@
 "news" = "Notícias";
 "night" = "Noite";
 "nightwave" = "NIGHTWAVE";
-"noDataFound" = "Nenhum dado encontrado!";
 "node" = "Nó";
-"noItemsFound" = "Nenhum item encontrado";
 "norasMixSeason" = "Temporada Mix da Nora";
 "notCompleted" = "Não concluído";
-"noWarframesFound" = "Nenhum Warframe encontrado";
 "ok" = "OK";
 "orderType" = "Tipo de ordem";
 "other" = "Outro";
@@ -97,7 +92,6 @@
 "rankAndMastery" = "Rank %lld · %@ de maestria";
 "razorbackProgress" = "Progresso do Razorback";
 "remaining" = "Restantes";
-"requestFailed" = "A solicitação falhou.";
 "retry" = "Tentar novamente";
 "robotic" = "Robótico";
 "rotation" = "Rotação";

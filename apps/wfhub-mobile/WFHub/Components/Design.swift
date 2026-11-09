@@ -83,7 +83,6 @@ enum WFStyle {
       traits.userInterfaceStyle == .dark
         ? UIColor(red: 0.88, green: 0.78, blue: 0.45, alpha: 1) : UIColor(red: 0.45, green: 0.33, blue: 0.04, alpha: 1)
     })
-  static let muted = Color.secondary
   static let artwork = LinearGradient(
     colors: [Color(red: 0.08, green: 0.08, blue: 0.09), Color(red: 0.15, green: 0.18, blue: 0.21), .black], startPoint: .top, endPoint: .bottom)
 }

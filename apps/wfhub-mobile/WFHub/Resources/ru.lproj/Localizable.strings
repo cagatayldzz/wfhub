@@ -65,8 +65,6 @@
 "latestNews" = "Последние новости";
 "light" = "Светлая";
 "market" = "Рынок";
-"markWarframesDescription" = "Отметьте Warframe, достигшие 30-го ранга.";
-"markWeaponsDescription" = "Отметьте оружие, достигшее максимального ранга.";
 "masteryPoints" = "%@ мастерства";
 "masteryRankChecklist" = "Список ранга мастерства";
 "masteryRequirement" = "Требуемый ранг";
@@ -75,12 +73,9 @@
 "news" = "Новости";
 "night" = "Ночь";
 "nightwave" = "Nightwave";
-"noDataFound" = "Данные не найдены!";
 "node" = "Узел";
-"noItemsFound" = "Элементы не найдены";
 "norasMixSeason" = "Сезон микса Норы";
 "notCompleted" = "Не завершено";
-"noWarframesFound" = "Warframe не найдены";
 "ok" = "ОК";
 "orderType" = "Тип заказа";
 "other" = "Другое";
@@ -97,7 +92,6 @@
 "rankAndMastery" = "Ранг %lld · %@ мастерства";
 "razorbackProgress" = "Прогресс Рейзорбека";
 "remaining" = "Осталось";
-"requestFailed" = "Запрос не выполнен.";
 "retry" = "Повторить";
 "robotic" = "Роботизированный";
 "rotation" = "Ротация";

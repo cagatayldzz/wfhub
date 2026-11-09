@@ -65,8 +65,6 @@
 "latestNews" = "Najnowsze wiadomości";
 "light" = "Jasny";
 "market" = "Rynek";
-"markWarframesDescription" = "Zaznacz Warframe'y, które osiągnęły rangę 30.";
-"markWeaponsDescription" = "Zaznacz bronie, które osiągnęły maksymalną rangę.";
 "masteryPoints" = "%@ mistrzostwa";
 "masteryRankChecklist" = "Lista rang mistrzostwa";
 "masteryRequirement" = "Wymagany poziom mistrzostwa";
@@ -75,12 +73,9 @@
 "news" = "Wiadomości";
 "night" = "Noc";
 "nightwave" = "NIGHTWAVE";
-"noDataFound" = "Nie znaleziono danych!";
 "node" = "Węzeł";
-"noItemsFound" = "Nie znaleziono elementów";
 "norasMixSeason" = "Sezon Miksu Nory";
 "notCompleted" = "Nieukończone";
-"noWarframesFound" = "Nie znaleziono Warframe'ów";
 "ok" = "OK";
 "orderType" = "Typ zlecenia";
 "other" = "Inne";
@@ -97,7 +92,6 @@
 "rankAndMastery" = "Ranga %lld · %@ mistrzostwa";
 "razorbackProgress" = "Postęp Razorbacka";
 "remaining" = "Pozostałe";
-"requestFailed" = "Żądanie nie powiodło się.";
 "retry" = "Spróbuj ponownie";
 "robotic" = "Robotyczny";
 "rotation" = "Rotacja";

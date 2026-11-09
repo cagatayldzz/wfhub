@@ -65,8 +65,6 @@
 "latestNews" = "最新ニュース";
 "light" = "ライト";
 "market" = "マーケット";
-"markWarframesDescription" = "ランク30に達したWarframeにチェックを付けます。";
-"markWeaponsDescription" = "最大ランクに達した武器にチェックを付けます。";
 "masteryPoints" = "マスタリー %@";
 "masteryRankChecklist" = "マスタリーランクチェックリスト";
 "masteryRequirement" = "必要マスタリー";
@@ -75,12 +73,9 @@
 "news" = "ニュース";
 "night" = "夜";
 "nightwave" = "ナイトウェーブ";
-"noDataFound" = "データが見つかりません！";
 "node" = "ノード";
-"noItemsFound" = "項目が見つかりません";
 "norasMixSeason" = "ノラのミックスシーズン";
 "notCompleted" = "未完了";
-"noWarframesFound" = "Warframeが見つかりません";
 "ok" = "OK";
 "orderType" = "注文タイプ";
 "other" = "その他";
@@ -97,7 +92,6 @@
 "rankAndMastery" = "ランク %lld · マスタリー %@";
 "razorbackProgress" = "レイザーバックの進捗";
 "remaining" = "未完了";
-"requestFailed" = "リクエストに失敗しました。";
 "retry" = "再試行";
 "robotic" = "ロボット";
 "rotation" = "ローテーション";

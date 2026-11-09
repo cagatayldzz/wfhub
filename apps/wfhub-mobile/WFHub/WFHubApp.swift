@@ -64,17 +64,3 @@ struct RootView: View {
 }
 
 enum RouteKind { case activity, category }
-
-struct RouteList: View {
-  let title: String
-  let routes: [Route]
-  let kind: RouteKind
-  @State private var search = ""
-  var body: some View {
-    List(routes.filter { search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) }) { route in
-      NavigationLink(td(route.title)) { DataScreen(route: route, kind: kind) }
-    }
-    .navigationTitle(title)
-    .searchable(text: $search)
-  }
-}
