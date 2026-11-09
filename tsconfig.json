@@ -3,10 +3,12 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["bun"],
+    "allowImportingTsExtensions": true,
+    "types": ["bun", "@cloudflare/workers-types", "vite/client"],
     "strict": true,
+    "jsx": "react-jsx",
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["scripts/**/*.ts", "apps/wfhub-web/**/*.ts"]
+  "include": ["scripts/**/*.ts", "apps/wfhub-web/**/*.ts", "apps/wfhub-web/**/*.tsx", "vite.config.ts"]
 }

@@ -1,4 +1,4 @@
-import { JSON_HEADERS } from './http';
+import { JSON_HEADERS } from './http.ts';
 
 interface D1Statement {
   bind(...values: (string | number)[]): D1Statement;

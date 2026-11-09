@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Install Rust through `rustup`. Desktop development on macOS also needs Xcode and its command-line tools. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device. Node.js is required for the web scripts; npm is required for Cloudflare deployment.
+Install Rust through `rustup` and install Bun and Node.js for web development. Desktop development on macOS also needs Xcode and its command-line tools. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
 
 For an Apple Silicon iOS build:
 
@@ -36,13 +36,14 @@ Alternatively, from the repository root, `bash scripts/mobile.sh simulator` gene
 
 ## Website and API
 
-Run `bun scripts/dev.ts web` from the repository root, then open `http://localhost:8000` for the landing page. API requests use locally generated data when available, otherwise they use the deployed API. Run `bun scripts/cloudflare.ts build` to generate local data; `bun scripts/cloudflare.ts deploy` builds and deploys the website and API to Cloudflare.
+Run `bun install`, then `bun run dev:web` from the repository root and open `http://localhost:8000`. The site uses TanStack React Start, Vite and Tailwind CSS; its Vite development server also handles API requests. API requests use locally generated data when available, otherwise they use the deployed API. Run `bun run cf:build` to build the site and generate local data; `bun run cf:deploy` builds and deploys the website and API to Cloudflare. The build produces the client in `dist/client` and the Worker in `dist/server`. Tailwind's CSS input is generated under `.tanstack` when Vite starts.
 
 The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-web/api/README.md) for configuration and dataset details.
 
 ## Checks
 
 ```sh
+bunx tsc --noEmit
 cargo fmt --all -- --check
 cargo clippy --locked --workspace --all-targets -- -D warnings
 cargo test --locked --workspace

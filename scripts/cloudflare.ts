@@ -1,11 +1,11 @@
-import { cp, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const web = join(root, 'apps/wfhub-web');
-const output = join(root, '.cloudflare-build');
+const output = join(root, 'dist/client');
 const assetData = join(output, '_api-data');
 const source = 'https://raw.githubusercontent.com/WFCD/warframe-items/master/data/';
 const categories = [
@@ -39,17 +39,17 @@ function makeCatalogue(items: Item[]) {
 }
 
 async function prepareAssets() {
-  await rm(output, { recursive: true, force: true });
+  const result = spawnSync('bunx', ['vite', 'build', '--config', 'vite.config.ts'], { cwd: root, stdio: 'inherit' });
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error(`Vite build failed (${result.status ?? 'interrupted'})`);
   await mkdir(assetData, { recursive: true });
+  await mkdir(join(output, 'api/swagger'), { recursive: true });
   const dataDir = join(web, 'api/data');
   const snapshots = (await readdir(dataDir)).filter(name => name === 'events.json' || /^mastery-[a-z-]+\.json$/.test(name));
   await Promise.all([
-    cp(web, output, { recursive: true, filter: path => path !== join(web, 'api') && path !== join(web, 'theme.ts') }),
-    cp(join(web, 'api/swagger'), join(output, 'api/swagger'), { recursive: true, filter: path => !path.endsWith('.ts') }),
+    cp(join(web, 'api/swagger/openapi.json'), join(output, 'api/swagger/openapi.json')),
     ...snapshots.map(name => cp(join(dataDir, name), join(assetData, name))),
   ]);
-  const theme = await Bun.build({ entrypoints: [join(web, 'theme.ts')], outdir: output, target: 'browser' });
-  if (!theme.success) throw new Error(`Failed to build theme: ${theme.logs.join('\n')}`);
   const swagger = await Bun.build({ entrypoints: [join(web, 'api/swagger/init.ts')], outdir: join(output, 'api/swagger'), target: 'browser' });
   if (!swagger.success) throw new Error(`Failed to build Swagger: ${swagger.logs.join('\n')}`);
 }

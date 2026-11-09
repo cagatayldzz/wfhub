@@ -1,5 +1,5 @@
-import { BASE_HEADERS, JSON_HEADERS } from './http';
-import { submitFeedback, type WorkerEnv } from './feedback';
+import { BASE_HEADERS, JSON_HEADERS } from './http.ts';
+import { submitFeedback, type WorkerEnv } from './feedback.ts';
 
 const SWAGGER_PATHS = new Set(['/api/swagger/', '/api/swagger/index.html', '/api/swagger/openapi.json', '/api/swagger/init.js']);
 const MASTERY_CATEGORIES = new Set([
@@ -11,6 +11,11 @@ const MASTERY_CATEGORIES = new Set([
 
 function notFound() {
   return new Response('Not found\n', { status: 404, headers: BASE_HEADERS });
+}
+
+function swagger(request: Request) {
+  const body = `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>WFHub API Documentation</title><link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css"></head><body><div id="swagger-ui"></div><script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script><script src="/api/swagger/init.js"></script></body></html>`;
+  return new Response(request.method === 'HEAD' ? null : body, { headers: { ...BASE_HEADERS, 'Content-Type': 'text/html; charset=utf-8' } });
 }
 
 /** Fetches a bundled asset using GET, including for incoming HEAD requests. */
@@ -62,15 +67,14 @@ export default {
       return Response.redirect(url, 308);
     }
     if (path === '/api/') {
-      url.pathname = '/api/swagger/';
-      return env.ASSETS.fetch(new Request(url, request));
+      return swagger(request);
     }
     if (path === '/api/swagger') {
       url.pathname += '/';
       return Response.redirect(url, 308);
     }
     if (SWAGGER_PATHS.has(path)) {
-      if (path.endsWith('/index.html')) url.pathname = '/api/swagger/';
+      if (path === '/api/swagger/' || path.endsWith('/index.html')) return swagger(request);
       return env.ASSETS.fetch(new Request(url, request));
     }
 

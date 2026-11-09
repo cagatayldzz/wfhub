@@ -3,7 +3,8 @@
   "name": "wfhub",
   "workers_dev": false,
   "preview_urls": false,
-  "main": "apps/wfhub-web/api/worker.ts",
+  "main": "apps/wfhub-web/src/worker.ts",
+  "compatibility_flags": ["nodejs_compat"],
   "compatibility_date": "2026-10-29",
   "observability": {
     "logs": {
@@ -19,7 +20,7 @@
     }
   },
   "assets": {
-    "directory": "./.cloudflare-build",
+    "directory": "./dist/client",
     "binding": "ASSETS",
     "run_worker_first": [
       "/api",
