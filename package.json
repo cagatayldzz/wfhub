@@ -13,7 +13,7 @@
     "mobile:project": "bash scripts/mobile.sh project",
     "mobile:simulator": "bash scripts/mobile.sh simulator",
     "test": "bash scripts/test.sh",
-    "update": "cargo update"
+    "update": "bash scripts/update.sh"
   },
   "devDependencies": {
     "@types/bun": "^1.4.4",
