@@ -4,10 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const [action, ...args] = process.argv.slice(2);
-const command = action === 'web' ? ['bunx', 'vite', '--config', 'vite.config.ts', ...args]
-  : action === 'phone' ? ['cargo', 'run', '-p', 'wfhub', '--', '--phone', ...args] : null;
+const command = action === 'web' ? ['bunx', 'vite', '--config', 'vite.config.ts', ...args] : null;
 if (!command) {
-  console.error('Usage: bun scripts/dev.ts {phone|web} [options]');
+  console.error('Usage: bun scripts/dev.ts web [options]');
   process.exitCode = 2;
 } else {
   const child = spawn(command[0], command.slice(1), { cwd: root, stdio: 'inherit' });

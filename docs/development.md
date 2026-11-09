@@ -2,17 +2,9 @@
 
 ## Prerequisites
 
-Install Rust through `rustup` and install Bun and Node.js for web development. Desktop development on macOS also needs Xcode and its command-line tools. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
+Install Bun and Node.js for web development. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
 
 ## Run the clients
-
-From the repository root, start the desktop app:
-
-```sh
-cargo run -p wfhub
-```
-
-The app opens in a phone-proportioned window. You can also run `bun scripts/dev.ts phone`.
 
 To generate the iOS project and open it in Xcode:
 
@@ -22,7 +14,7 @@ xcodegen generate
 open WFHub.xcodeproj
 ```
 
-Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team. The iOS app does not require Rust.
+Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team.
 
 Alternatively, from the repository root, `bash scripts/mobile.sh simulator` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
 
@@ -36,16 +28,14 @@ The privacy and terms pages are drafts and require review before publication. Se
 
 ```sh
 bunx tsc --noEmit
-cargo fmt --all -- --check
-cargo clippy --locked --workspace --all-targets -- -D warnings
-cargo test --locked --workspace
+bun test apps/wfhub-web/api
 ```
 
-`bash scripts/test.sh` runs these checks in sequence. The current Rust tests cover the shared route catalogue and platform validation; they do not replace UI and device testing. When changing UI behavior, exercise the affected screens and navigation in the relevant client.
+`bash scripts/test.sh` runs these checks in sequence. API tests cover routes, HTTP methods, and response behavior; they do not replace UI and device testing. When changing UI behavior, exercise the affected screens and navigation in the relevant client.
 
 ## Generated files and release
 
-`target/`, the iOS `build/` directory, and generated `.xcodeproj` files are ignored by Git. Edit `apps/wfhub-mobile/project.yml` and regenerate the project instead of editing the generated project as the source of truth.
+The iOS `build/` directory and generated `.xcodeproj` files are ignored by Git. Edit `apps/wfhub-mobile/project.yml` and regenerate the project instead of editing the generated project as the source of truth.
 
 `bash scripts/mobile.sh archive` generates an iOS archive and increments `CURRENT_PROJECT_VERSION` in `project.yml` by default. Invoke the script directly with `--no-bump` to retain the current number. Archiving requires an appropriately configured signing team.
 

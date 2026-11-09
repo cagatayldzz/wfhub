@@ -1,18 +1,8 @@
 # WFHub API
 
-A Rust service for the WFHub Codex JSON dataset. It serves the existing category and item paths used by the desktop and iOS clients.
+A TypeScript Cloudflare Worker serves the WFHub Codex catalogue, mastery snapshots, event banners, and feedback endpoint. For local development, run `bun run dev:web` and open `http://localhost:8000/api/` for Swagger documentation. Run `bun run cf:build` to generate local catalogue data; missing categories fall back to the deployed API during development.
 
-```sh
-cargo run -p wfhub-api
-```
-
-The default address is `127.0.0.1:8080`. Set `WFHUB_API_ADDR` to change the bind address and `WFHUB_API_DATA_DIR` to serve a different dataset directory. For example, `/api/warframes.json` returns a category and `/api/warframes/excalibur.json` returns an item.
-
-Swagger documentation is available at `/api/`.
-
-The `/api/events.json` endpoint serves the event banners maintained in `api/data/events.json`. Update that file and redeploy to change the banners.
-
-The local Rust server needs a JSON dataset in `api/` (or the directory set by `WFHUB_API_DATA_DIR`). The Cloudflare build instead downloads category data from [WFCD / warframe-items](https://github.com/WFCD/warframe-items) and generates the API indexes.
+`/api/warframes.json` returns a category and `/api/warframes/excalibur.json` returns an item. The `/api/events.json` endpoint serves the banners maintained in `api/data/events.json`. Update that file and redeploy to change the banners. The Cloudflare build downloads category data from [WFCD / warframe-items](https://github.com/WFCD/warframe-items) and generates the API indexes.
 
 For Cloudflare Workers Builds, use the repository root as the root directory, `bun scripts/cloudflare.ts build` as the build command, and `bun scripts/cloudflare.ts deploy` as the deploy command. The build produces the React Start client in `dist/client`, the Worker in `dist/server`, and generates API data under `dist/client/_api-data`; the Worker serves JSON paths under `/api/`. The build requires network access to GitHub. `bun scripts/cloudflare.ts deploy` also builds and deploys locally.
 
@@ -26,4 +16,4 @@ Additional mastery endpoints: `railjack-intrinsic`, `drifter-intrinsic`, `starch
 
 ### Feedback setup
 
-The deployed API runs in the Cloudflare Worker, which writes anonymous feedback to the `DB` D1 binding. Deploying with `bun run cf:deploy` applies pending remote D1 migrations before deploying the Worker; migration failure stops deployment. A `--dry-run` skips migrations. Wrangler may request confirmation locally; CI applies pending migrations non-interactively. The deploy credentials need D1 migration permissions. Set a long random `FEEDBACK_RATE_LIMIT_SECRET` using `bunx wrangler secret put FEEDBACK_RATE_LIMIT_SECRET`; the endpoint fails closed if it is missing. Feedback is write-only via `POST /api/feedback`, with JSON fields `title` (3–120 characters), `category` (`bug`, `suggestion`, or `other`), and `message` (10–4000 characters). Inspect submissions in the D1 dashboard. The rate limit is five submissions per IP per hour, with daily-rotated keyed hashes rather than stored IP addresses; it is a basic abuse mitigation, not authentication. The standalone Rust server only serves local read-only catalogue data and does not implement this endpoint.
+The deployed API runs in the Cloudflare Worker, which writes anonymous feedback to the `DB` D1 binding. Deploying with `bun run cf:deploy` applies pending remote D1 migrations before deploying the Worker; migration failure stops deployment. A `--dry-run` skips migrations. Wrangler may request confirmation locally; CI applies pending migrations non-interactively. The deploy credentials need D1 migration permissions. Set a long random `FEEDBACK_RATE_LIMIT_SECRET` using `bunx wrangler secret put FEEDBACK_RATE_LIMIT_SECRET`; the endpoint fails closed if it is missing. Feedback is write-only via `POST /api/feedback`, with JSON fields `title` (3–120 characters), `category` (`bug`, `suggestion`, or `other`), and `message` (10–4000 characters). Inspect submissions in the D1 dashboard. The rate limit is five submissions per IP per hour, with daily-rotated keyed hashes rather than stored IP addresses; it is a basic abuse mitigation, not authentication.
