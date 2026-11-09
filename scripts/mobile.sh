@@ -17,20 +17,48 @@ else
   echo "Build number $current -> $next"
 fi
 
-xcodegen generate
+echo "Preparing Xcode project..."
+xcodegen generate >/dev/null
 
 # Archives in this folder show up in the Organizer by themselves.
 folder="$HOME/Library/Developer/Xcode/Archives/$(date +%Y-%m-%d)"
 mkdir -p "$folder"
 archive="$folder/WFHub $(date '+%Y-%m-%d, %H.%M').xcarchive"
 
+echo "Creating archive (this may take a few minutes)..."
+log_file="$(mktemp "${TMPDIR:-/tmp}/wfhub-archive.XXXXXX")"
 xcodebuild archive \
   -project WFHub.xcodeproj \
   -scheme WFHub \
   -destination 'generic/platform=iOS' \
   -archivePath "$archive" \
   -allowProvisioningUpdates \
-  "$@"
+  -quiet \
+  "$@" >"$log_file" 2>&1 &
+build_pid=$!
+trap 'kill "$build_pid" 2>/dev/null || true; wait "$build_pid" 2>/dev/null || true; rm -f "$log_file"; exit 130' INT TERM
+if [ -t 1 ]; then
+  frames='|/-\'
+  frame=0
+  while kill -0 "$build_pid" 2>/dev/null; do
+    printf '\r  %s Archiving...' "${frames:frame:1}"
+    frame=$(((frame + 1) % 4))
+    sleep 0.2
+  done
+  printf '\r\033[K'
+fi
+if wait "$build_pid"; then
+  trap - INT TERM
+  if [ -s "$log_file" ]; then cat "$log_file"; fi
+  rm -f "$log_file"
+else
+  status=$?
+  trap - INT TERM
+  cat "$log_file" >&2
+  rm -f "$log_file"
+  echo "Archive failed." >&2
+  return "$status"
+fi
 
 echo "Archive ready: $archive"
 # Opening an archive starts Xcode and shows it in the Organizer.
