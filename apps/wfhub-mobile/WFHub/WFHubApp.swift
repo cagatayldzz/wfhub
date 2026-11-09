@@ -34,10 +34,11 @@ enum Catalogue {
 }
 
 struct RootView: View {
-  @State private var selection = ProcessInfo.processInfo.arguments.firstIndex(of: "--preview-tab").flatMap { index in
-    let args = ProcessInfo.processInfo.arguments
-    return index + 1 < args.count ? Int(args[index + 1]) : nil
-  } ?? 0
+  @State private var selection =
+    ProcessInfo.processInfo.arguments.firstIndex(of: "--preview-tab").flatMap { index in
+      let args = ProcessInfo.processInfo.arguments
+      return index + 1 < args.count ? Int(args[index + 1]) : nil
+    } ?? 0
   @AppStorage("appLanguage") private var language = "system"
   @AppStorage("appTheme") private var theme = "system"
   private var colorScheme: ColorScheme? {
@@ -77,4 +78,3 @@ struct RouteList: View {
     .searchable(text: $search)
   }
 }
-

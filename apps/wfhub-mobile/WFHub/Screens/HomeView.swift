@@ -34,9 +34,10 @@ struct HomeView: View {
 
         ForEach(Array(data.banners.enumerated()), id: \.offset) { _, banner in
           if let title = banner["title"] as? String,
-             let link = banner["link"] as? String,
-             let url = URL(string: link.replacingOccurrences(of: "{lang}", with: locale.language.languageCode?.identifier ?? "en")),
-             ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
+            let link = banner["link"] as? String,
+            let url = URL(string: link.replacingOccurrences(of: "{lang}", with: locale.language.languageCode?.identifier ?? "en")),
+            ["http", "https"].contains(url.scheme?.lowercased() ?? "")
+          {
             Link(destination: url) {
               ImageBanner(image: banner["imageLink"] as? String, title: title, subtitle: nil, expiry: nil, imageAlignment: .leading)
             }.buttonStyle(.plain)
@@ -44,7 +45,9 @@ struct HomeView: View {
         }
 
         if let nightwave = data.nightwave {
-          NavigationLink { DataScreen(route: route("nightwave", fallback: "Nightwave"), kind: .activity) } label: {
+          NavigationLink {
+            DataScreen(route: route("nightwave", fallback: "Nightwave"), kind: .activity)
+          } label: {
             VStack(alignment: .leading, spacing: 6) {
               Text(t("nightwave")).font(.system(size: 26, weight: .black)).foregroundStyle(WFStyle.accent)
               Text(tf("seasonNumber", Int(number(nightwave["season"])) ?? 0))
@@ -78,8 +81,12 @@ struct HomeView: View {
         }
 
         if let trader = data.trader {
-          NavigationLink { DataScreen(route: route("voidTrader", fallback: "Baro Ki'Teer"), kind: .activity) } label: {
-            ImageBanner(image: cdn + "sections/baro-ki-teer.png", title: "Baro Ki'Teer", subtitle: trader["location"] as? String, expiry: trader["expiry"] as? String, height: 140, imageAlignment: .leading)
+          NavigationLink {
+            DataScreen(route: route("voidTrader", fallback: "Baro Ki'Teer"), kind: .activity)
+          } label: {
+            ImageBanner(
+              image: cdn + "sections/baro-ki-teer.png", title: "Baro Ki'Teer", subtitle: trader["location"] as? String,
+              expiry: trader["expiry"] as? String, height: 140, imageAlignment: .leading)
           }.buttonStyle(.plain)
         }
 
@@ -132,7 +139,9 @@ struct HomeView: View {
             .contentShape(Rectangle())
         }
       } else {
-        NavigationLink { CodexCategoriesView() } label: {
+        NavigationLink {
+          CodexCategoriesView()
+        } label: {
           Text(t("viewAll"))
             .frame(minWidth: 70, minHeight: 44, alignment: .trailing)
             .contentShape(Rectangle())
@@ -142,7 +151,9 @@ struct HomeView: View {
   }
 
   private func codexCard(_ title: String, category: String, image: String) -> some View {
-    NavigationLink { DataScreen(route: Route(title: title, endpoint: category), kind: .category) } label: {
+    NavigationLink {
+      DataScreen(route: Route(title: title, endpoint: category), kind: .category)
+    } label: {
       ArtworkCard(title: title, image: URL(string: cdn + image))
     }.buttonStyle(.plain)
   }
@@ -153,7 +164,8 @@ struct HomeView: View {
     let results = await withTaskGroup(of: (String, Any?).self, returning: [(String, Any?)].self) { group in
       for endpoint in endpoints {
         group.addTask {
-          let address = endpoint == "banners" ? "https://wfhub.cagatayldzz.com/api/events.json" : "https://api.warframestat.us/\(selectedPlatform)/\(endpoint)/"
+          let address =
+            endpoint == "banners" ? "https://wfhub.cagatayldzz.com/api/events.json" : "https://api.warframestat.us/\(selectedPlatform)/\(endpoint)/"
           guard let url = URL(string: address) else { return (endpoint, nil) }
           return (endpoint, try? await API.fetch(url))
         }
@@ -171,7 +183,12 @@ struct HomeView: View {
       case "voidTrader": if let value = value as? [String: Any] { updated.trader = value } else { updated.failed.insert(endpoint) }
       case "events": if let value = value as? [[String: Any]] { updated.events = value } else { updated.failed.insert(endpoint) }
       case "alerts": if let value = value as? [[String: Any]] { updated.alerts = value } else { updated.failed.insert(endpoint) }
-      case "news": if let value = value as? [[String: Any]] { updated.news = value.sorted { ($0["date"] as? String ?? "") > ($1["date"] as? String ?? "") } } else { updated.failed.insert(endpoint) }
+      case "news":
+        if let value = value as? [[String: Any]] {
+          updated.news = value.sorted { ($0["date"] as? String ?? "") > ($1["date"] as? String ?? "") }
+        } else {
+          updated.failed.insert(endpoint)
+        }
       case "banners": if let value = value as? [[String: Any]] { updated.banners = value } else { updated.failed.insert(endpoint) }
       default: break
       }
@@ -247,18 +264,20 @@ private struct EventCard: View {
     return nil
   }
   var body: some View {
-    WFCard { VStack(alignment: .leading, spacing: 6) {
-      HStack {
-        Text(event["description"] as? String ?? "Event").font(.headline).lineLimit(2)
-        Spacer()
-        if let progress { Text(String(format: "%.2f%%", progress)).font(.caption.bold()) }
+    WFCard {
+      VStack(alignment: .leading, spacing: 6) {
+        HStack {
+          Text(event["description"] as? String ?? "Event").font(.headline).lineLimit(2)
+          Spacer()
+          if let progress { Text(String(format: "%.2f%%", progress)).font(.caption.bold()) }
+        }
+        HStack {
+          Text(event["node"] as? String ?? event["victimNode"] as? String ?? "–").foregroundStyle(.secondary)
+          Spacer()
+          Countdown(expiry: event["expiry"] as? String).font(.subheadline)
+        }
       }
-      HStack {
-        Text(event["node"] as? String ?? event["victimNode"] as? String ?? "–").foregroundStyle(.secondary)
-        Spacer()
-        Countdown(expiry: event["expiry"] as? String).font(.subheadline)
-      }
-    } }
+    }
   }
 }
 
@@ -269,14 +288,16 @@ private struct AlertCard: View {
     let reward = mission["reward"] as? [String: Any] ?? [:]
     let items = reward["items"] as? [String] ?? []
     let counted = (reward["countedItems"] as? [[String: Any]] ?? []).map { "\(number($0["count"])) \($0["type"] as? String ?? "")" }
-    return WFCard { VStack(alignment: .leading, spacing: 6) {
-      Text((alert["tag"] as? String) == "LotusGift" ? "Gifts of the Lotus" : (mission["node"] as? String ?? "Alert")).font(.headline)
-      HStack {
-        Text((items.isEmpty ? counted : items).joined(separator: ", ")).foregroundStyle(.secondary)
-        Spacer()
-        Countdown(expiry: alert["expiry"] as? String).font(.subheadline)
+    return WFCard {
+      VStack(alignment: .leading, spacing: 6) {
+        Text((alert["tag"] as? String) == "LotusGift" ? "Gifts of the Lotus" : (mission["node"] as? String ?? "Alert")).font(.headline)
+        HStack {
+          Text((items.isEmpty ? counted : items).joined(separator: ", ")).foregroundStyle(.secondary)
+          Spacer()
+          Countdown(expiry: alert["expiry"] as? String).font(.subheadline)
+        }
       }
-    } }
+    }
   }
 }
 
@@ -299,6 +320,8 @@ private struct NewsCard: View {
     }
     if let link = item["link"] as? String, let url = URL(string: link), ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
       Link(destination: url) { content }.buttonStyle(.plain)
-    } else { content }
+    } else {
+      content
+    }
   }
 }

@@ -11,8 +11,8 @@ struct FeedbackView: View {
   @FocusState private var focused: Bool
 
   private var valid: Bool {
-    (3...120).contains(title.trimmingCharacters(in: .whitespacesAndNewlines).unicodeScalars.count) &&
-      (10...4000).contains(message.trimmingCharacters(in: .whitespacesAndNewlines).unicodeScalars.count)
+    (3...120).contains(title.trimmingCharacters(in: .whitespacesAndNewlines).unicodeScalars.count)
+      && (10...4000).contains(message.trimmingCharacters(in: .whitespacesAndNewlines).unicodeScalars.count)
   }
 
   var body: some View {
@@ -44,7 +44,9 @@ struct FeedbackView: View {
           Text(t("characters10To4000")).font(.caption).foregroundStyle(.secondary)
         }
         if let error { Text(t(error)).font(.subheadline).foregroundStyle(.red) }
-        Button { Task { await submit() } } label: {
+        Button {
+          Task { await submit() }
+        } label: {
           Group { if sending { ProgressView().tint(.black) } else { Text(t("sendFeedback")).font(.headline) } }
             .foregroundStyle(.black).frame(maxWidth: .infinity).padding(.vertical, 16)
             .background(WFStyle.gold).clipShape(RoundedRectangle(cornerRadius: 12))

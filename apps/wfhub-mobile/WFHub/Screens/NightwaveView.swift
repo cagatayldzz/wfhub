@@ -55,7 +55,8 @@ private struct NightwaveChallengeRow: View {
   var body: some View {
     HStack(spacing: 0) {
       ZStack(alignment: .bottom) {
-        LinearGradient(colors: [Color(red: 0.08, green: 0.08, blue: 0.08), Color(red: 0.15, green: 0.18, blue: 0.2), .black], startPoint: .bottom, endPoint: .top)
+        LinearGradient(
+          colors: [Color(red: 0.08, green: 0.08, blue: 0.08), Color(red: 0.15, green: 0.18, blue: 0.2), .black], startPoint: .bottom, endPoint: .top)
         ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/nightwave/\(slug).png"), maxPixelSize: 192, showsPlaceholder: false)
           .frame(width: 56, height: 56)
           .frame(maxHeight: .infinity)

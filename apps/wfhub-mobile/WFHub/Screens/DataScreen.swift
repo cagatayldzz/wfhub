@@ -21,43 +21,59 @@ struct DataScreen: View {
   var body: some View {
     Group {
       if let error {
-        ContentUnavailableView { Label(t("unableToLoad"), systemImage: "wifi.slash") } description: { Text(error) } actions: { Button(t("retry")) { Task { await load() } } }
+        ContentUnavailableView {
+          Label(t("unableToLoad"), systemImage: "wifi.slash")
+        } description: {
+          Text(error)
+        } actions: {
+          Button(t("retry")) { Task { await load() } }
+        }
       } else if let data {
         VStack(spacing: 0) {
-        if isFissures { tierFilter }
-        ScrollView {
-          if let items = data as? [[String: Any]] {
-            if items.isEmpty { ContentUnavailableView("noDataFound", systemImage: "tray") }
-            if kind == .category {
-              LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
-                  if matches(item), let slug = item["slug"] as? String {
-                    NavigationLink { ItemScreen(category: route.endpoint, slug: slug, title: itemTitle(item)) } label: { CodexTile(item: item) }.buttonStyle(.plain)
+          if isFissures { tierFilter }
+          ScrollView {
+            if let items = data as? [[String: Any]] {
+              if items.isEmpty { ContentUnavailableView("noDataFound", systemImage: "tray") }
+              if kind == .category {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                  ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                    if matches(item), let slug = item["slug"] as? String {
+                      NavigationLink {
+                        ItemScreen(category: route.endpoint, slug: slug, title: itemTitle(item))
+                      } label: {
+                        CodexTile(item: item)
+                      }.buttonStyle(.plain)
+                    }
                   }
-                }
-              }.padding(12)
-            } else {
-              LazyVStack(spacing: 10) {
-                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
-                  if matches(item) {
-                    if route.endpoint == "news" { NewsDetailRow(item: item) }
-                    else if route.endpoint == "flashSales" { FlashSaleCard(item: item) }
-                    else { ActivityRow(value: item, endpoint: route.endpoint) }
+                }.padding(12)
+              } else {
+                LazyVStack(spacing: 10) {
+                  ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                    if matches(item) {
+                      if route.endpoint == "news" {
+                        NewsDetailRow(item: item)
+                      } else if route.endpoint == "flashSales" {
+                        FlashSaleCard(item: item)
+                      } else {
+                        ActivityRow(value: item, endpoint: route.endpoint)
+                      }
+                    }
                   }
-                }
-              }.padding(12)
-            }
-          } else if let object = data as? [String: Any] {
-            if route.endpoint == "nightwave" {
-              NightwaveView(value: object)
-            } else if route.endpoint == "constructionProgress" {
-              ConstructionProgressView(value: object)
+                }.padding(12)
+              }
+            } else if let object = data as? [String: Any] {
+              if route.endpoint == "nightwave" {
+                NightwaveView(value: object)
+              } else if route.endpoint == "constructionProgress" {
+                ConstructionProgressView(value: object)
+              } else {
+                ActivityRow(value: object, endpoint: route.endpoint).padding(12)
+              }
             } else {
-              ActivityRow(value: object, endpoint: route.endpoint).padding(12)
+              ContentUnavailableView("noDataFound", systemImage: "tray")
             }
-          } else { ContentUnavailableView("noDataFound", systemImage: "tray") }
-        }
-        .refreshable { await load() }
+          }
+          .refreshable { await load() }
         }
         .modifier(SearchIf(enabled: !isFissures && route.endpoint != "news" && data is [[String: Any]], text: $search))
       } else {
@@ -80,7 +96,9 @@ struct DataScreen: View {
     ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 8) {
         ForEach(Self.tiers, id: \.self) { name in
-          Button { tier = name } label: {
+          Button {
+            tier = name
+          } label: {
             Text(td(name == "All" ? "All" : name.uppercased()))
               .font(.subheadline.weight(.semibold))
               .padding(.horizontal, 14).padding(.vertical, 8)
@@ -94,7 +112,8 @@ struct DataScreen: View {
 
   private func matches(_ item: [String: Any]) -> Bool {
     if isFissures { return tier == "All" || (item["tier"] as? String)?.caseInsensitiveCompare(tier) == .orderedSame }
-    return search.isEmpty || itemTitle(item).localizedCaseInsensitiveContains(search) || (item["item"] as? String ?? "").localizedCaseInsensitiveContains(search)
+    return search.isEmpty || itemTitle(item).localizedCaseInsensitiveContains(search)
+      || (item["item"] as? String ?? "").localizedCaseInsensitiveContains(search)
   }
 
   private func load() async {
@@ -107,7 +126,9 @@ struct DataScreen: View {
         data = news.sorted { ($0["date"] as? String ?? "") > ($1["date"] as? String ?? "") }
       } else if route.endpoint == "flashSales", let sales = result as? [[String: Any]] {
         data = sales.sorted { ($0["expiry"] as? String ?? "") < ($1["expiry"] as? String ?? "") }
-      } else { data = result }
+      } else {
+        data = result
+      }
       error = nil
     } catch {
       guard !Task.isCancelled, selectedPlatform == platform else { return }
@@ -116,15 +137,18 @@ struct DataScreen: View {
   }
 }
 
-
 private struct ConstructionProgressView: View {
   let value: [String: Any]
 
   private func progress(_ key: String) -> Double? {
     let result: Double?
-    if let text = value[key] as? String { result = Double(text) }
-    else if let number = value[key] as? NSNumber { result = number.doubleValue }
-    else { result = nil }
+    if let text = value[key] as? String {
+      result = Double(text)
+    } else if let number = value[key] as? NSNumber {
+      result = number.doubleValue
+    } else {
+      result = nil
+    }
     guard let result, result.isFinite, (0...100).contains(result) else { return nil }
     return result
   }
@@ -208,23 +232,31 @@ struct ItemScreen: View {
   @State private var error: String?
   var body: some View {
     Group {
-      if let item { CodexDetail(item: item) }
-      else if let error {
-        ContentUnavailableView { Label(t("unableToLoad"), systemImage: "wifi.slash") } description: { Text(error) } actions: { Button(t("retry")) { Task { await loadItem() } } }
+      if let item {
+        CodexDetail(item: item)
+      } else if let error {
+        ContentUnavailableView {
+          Label(t("unableToLoad"), systemImage: "wifi.slash")
+        } description: {
+          Text(error)
+        } actions: {
+          Button(t("retry")) { Task { await loadItem() } }
+        }
+      } else {
+        ProgressView()
       }
-      else { ProgressView() }
     }.navigationTitle(title).task { await loadItem() }
   }
   private func loadItem() async {
-      var components = URLComponents(string: "https://wfhub.cagatayldzz.com")!
-      components.path = "/api/\(category)/\(slug).json"
-      do {
-        guard let url = components.url else { throw URLError(.badURL) }
-        item = try await API.fetch(url) as? [String: Any]
-        if item == nil { throw URLError(.cannotParseResponse) }
-        error = nil
-      } catch { self.error = error.localizedDescription }
-    }
+    var components = URLComponents(string: "https://wfhub.cagatayldzz.com")!
+    components.path = "/api/\(category)/\(slug).json"
+    do {
+      guard let url = components.url else { throw URLError(.badURL) }
+      item = try await API.fetch(url) as? [String: Any]
+      if item == nil { throw URLError(.cannotParseResponse) }
+      error = nil
+    } catch { self.error = error.localizedDescription }
+  }
 }
 
 private struct SearchIf: ViewModifier {

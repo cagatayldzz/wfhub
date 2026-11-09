@@ -6,6 +6,7 @@
     "cf:build": "bun scripts/cloudflare.ts build",
     "cf:deploy": "bun scripts/cloudflare.ts deploy",
     "commit": "bash scripts/commit.sh",
+    "format:swift": "swift format --in-place --recursive apps/wfhub-mobile/WFHub",
     "dev:phone": "bun scripts/dev.ts phone",
     "dev:web": "bun scripts/dev.ts web",
     "mobile:archive": "bash scripts/mobile.sh archive",

@@ -38,7 +38,11 @@ struct SettingsView: View {
             Divider().padding(.leading, 60)
             Menu {
               ForEach(platforms, id: \.0) { code, title in
-                Button { platform = code } label: { if platform == code { Label(title, systemImage: "checkmark") } else { Text(title) } }
+                Button {
+                  platform = code
+                } label: {
+                  if platform == code { Label(title, systemImage: "checkmark") } else { Text(title) }
+                }
               }
             } label: {
               SettingsRow(icon: "gamecontroller", title: "platform", value: platforms.first { $0.0 == platform }?.1 ?? "PC")
@@ -50,26 +54,50 @@ struct SettingsView: View {
           Text(t("preferences")).font(.caption.bold()).tracking(1).foregroundStyle(.secondary).padding(.horizontal, 4)
           VStack(spacing: 0) {
             Menu {
-              Button { language = "system" } label: { if language == "system" { Label(t("system"), systemImage: "checkmark") } else { Text(t("system")) } }
+              Button {
+                language = "system"
+              } label: {
+                if language == "system" { Label(t("system"), systemImage: "checkmark") } else { Text(t("system")) }
+              }
               ForEach(languages, id: \.0) { code, title in
-                Button { language = code } label: { if language == code { Label(title, systemImage: "checkmark") } else { Text(title) } }
+                Button {
+                  language = code
+                } label: {
+                  if language == code { Label(title, systemImage: "checkmark") } else { Text(title) }
+                }
               }
             } label: {
-              SettingsRow(icon: "globe", title: "language", value: language == "system" ? "System" : languages.first { $0.0 == language }?.1 ?? "English")
+              SettingsRow(
+                icon: "globe", title: "language", value: language == "system" ? "System" : languages.first { $0.0 == language }?.1 ?? "English")
             }
             Divider().padding(.leading, 60)
             Menu {
-              Button { theme = "system" } label: { if theme == "system" { Label(t("system"), systemImage: "checkmark") } else { Text(t("system")) } }
-              Button { theme = "light" } label: { if theme == "light" { Label(t("light"), systemImage: "checkmark") } else { Text(t("light")) } }
-              Button { theme = "dark" } label: { if theme == "dark" { Label(t("dark"), systemImage: "checkmark") } else { Text(t("dark")) } }
+              Button {
+                theme = "system"
+              } label: {
+                if theme == "system" { Label(t("system"), systemImage: "checkmark") } else { Text(t("system")) }
+              }
+              Button {
+                theme = "light"
+              } label: {
+                if theme == "light" { Label(t("light"), systemImage: "checkmark") } else { Text(t("light")) }
+              }
+              Button {
+                theme = "dark"
+              } label: {
+                if theme == "dark" { Label(t("dark"), systemImage: "checkmark") } else { Text(t("dark")) }
+              }
             } label: {
-              SettingsRow(icon: "circle.lefthalf.filled", title: "appearance", value: theme == "light" ? "Light" : theme == "dark" ? "Dark" : "System")
+              SettingsRow(
+                icon: "circle.lefthalf.filled", title: "appearance", value: theme == "light" ? "Light" : theme == "dark" ? "Dark" : "System")
             }
           }.tint(.primary).background(Color(uiColor: .secondarySystemBackground)).clipShape(RoundedRectangle(cornerRadius: 14))
         }
 
         VStack(spacing: 0) {
-          NavigationLink { FeedbackView() } label: {
+          NavigationLink {
+            FeedbackView()
+          } label: {
             SettingsLinkRow(icon: "bubble.left.and.bubble.right", title: "feedback")
           }
           Divider().padding(.leading, 60)
@@ -78,7 +106,9 @@ struct SettingsView: View {
           }
           if ads.privacyOptionsRequired {
             Divider().padding(.leading, 60)
-            Button { Task { await ads.showPrivacyOptions() } } label: {
+            Button {
+              Task { await ads.showPrivacyOptions() }
+            } label: {
               SettingsLinkRow(icon: "hand.raised", title: "privacyOptions")
             }
           }
@@ -95,7 +125,9 @@ struct SettingsView: View {
         }
       }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 32)
     }.scrollDismissesKeyboard(.interactively).navigationBarHidden(true)
-      .onAppear { name = storedName; platform = storedPlatform }
+      .onAppear {
+        name = storedName; platform = storedPlatform
+      }
       .alert(t("settingsSaved"), isPresented: $saved) { Button(t("ok"), role: .cancel) {} }
   }
 }

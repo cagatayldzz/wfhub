@@ -1,5 +1,5 @@
-import SwiftUI
 import ImageIO
+import SwiftUI
 
 // Decoded thumbnails live in memory; downloaded files live on disk, so scrolling never re-downloads or re-decodes.
 enum ImageStore {
@@ -25,15 +25,19 @@ enum ImageStore {
   static func load(_ url: URL, size: Int) async -> UIImage? {
     if let hit = memory.object(forKey: key(url, size)) { return hit }
     guard let (data, response) = try? await session.data(from: url),
-          (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? false else { return nil }
+      (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? false
+    else { return nil }
     let decoded = await Task.detached(priority: .utility) { () -> UIImage? in
       guard let source = CGImageSourceCreateWithData(data as CFData, nil),
-            let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
-              kCGImageSourceCreateThumbnailFromImageAlways: true,
-              kCGImageSourceCreateThumbnailWithTransform: true,
-              kCGImageSourceThumbnailMaxPixelSize: size,
-              kCGImageSourceShouldCacheImmediately: true
-            ] as CFDictionary) else { return nil }
+        let thumbnail = CGImageSourceCreateThumbnailAtIndex(
+          source, 0,
+          [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: size,
+            kCGImageSourceShouldCacheImmediately: true
+          ] as CFDictionary)
+      else { return nil }
       return UIImage(cgImage: thumbnail)
     }.value
     if let decoded {
@@ -74,11 +78,14 @@ struct ThumbnailImage: View {
 // Shared visual language used by the native screens.
 enum WFStyle {
   static let gold = Color(red: 0.88, green: 0.78, blue: 0.45)
-  static let accent = Color(uiColor: UIColor { traits in
-    traits.userInterfaceStyle == .dark ? UIColor(red: 0.88, green: 0.78, blue: 0.45, alpha: 1) : UIColor(red: 0.45, green: 0.33, blue: 0.04, alpha: 1)
-  })
+  static let accent = Color(
+    uiColor: UIColor { traits in
+      traits.userInterfaceStyle == .dark
+        ? UIColor(red: 0.88, green: 0.78, blue: 0.45, alpha: 1) : UIColor(red: 0.45, green: 0.33, blue: 0.04, alpha: 1)
+    })
   static let muted = Color.secondary
-  static let artwork = LinearGradient(colors: [Color(red: 0.08, green: 0.08, blue: 0.09), Color(red: 0.15, green: 0.18, blue: 0.21), .black], startPoint: .top, endPoint: .bottom)
+  static let artwork = LinearGradient(
+    colors: [Color(red: 0.08, green: 0.08, blue: 0.09), Color(red: 0.15, green: 0.18, blue: 0.21), .black], startPoint: .top, endPoint: .bottom)
 }
 
 struct WFCard<Content: View>: View {

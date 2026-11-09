@@ -4,10 +4,14 @@ struct CodexCategoriesView: View {
   var body: some View {
     ScrollView {
       VStack(spacing: 10) {
-        NavigationLink { MasteryChecklistView() } label: {
+        NavigationLink {
+          MasteryChecklistView()
+        } label: {
           CodexMenuCard(title: t("masteryRankChecklist"), subtitle: t("warframes"), icon: "checklist")
         }.buttonStyle(.plain)
-        NavigationLink { CodexCatalogueView() } label: {
+        NavigationLink {
+          CodexCatalogueView()
+        } label: {
           CodexMenuCard(title: t("codexCatalogue"), subtitle: t("browseCategories"), icon: "book.closed")
         }.buttonStyle(.plain)
       }.padding(10)
@@ -42,7 +46,9 @@ private struct CodexCatalogueView: View {
           NavigationLink {
             DataScreen(route: route, kind: .category)
           } label: {
-            ArtworkCard(title: route.title, image: URL(string: "https://wfhub.cagatayldzz.com/public/codex/\(route.endpoint == "misc" ? "gear" : route.endpoint).png"))
+            ArtworkCard(
+              title: route.title,
+              image: URL(string: "https://wfhub.cagatayldzz.com/public/codex/\(route.endpoint == "misc" ? "gear" : route.endpoint).png"))
           }.buttonStyle(.plain)
         }
       }.padding(10)

@@ -1,5 +1,5 @@
-import GoogleMobileAds
 import AppTrackingTransparency
+import GoogleMobileAds
 import SwiftUI
 import UserMessagingPlatform
 
@@ -13,9 +13,9 @@ final class AdsManager: ObservableObject {
   private(set) lazy var banner: BannerView = {
     let view = BannerView()
     #if DEBUG
-    view.adUnitID = "ca-app-pub-3940256099942544/2435281174"
+      view.adUnitID = "ca-app-pub-3940256099942544/2435281174"
     #else
-    view.adUnitID = "ca-app-pub-6626336739486650/9106298353"
+      view.adUnitID = "ca-app-pub-6626336739486650/9106298353"
     #endif
     view.delegate = bannerDelegate
     return view
@@ -30,7 +30,8 @@ final class AdsManager: ObservableObject {
   func loadBanner(width: CGFloat) {
     guard ready, width != loadedWidth else { return }
     loadedWidth = width
-    banner.rootViewController = UIApplication.shared.connectedScenes
+    banner.rootViewController =
+      UIApplication.shared.connectedScenes
       .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }.first
     banner.adSize = currentOrientationAnchoredAdaptiveBanner(width: width)
     banner.load(Request())

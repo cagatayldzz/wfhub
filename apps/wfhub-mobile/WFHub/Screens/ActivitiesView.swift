@@ -1,7 +1,10 @@
 import SwiftUI
 
 struct ActivitiesView: View {
-  private let order = ["alerts", "voidTrader", "fissures", "cycles", "dailyDeals", "nightwave", "events", "invasions", "arbitration", "archonHunt", "steelPath", "sentientOutposts", "simaris", "constructionProgress", "news", "flashSales", "sortie"]
+  private let order = [
+    "alerts", "voidTrader", "fissures", "cycles", "dailyDeals", "nightwave", "events", "invasions", "arbitration", "archonHunt", "steelPath",
+    "sentientOutposts", "simaris", "constructionProgress", "news", "flashSales", "sortie"
+  ]
   private var routes: [Route] {
     order.compactMap { endpoint in
       if endpoint == "cycles" { return Route(title: "Cycles", endpoint: endpoint) }
@@ -19,13 +22,21 @@ struct ActivitiesView: View {
           }
           Spacer()
         }.padding(.bottom, 10)
-          ForEach(routes) { route in
-            if route.endpoint == "cycles" {
-              NavigationLink { CyclesView() } label: { ActivityLink(route: route) }.buttonStyle(.plain)
-            } else {
-              NavigationLink { DataScreen(route: route, kind: .activity) } label: { ActivityLink(route: route) }.buttonStyle(.plain)
-            }
+        ForEach(routes) { route in
+          if route.endpoint == "cycles" {
+            NavigationLink {
+              CyclesView()
+            } label: {
+              ActivityLink(route: route)
+            }.buttonStyle(.plain)
+          } else {
+            NavigationLink {
+              DataScreen(route: route, kind: .activity)
+            } label: {
+              ActivityLink(route: route)
+            }.buttonStyle(.plain)
           }
+        }
       }.padding(.horizontal, 16).padding(.top, 24).padding(.bottom, 24)
     }
     .navigationBarHidden(true)
@@ -49,7 +60,7 @@ private struct ActivityLink: View {
   var body: some View {
     HStack(spacing: 12) {
       ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/activities/\(imageName).png"), maxPixelSize: 160)
-      .frame(width: 40, height: 40)
+        .frame(width: 40, height: 40)
       VStack(alignment: .leading, spacing: 3) {
         Text(td(route.title)).font(.system(size: 16, weight: .semibold)).foregroundStyle(.primary)
       }

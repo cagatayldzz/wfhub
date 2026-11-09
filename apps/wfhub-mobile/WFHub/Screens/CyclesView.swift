@@ -17,22 +17,27 @@ struct CyclesView: View {
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 10) {
-      ForEach(routes) { route in
-        WFCard { VStack(alignment: .leading, spacing: 8) {
-          Text(td(route.title)).font(.headline)
-          if let cycle = cycles[route.endpoint] {
-            HStack {
-              Text(td((cycle["state"] as? String ?? "–").capitalized)).foregroundStyle(.secondary)
-              Spacer()
-              if let expiry = cycle["expiry"] as? String, let date = screenDate(expiry) {
-                if date > .now { Text(date, style: .timer).monospacedDigit() } else { Text(t("expired")) }
+        ForEach(routes) { route in
+          WFCard {
+            VStack(alignment: .leading, spacing: 8) {
+              Text(td(route.title)).font(.headline)
+              if let cycle = cycles[route.endpoint] {
+                HStack {
+                  Text(td((cycle["state"] as? String ?? "–").capitalized)).foregroundStyle(.secondary)
+                  Spacer()
+                  if let expiry = cycle["expiry"] as? String, let date = screenDate(expiry) {
+                    if date > .now { Text(date, style: .timer).monospacedDigit() } else { Text(t("expired")) }
+                  }
+                }
+              } else if failed.contains(route.endpoint) {
+                Text(t("unableToLoad")).foregroundStyle(.secondary)
+              } else if loading {
+                ProgressView()
               }
             }
-          } else if failed.contains(route.endpoint) { Text(t("unableToLoad")).foregroundStyle(.secondary) }
-          else if loading { ProgressView() }
-        } }
-      }
-      if !failed.isEmpty { Button(t("retry")) { Task { await load() } } }
+          }
+        }
+        if !failed.isEmpty { Button(t("retry")) { Task { await load() } } }
       }.padding(16)
     }.navigationTitle(t("cycles")).refreshable { await load() }.task(id: platform) {
       await load()
@@ -48,8 +53,7 @@ struct CyclesView: View {
     var errors: Set<String> = []
     for route in routes {
       guard !Task.isCancelled, let url = URL(string: "https://api.warframestat.us/\(selected)/\(route.endpoint)/") else { return }
-      if let value = try? await API.fetch(url) as? [String: Any] { results[route.endpoint] = value }
-      else { errors.insert(route.endpoint) }
+      if let value = try? await API.fetch(url) as? [String: Any] { results[route.endpoint] = value } else { errors.insert(route.endpoint) }
     }
     guard !Task.isCancelled, platform == selected else { return }
     cycles.merge(results) { _, new in new }

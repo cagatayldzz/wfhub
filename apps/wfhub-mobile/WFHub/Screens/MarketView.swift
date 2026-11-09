@@ -18,7 +18,13 @@ struct MarketView: View {
         if loading {
           ProgressView().frame(maxWidth: .infinity).padding(.vertical, 40)
         } else if let error {
-          ContentUnavailableView { Label(t("unableToLoad"), systemImage: "wifi.slash") } description: { Text(error) } actions: { Button(t("retry")) { Task { await load() } } }
+          ContentUnavailableView {
+            Label(t("unableToLoad"), systemImage: "wifi.slash")
+          } description: {
+            Text(error)
+          } actions: {
+            Button(t("retry")) { Task { await load() } }
+          }
         } else {
           ForEach(Array(orders.filter { ($0["type"] as? String) == type }.prefix(35).enumerated()), id: \.offset) { _, order in
             let item = items[order["itemId"] as? String ?? ""]
@@ -28,7 +34,9 @@ struct MarketView: View {
             let user = order["user"] as? [String: Any]
             if let url = URL(string: "https://warframe.market/items/\(slug)"), !slug.isEmpty {
               Link(destination: url) { orderLabel(name: name, order: order, user: user, icon: language?["icon"] as? String) }.buttonStyle(.plain)
-            } else { orderLabel(name: name, order: order, user: user, icon: language?["icon"] as? String) }
+            } else {
+              orderLabel(name: name, order: order, user: user, icon: language?["icon"] as? String)
+            }
           }
         }
       }.padding(.horizontal, 16).padding(.bottom, 16)
@@ -44,7 +52,7 @@ struct MarketView: View {
     HStack(alignment: .center, spacing: 14) {
       ThumbnailImage(url: icon.flatMap { URL(string: "https://warframe.market/static/assets/" + $0) }, maxPixelSize: 256)
         .padding(8)
-      .frame(width: 76, height: 76).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 10))
+        .frame(width: 76, height: 76).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 10))
 
       VStack(alignment: .leading, spacing: 7) {
         Text(name).font(.system(size: 16, weight: .bold)).foregroundStyle(.primary)
@@ -78,17 +86,20 @@ struct MarketView: View {
       async let orderResponse = API.fetch(URL(string: "https://api.warframe.market/v2/orders/recent")!)
       async let itemResponse = API.fetch(URL(string: "https://api.warframe.market/v2/items")!)
       let (rawOrders, rawItems) = try await (orderResponse, itemResponse)
-      guard let orderData = (rawOrders as? [String: Any])?["data"] as? [[String: Any]], let itemData = (rawItems as? [String: Any])?["data"] as? [[String: Any]] else { throw URLError(.cannotParseResponse) }
+      guard let orderData = (rawOrders as? [String: Any])?["data"] as? [[String: Any]],
+        let itemData = (rawItems as? [String: Any])?["data"] as? [[String: Any]]
+      else { throw URLError(.cannotParseResponse) }
       guard !Task.isCancelled else { return }
       let visibleOrders = ["sell", "buy"].flatMap { type in
         orderData.lazy.filter { ($0["type"] as? String) == type }.prefix(35)
       }
       let itemIDs = Set(visibleOrders.compactMap { $0["itemId"] as? String })
       orders = visibleOrders
-      items = Dictionary(itemData.compactMap { item in
-        guard let id = item["id"] as? String, itemIDs.contains(id) else { return nil }
-        return (id, item)
-      }, uniquingKeysWith: { first, _ in first })
+      items = Dictionary(
+        itemData.compactMap { item in
+          guard let id = item["id"] as? String, itemIDs.contains(id) else { return nil }
+          return (id, item)
+        }, uniquingKeysWith: { first, _ in first })
       error = nil
     } catch {
       guard !Task.isCancelled else { return }

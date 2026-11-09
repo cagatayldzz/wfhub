@@ -11,7 +11,9 @@ func screenDate(_ text: String) -> Date? {
 private func imageURL(_ value: Any?) -> URL? {
   guard let string = value as? String, !string.isEmpty else { return nil }
   if let url = URL(string: string), url.scheme != nil { return url }
-  return URL(string: "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/" + string.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)
+  return URL(
+    string: "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/img/" + string.addingPercentEncoding(
+      withAllowedCharacters: .urlPathAllowed)!)
 }
 
 struct CodexRow: View {
@@ -32,7 +34,10 @@ struct CodexTile: View {
 
 struct CodexDetail: View {
   let item: [String: Any]
-  private let stats = [("health", "Health"), ("shield", "Shield"), ("armor", "Armor"), ("stamina", "Stamina"), ("power", "Power"), ("sprintSpeed", "Sprint Speed"), ("masteryReq", "Mastery Requirement")]
+  private let stats = [
+    ("health", "Health"), ("shield", "Shield"), ("armor", "Armor"), ("stamina", "Stamina"), ("power", "Power"), ("sprintSpeed", "Sprint Speed"),
+    ("masteryReq", "Mastery Requirement")
+  ]
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 14) {
@@ -42,38 +47,50 @@ struct CodexDetail: View {
           Text(itemTitle(item)).font(.title2.bold()).foregroundStyle(.white).multilineTextAlignment(.center)
         }.padding(20).frame(maxWidth: .infinity).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 12))
         if let description = item["description"] as? String, !description.isEmpty {
-          WFCard { VStack(alignment: .leading, spacing: 10) {
-            Text(t("description")).font(.headline)
-            Text(description).font(.subheadline).foregroundStyle(.secondary).textSelection(.enabled)
-          } }
+          WFCard {
+            VStack(alignment: .leading, spacing: 10) {
+              Text(t("description")).font(.headline)
+              Text(description).font(.subheadline).foregroundStyle(.secondary).textSelection(.enabled)
+            }
+          }
         }
         if stats.contains(where: { item[$0.0] != nil }) {
-          WFCard { VStack(alignment: .leading, spacing: 12) {
-            Text(t("information")).font(.headline)
-            ForEach(stats, id: \.0) { key, title in
-              if let value = item[key] {
-                HStack { Text(td(title)).foregroundStyle(.secondary); Spacer(); Text(String(describing: value)).fontWeight(.semibold) }.font(.subheadline)
-              }
-            }
-          } }
-        }
-        if let abilities = item["abilities"] as? [[String: Any]], !abilities.isEmpty {
-          WFCard { VStack(alignment: .leading, spacing: 14) {
-            Text(t("abilities")).font(.headline)
-            ForEach(Array(abilities.enumerated()), id: \.offset) { _, ability in
-              HStack(alignment: .top, spacing: 12) {
-                ThumbnailImage(url: imageURL(ability["imageName"]), maxPixelSize: 192)
-                  .frame(width: 48, height: 48).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 7))
-                VStack(alignment: .leading, spacing: 4) {
-                  Text(ability["name"] as? String ?? "Ability").font(.subheadline.bold())
-                  if let description = ability["description"] as? String { Text(description).font(.subheadline).foregroundStyle(.secondary) }
+          WFCard {
+            VStack(alignment: .leading, spacing: 12) {
+              Text(t("information")).font(.headline)
+              ForEach(stats, id: \.0) { key, title in
+                if let value = item[key] {
+                  HStack {
+                    Text(td(title)).foregroundStyle(.secondary); Spacer(); Text(String(describing: value)).fontWeight(.semibold)
+                  }.font(.subheadline)
                 }
               }
             }
-          } }
+          }
+        }
+        if let abilities = item["abilities"] as? [[String: Any]], !abilities.isEmpty {
+          WFCard {
+            VStack(alignment: .leading, spacing: 14) {
+              Text(t("abilities")).font(.headline)
+              ForEach(Array(abilities.enumerated()), id: \.offset) { _, ability in
+                HStack(alignment: .top, spacing: 12) {
+                  ThumbnailImage(url: imageURL(ability["imageName"]), maxPixelSize: 192)
+                    .frame(width: 48, height: 48).background(WFStyle.artwork).clipShape(RoundedRectangle(cornerRadius: 7))
+                  VStack(alignment: .leading, spacing: 4) {
+                    Text(ability["name"] as? String ?? "Ability").font(.subheadline.bold())
+                    if let description = ability["description"] as? String { Text(description).font(.subheadline).foregroundStyle(.secondary) }
+                  }
+                }
+              }
+            }
+          }
         }
         if let damage = item["damage"] as? [String: Any], !damage.isEmpty {
-          WFCard { VStack(alignment: .leading, spacing: 10) { Text(t("damage")).font(.headline); DetailFields(value: damage, depth: 0) } }
+          WFCard {
+            VStack(alignment: .leading, spacing: 10) {
+              Text(t("damage")).font(.headline); DetailFields(value: damage, depth: 0)
+            }
+          }
         }
       }.padding(12)
     }
@@ -107,14 +124,19 @@ struct ActivityRow: View {
         }
         if let detail { Text(detail).font(.subheadline).foregroundStyle(.secondary) }
         if let expiry = value["expiry"] as? String, let date = screenDate(expiry), date > .now {
-          Label { Text(date, style: .timer).monospacedDigit() } icon: { Image(systemName: "clock") }.font(.caption.bold()).foregroundStyle(.secondary)
+          Label {
+            Text(date, style: .timer).monospacedDigit()
+          } icon: {
+            Image(systemName: "clock")
+          }.font(.caption.bold()).foregroundStyle(.secondary)
         }
         ForEach(["node", "enemy", "faction", "target", "item", "discount", "price", "fomorianProgress", "razorbackProgress"], id: \.self) { key in
           if let field = value[key], !(field is NSNull) {
             let shown = String(describing: field)
             if shown != primary && shown != detail {
               HStack {
-                Text(td(key.replacingOccurrences(of: "([a-z])([A-Z])", with: "$1 $2", options: .regularExpression).capitalized)).foregroundStyle(.secondary)
+                Text(td(key.replacingOccurrences(of: "([a-z])([A-Z])", with: "$1 $2", options: .regularExpression).capitalized)).foregroundStyle(
+                  .secondary)
                 Spacer()
                 Text(shown).fontWeight(.medium).multilineTextAlignment(.trailing)
               }.font(.subheadline)
@@ -149,12 +171,17 @@ struct ActivityRow: View {
         if let inventory = value["inventory"] as? [[String: Any]], !inventory.isEmpty {
           ForEach(Array(inventory.enumerated()), id: \.offset) { _, entry in
             Divider()
-            HStack { Text(entry["item"] as? String ?? "Item").font(.subheadline); Spacer(); Text("\(entry["ducats"] as? Int ?? 0) ◈").font(.caption.bold()).foregroundStyle(WFStyle.accent) }
+            HStack {
+              Text(entry["item"] as? String ?? "Item").font(.subheadline); Spacer();
+              Text("\(entry["ducats"] as? Int ?? 0) ◈").font(.caption.bold()).foregroundStyle(WFStyle.accent)
+            }
           }
         }
         if let mission = value["mission"] as? [String: Any] {
           if let type = mission["type"] as? String { Text(type).font(.subheadline).foregroundStyle(.secondary) }
-          if let reward = mission["reward"] as? [String: Any], let items = reward["items"] as? [String], !items.isEmpty { Text(items.joined(separator: ", ")).font(.subheadline) }
+          if let reward = mission["reward"] as? [String: Any], let items = reward["items"] as? [String], !items.isEmpty {
+            Text(items.joined(separator: ", ")).font(.subheadline)
+          }
         }
       }
     }
@@ -167,16 +194,28 @@ struct DetailFields: View {
   var body: some View {
     ForEach(value.keys.sorted(), id: \.self) { key in
       if let text = value[key] as? String, !text.isEmpty, key != "link", !key.hasSuffix("Key"), !key.hasSuffix("Id") {
-        LabeledContent { Text(text) } label: { Text(td(label(key))) }.font(.subheadline)
+        LabeledContent {
+          Text(text)
+        } label: {
+          Text(td(label(key)))
+        }.font(.subheadline)
       } else if let number = value[key] as? NSNumber {
-        LabeledContent { Text(number.stringValue) } label: { Text(td(label(key))) }.font(.subheadline)
+        LabeledContent {
+          Text(number.stringValue)
+        } label: {
+          Text(td(label(key)))
+        }.font(.subheadline)
       } else if let object = value[key] as? [String: Any], !object.isEmpty, depth < 3 {
         VStack(alignment: .leading, spacing: 5) {
           Text(td(label(key))).font(.subheadline.bold())
           DetailFields(value: object, depth: depth + 1)
         }
       } else if let strings = value[key] as? [String], !strings.isEmpty {
-        LabeledContent { Text(strings.joined(separator: ", ")) } label: { Text(td(label(key))) }.font(.subheadline)
+        LabeledContent {
+          Text(strings.joined(separator: ", "))
+        } label: {
+          Text(td(label(key)))
+        }.font(.subheadline)
       } else if let objects = value[key] as? [[String: Any]], !objects.isEmpty, depth < 3 {
         VStack(alignment: .leading, spacing: 8) {
           Text(td(label(key))).font(.subheadline.bold())
@@ -217,7 +256,9 @@ struct NewsDetailRow: View {
     }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 6)
     if let link = item["link"] as? String, let url = URL(string: link), ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
       Link(destination: url) { content }.buttonStyle(.plain)
-    } else { content }
+    } else {
+      content
+    }
   }
 }
 
@@ -246,8 +287,12 @@ struct FlashSaleCard: View {
           }
           Spacer(minLength: 0)
           if let expiry = item["expiry"] as? String, let date = screenDate(expiry), date > .now {
-            Label { Text(date, style: .timer).monospacedDigit() } icon: { Image(systemName: "clock") }
-              .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+            Label {
+              Text(date, style: .timer).monospacedDigit()
+            } icon: {
+              Image(systemName: "clock")
+            }
+            .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
           }
         }
       }
@@ -261,7 +306,7 @@ private struct CurrencyLabel: View {
   var body: some View {
     HStack(spacing: 4) {
       ThumbnailImage(url: URL(string: "https://wfhub.cagatayldzz.com/public/icons/\(icon).png"), maxPixelSize: 96)
-      .frame(width: 16, height: 16)
+        .frame(width: 16, height: 16)
       Text(value, format: .number).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
     }.accessibilityElement(children: .combine)
   }
