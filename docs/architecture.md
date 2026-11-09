@@ -13,7 +13,7 @@ WFHub has two native clients in a Rust workspace. They share a route catalogue, 
 
 ## Shared code
 
-`crates/core/src/lib.rs` defines activity routes, Codex categories, and platform validation. `crates/ffi` exposes the catalogue to iOS through `wfhub_catalogue` and `wfhub_free`. The catalogue is returned as an owned UTF-8 string; callers must free it with `wfhub_free`. The corresponding C declarations live in `apps/wfhub-mobile/WFHub/wfhub.h`.
+`crates/core/src/lib.rs` defines activity routes, Codex categories, and platform validation. `crates/ffi` exposes the catalogue to iOS through `wfhub_catalogue` and `wfhub_free`. The catalogue is returned as an owned UTF-8 string; callers must free it with `wfhub_free`. The corresponding C declarations live in `apps/wfhub-mobile/WFHub/Bridge/wfhub.h`.
 
 ## Desktop client
 
@@ -32,7 +32,7 @@ The root state tracks the selected tab, each tab's current page and navigation h
 
 ## iOS client
 
-`apps/wfhub-mobile/WFHub/WFHubApp.swift` creates the SwiftUI tab view and reads the shared catalogue through the bridge. `HomeView.swift`, `MarketView.swift`, `OtherScreens.swift`, and `DataScreen.swift` implement the main screens. `DetailComponents.swift` and `Design.swift` provide shared detail views and visual components. Localized strings are stored in language-specific `.lproj` directories.
+`apps/wfhub-mobile/WFHub/WFHubApp.swift` creates the SwiftUI tab view and reads the shared catalogue through the bridge. `Screens/` contains the main views, `Components/` contains shared detail views and visual components, and `Core/` contains shared services. The Rust headers are in `Bridge/`; localized strings are in language-specific `.lproj` directories under `Resources/`.
 
 `project.yml` is the source for the generated Xcode project. An Xcode pre-build script compiles `wfhub-ffi` as a static library for the selected iOS platform and architecture.
 

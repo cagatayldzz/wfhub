@@ -49,12 +49,13 @@ struct RootView: View {
   }
   var body: some View {
     TabView(selection: $selection) {
-      NavigationStack { HomeView() }.tabItem { Label("Home", systemImage: "house") }.tag(0)
-      NavigationStack { ActivitiesView() }.tabItem { Label("Activities", systemImage: "bolt") }.tag(1)
-      NavigationStack { MarketView() }.tabItem { Label("Market", systemImage: "bag") }.tag(2)
-      NavigationStack { CodexCategoriesView() }.tabItem { Label("Codex", systemImage: "book") }.tag(3)
-      NavigationStack { SettingsView() }.tabItem { Label("Settings", systemImage: "gear") }.tag(4)
+      NavigationStack { HomeView() }.tabItem { Label(t("home"), systemImage: "house") }.tag(0)
+      NavigationStack { ActivitiesView() }.tabItem { Label(t("activities"), systemImage: "bolt") }.tag(1)
+      NavigationStack { MarketView() }.tabItem { Label(t("market"), systemImage: "bag") }.tag(2)
+      NavigationStack { CodexCategoriesView() }.tabItem { Label(t("codex"), systemImage: "book") }.tag(3)
+      NavigationStack { SettingsView() }.tabItem { Label(t("settings"), systemImage: "gear") }.tag(4)
     }
+    .id(language)
     .tint(WFStyle.accent)
     .preferredColorScheme(colorScheme)
     .environment(\.locale, language == "system" ? .autoupdatingCurrent : Locale(identifier: language))
@@ -70,7 +71,7 @@ struct RouteList: View {
   @State private var search = ""
   var body: some View {
     List(routes.filter { search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) }) { route in
-      NavigationLink(route.title) { DataScreen(route: route, kind: kind) }
+      NavigationLink(td(route.title)) { DataScreen(route: route, kind: kind) }
     }
     .navigationTitle(title)
     .searchable(text: $search)
