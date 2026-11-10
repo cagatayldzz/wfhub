@@ -1,8 +1,8 @@
 # Architecture
 
-WFHub has a SwiftUI iOS app and a plain HTML/CSS website and a Rust API whose output is static.
+WFHub has a SwiftUI iOS app, a plain HTML/CSS website and a Rust API whose output is static. The site and the API are one Cloudflare Worker deployment served from `https://wfhub.cagatayldzz.com/` (the API under `/api/`, images under `/public/`).
 
-## Codex API
+## Website and API
 
 `apps/wfhub-web` is the static website (home, legal pages, Swagger page, images) and the static data the API serves under `data/`. `apps/wfhub-api` is the Rust API: a tool that makes the Codex catalogue files, and a Cloudflare Worker (Rust, WASM) that is compiled once, committed, and only serves those files and stores feedback. See the [API README](../apps/wfhub-api/README.md) for configuration and data provenance.
 
