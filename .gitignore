@@ -18,6 +18,10 @@
 *.mobileprovision
 
 /node_modules/
-/.tanstack/
-/dist/
 /.wrangler/
+
+# API: Rust build output and the downloaded WFCD sources of the catalogue.
+/apps/wfhub-api/target/
+/apps/wfhub-api/worker/target/
+/apps/wfhub-api/worker/build/
+/apps/wfhub-api/catalogue/sources/

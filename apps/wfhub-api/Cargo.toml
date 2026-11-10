@@ -1,0 +1,32 @@
+[package]
+name = "wfhub-api"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[features]
+# `generate` makes the static catalogue files from the WFCD sources (the tool and the tests). The Worker (`worker/`)
+# does not need it: it only serves static files (`apps/wfhub-web/data`), with the routes of `routes`.
+default = ["generate"]
+generate = ["dep:unicode-normalization"]
+
+[dependencies]
+hmac = "0.12"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+sha2 = "0.10"
+unicode-normalization = { version = "0.1", optional = true }
+
+[[bin]]
+name = "export-catalogue"
+path = "src/bin/export-catalogue.rs"
+required-features = ["generate"]
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+dbg_macro = "warn"
+todo = "deny"
+unimplemented = "deny"

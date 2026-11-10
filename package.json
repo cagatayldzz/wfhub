@@ -1,37 +1,23 @@
 {
   "name": "wfhub",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
-    "cf:build": "bun scripts/cloudflare.ts build",
-    "cf:deploy": "bun scripts/cloudflare.ts deploy",
+    "cf:deploy": "npx wrangler d1 migrations apply DB --remote && npx wrangler deploy",
+    "cf:build": "echo \"nothing to build: the site is static and the Worker is committed (apps/wfhub-api/worker/dist), see api:build\"",
+    "cf:preview": "npx wrangler versions upload",
     "commit": "bash scripts/commit.sh",
+    "format:rust": "cargo fmt --manifest-path apps/wfhub-api/Cargo.toml",
     "format:swift": "swift format --in-place --recursive apps/wfhub-mobile/WFHub",
-    "dev:web": "bun scripts/dev.ts web",
+    "dev:web": "npx wrangler dev --local --port 8000",
+    "api:test": "cargo test --release --manifest-path apps/wfhub-api/Cargo.toml",
+    "api:build": "bash scripts/build-worker.sh",
+    "catalogue:fetch": "bash apps/wfhub-api/catalogue/fetch.sh",
+    "catalogue:export": "cargo run --release --manifest-path apps/wfhub-api/Cargo.toml --bin export-catalogue -- apps/wfhub-api/catalogue/sources apps/wfhub-web/data/catalogue",
     "mobile:archive": "bash scripts/mobile.sh archive",
     "mobile:project": "bash scripts/mobile.sh project",
     "mobile:simulator": "bash scripts/mobile.sh simulator",
-    "test": "bash scripts/test.sh",
-    "update": "bash scripts/update.sh"
-  },
-  "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.67.0",
-    "@cloudflare/workers-types": "^5.20261109.1",
-    "@tailwindcss/vite": "^4.3.5",
-    "@types/bun": "^1.4.4",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.3.0",
-    "tailwindcss": "^4.3.5",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.7",
-    "wrangler": "^4.158.0"
-  },
-  "dependencies": {
-    "@tanstack/react-router": "^1.170.45",
-    "@tanstack/react-start": "^1.169.3",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "test": "cargo test --release --manifest-path apps/wfhub-api/Cargo.toml"
   }
 }

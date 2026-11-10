@@ -1,13 +1,14 @@
 # WFHub
 
-WFHub is a Warframe companion for exploring world state, activities, Codex content, and recent market orders. The project includes a SwiftUI iOS app and a TypeScript website with an API.
+WFHub is a Warframe companion for exploring world state, activities, Codex content, and recent market orders. The project includes a SwiftUI iOS app and a plain HTML/CSS website and a static Rust API on Cloudflare.
 
 ## Getting started
 
-Install [Bun](https://bun.sh/), then run the website from the repository root:
+Install [Node.js](https://nodejs.org/) and [Rust](https://rustup.rs/), then run the website and API from the repository root:
 
 ```sh
-bun run dev:web          # Website: http://localhost:8000
+npm run dev:web          # Website and API: http://localhost:8000
+npm run api:test         # API tests
 ```
 
 For iOS setup, prerequisites, and development checks, see the [development guide](docs/development.md). More information is available in the [documentation](docs/README.md).

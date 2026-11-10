@@ -47,7 +47,7 @@ targets:
         CODE_SIGN_ENTITLEMENTS: WFHub/WFHub.entitlements
         PRODUCT_BUNDLE_IDENTIFIER: com.wfhub.cagatayldzz
         MARKETING_VERSION: "2.2"
-        CURRENT_PROJECT_VERSION: "6"
+        CURRENT_PROJECT_VERSION: "7"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_KEY_CFBundleDisplayName: WFHub

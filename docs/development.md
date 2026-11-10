@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Install Bun and Node.js for web development. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
+Install Node.js (for Wrangler) and Rust with the `wasm32-unknown-unknown` target for web and API development. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
 
 ## Run the clients
 
@@ -20,18 +20,18 @@ Alternatively, from the repository root, `bash scripts/mobile.sh simulator` gene
 
 ## Website and API
 
-Run `bun install`, then `bun run dev:web` from the repository root and open `http://localhost:8000`. The site uses TanStack React Start, Vite and Tailwind CSS; its Vite development server also handles API requests. API requests use locally generated data when available, otherwise they use the deployed API. Run `bun run cf:build` to build the site and generate local data; `bun run cf:deploy` builds and deploys the website and API to Cloudflare. The build produces the client in `dist/client` and the Worker in `dist/server`. Tailwind's CSS input is generated under `.tanstack` when Vite starts.
+The website is plain HTML and CSS in `apps/wfhub-web` (no build step). Run `npm run dev:web` from the repository root and open `http://localhost:8000`: Wrangler serves the site and the API together. `npm run cf:deploy` applies pending D1 migrations and uploads the site and the committed Worker to Cloudflare; deploying never compiles Rust. Run `npm run api:build` (and commit `apps/wfhub-api/worker/dist`) only when the Rust code of the Worker or `routes.rs`/`feedback.rs` changes. Run `npm run catalogue:fetch` and `npm run catalogue:export` to refresh the Codex catalogue files in `apps/wfhub-web/data/catalogue`.
 
-The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-web/api/README.md) for configuration and dataset details.
+The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-api/README.md) for configuration and dataset details.
 
 ## Checks
 
 ```sh
-bunx tsc --noEmit
-bun test apps/wfhub-web/api
+npm run api:test
+npm run format:rust
 ```
 
-`bash scripts/test.sh` runs these checks in sequence. API tests cover routes, HTTP methods, and response behavior; they do not replace UI and device testing. When changing UI behavior, exercise the affected screens and navigation in the relevant client.
+API tests cover routes, HTTP methods, feedback validation, and the static data files; they do not replace UI and device testing. When changing UI behavior, exercise the affected screens and navigation in the relevant client.
 
 ## Generated files and release
 
@@ -41,4 +41,4 @@ The iOS `build/` directory and generated `.xcodeproj` files are ignored by Git. 
 
 If the simulator script cannot find iPhone 15, select an available simulator with `WFHUB_SIMULATOR`. Network-backed screens require access to the services listed in [Data and integrations](data-and-integrations.md).
 
-The TypeScript development and Cloudflare scripts use Bun.
+The web and API scripts are npm scripts (`package.json`); they only need Node.js for `npx wrangler`.
