@@ -4,7 +4,7 @@ The Rust API behind `https://wfhub.cagatayldzz.com/api`. It serves the WFHub Cod
 banners and a feedback endpoint. For local development, run `npm run dev:web` and open `http://localhost:8000/api/` for the
 Swagger documentation.
 
-**Everything is static.** The data are files in the website (`apps/wfhub-web/data`). The Worker is compiled **once** (its
+**Everything is static.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is compiled **once** (its
 compiled form, `worker/dist`, is committed), holds no data and only serves those files; the only thing it writes is
 feedback (Cloudflare D1). To change the API you edit a file and deploy the site, and nothing is compiled again.
 
@@ -15,7 +15,7 @@ catalogue/fetch.sh      downloads the WFCD sources into catalogue/sources (not c
 migrations/             D1 migrations (feedback)
 worker/                 the Cloudflare Worker (Rust, WASM): glue between the site's files and the routes
 worker/dist/            the compiled Worker (index.js, index_bg.wasm), committed
-apps/wfhub-web/data/    what the Worker serves
+data/                   what the Worker serves
   events.json           the banners (edit by hand)
   mastery/<name>.json   mastery checklist snapshots (edit by hand)
   catalogue/            made by catalogue:export from WFCD: <category>.json and <category>/<first character of slug>.json
@@ -27,7 +27,7 @@ npm run dev:web           # the real thing locally (wrangler dev): the website a
 npm run api:test          # routes, feedback rules and the static files
 npm run api:build         # compiles the Worker into worker/dist: only when worker/ or src/routes.rs, src/feedback.rs change
 npm run catalogue:fetch   # downloads the WFCD files
-npm run catalogue:export  # writes apps/wfhub-web/data/catalogue
+npm run catalogue:export  # writes data/catalogue
 npm run format:rust
 ```
 

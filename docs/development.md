@@ -20,7 +20,7 @@ Alternatively, from the repository root, `bash scripts/mobile.sh simulator` gene
 
 ## Website and API
 
-The website is plain HTML and CSS in `apps/wfhub-web` (no build step). Run `npm run dev:web` from the repository root and open `http://localhost:8000`: Wrangler serves the site and the API together. `npm run cf:deploy` applies pending D1 migrations and uploads the site and the committed Worker to Cloudflare; deploying never compiles Rust. Run `npm run api:build` (and commit `apps/wfhub-api/worker/dist`) only when the Rust code of the Worker or `routes.rs`/`feedback.rs` changes. Run `npm run catalogue:fetch` and `npm run catalogue:export` to refresh the Codex catalogue files in `apps/wfhub-web/data/catalogue`.
+The website is plain HTML and CSS in `apps/wfhub-web` (images in `public/`); `scripts/build-site.sh` merges it and the API data (`apps/wfhub-api/data`) into `dist/site` (the scripts below run it). Run `npm run dev:web` from the repository root and open `http://localhost:8000`: Wrangler serves the site and the API together. `npm run cf:deploy` applies pending D1 migrations and uploads the site and the committed Worker to Cloudflare; deploying never compiles Rust. Run `npm run api:build` (and commit `apps/wfhub-api/worker/dist`) only when the Rust code of the Worker or `routes.rs`/`feedback.rs` changes. Run `npm run catalogue:fetch` and `npm run catalogue:export` to refresh the Codex catalogue files in `apps/wfhub-api/data/catalogue`.
 
 The privacy and terms pages are drafts and require review before publication. See the [API README](../apps/wfhub-api/README.md) for configuration and dataset details.
 

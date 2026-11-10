@@ -1,3 +1,6 @@
 {
-    "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "json.schemaDownload.trustedDomains": {
+    "https://unpkg.com/": true
+  }
 }
