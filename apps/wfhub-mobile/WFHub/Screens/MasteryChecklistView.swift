@@ -27,7 +27,6 @@ private struct MasteryMark: Codable {
   private let prefix = "mastery.warframe.v1."
   private let cloud = NSUbiquitousKeyValueStore.default
   private let groupPrefix = "mastery.group.v1."
-  private let legacyCategories: Set<String> = ["warframes", "primary", "secondary", "melee"]
   private var observer: NSObjectProtocol?
 
   init() {
@@ -47,53 +46,50 @@ private struct MasteryMark: Codable {
   deinit { if let observer { NotificationCenter.default.removeObserver(observer) } }
 
   func toggle(_ id: String) {
-    let mark = MasteryMark(completed: !(marks[id]?.completed ?? false), modified: Date().timeIntervalSince1970)
-    marks[id] = mark
+    marks[id] = MasteryMark(completed: !(marks[id]?.completed ?? false), modified: Date().timeIntervalSince1970)
     saveLocal()
-    writeCloud(mark, id: id)
+    writeGroup(group(for: id))
     cloud.synchronize()
   }
 
+  /// Merges remote marks into local state, then writes one KVS key per category.
+  /// Pre-grouping builds stored one key per item for warframes/primary/secondary/melee; those are
+  /// migrated into the group keys and removed so the 1024-key KVS limit is never approached.
   private func mergeCloud() {
-    for (key, value) in cloud.dictionaryRepresentation where key.hasPrefix(groupPrefix) {
+    let all = cloud.dictionaryRepresentation
+    for (key, value) in all where key.hasPrefix(groupPrefix) {
       guard let data = value as? Data, let remote = try? JSONDecoder().decode([String: MasteryMark].self, from: data) else { continue }
       for (id, mark) in remote where marks[id] == nil || marks[id]!.modified < mark.modified { marks[id] = mark }
     }
-    for (key, value) in cloud.dictionaryRepresentation where key.hasPrefix(prefix) {
+    var legacyKeys: [String] = []
+    for (key, value) in all where key.hasPrefix(prefix) {
+      legacyKeys.append(key)
       guard let data = value as? Data, let remote = try? JSONDecoder().decode(MasteryMark.self, from: data) else { continue }
       let id = String(key.dropFirst(prefix.count))
       if let local = marks[id], local.modified >= remote.modified { continue }
       marks[id] = remote
     }
     saveLocal()
-    let groups = Set(marks.keys.compactMap { group(for: $0) })
-    for group in groups { writeGroup(group) }
-    for (id, mark) in marks where group(for: id) == nil {
-      let remote = cloud.data(forKey: prefix + id).flatMap { try? JSONDecoder().decode(MasteryMark.self, from: $0) }
-      if remote == nil || mark.modified > remote!.modified { writeCloud(mark, id: id) }
-    }
+    for group in Set(marks.keys.map(group(for:))) { writeGroup(group) }
+    for key in legacyKeys { cloud.removeObject(forKey: key) }
   }
 
   private func saveLocal() {
     if let data = try? JSONEncoder().encode(marks) { UserDefaults.standard.set(data, forKey: localKey) }
   }
 
-  private func group(for id: String) -> String? {
-    guard let separator = id.firstIndex(of: ":") else { return nil }
-    let category = String(id[..<separator])
-    return legacyCategories.contains(category) ? nil : category
+  /// Warframe ids are bare slugs; every other category uses "category:id".
+  private func group(for id: String) -> String {
+    guard let separator = id.firstIndex(of: ":") else { return "warframes" }
+    return String(id[..<separator])
   }
 
   private func writeGroup(_ group: String) {
     let local = marks.filter { self.group(for: $0.key) == group }
-    let remote = cloud.data(forKey: groupPrefix + group).flatMap { try? JSONDecoder().decode([String: MasteryMark].self, from: $0) } ?? [:]
-    var merged = remote
-    for (id, mark) in local where merged[id] == nil || merged[id]!.modified < mark.modified { merged[id] = mark }
-    if let data = try? JSONEncoder().encode(merged) { cloud.set(data, forKey: groupPrefix + group) }
-  }
-
-  private func writeCloud(_ mark: MasteryMark, id: String) {
-    if let group = group(for: id) { writeGroup(group) } else if let data = try? JSONEncoder().encode(mark) { cloud.set(data, forKey: prefix + id) }
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .sortedKeys  // stable bytes, so an unchanged group is never rewritten (avoids sync ping-pong)
+    guard let data = try? encoder.encode(local), cloud.data(forKey: groupPrefix + group) != data else { return }
+    cloud.set(data, forKey: groupPrefix + group)
   }
 }
 
