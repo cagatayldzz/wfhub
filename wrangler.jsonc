@@ -4,6 +4,10 @@
   "main": "apps/wfhub-api/worker/dist/index.js",
   "compatibility_date": "2026-10-29",
   "workers_dev": false,
+  "vars": {
+    "ACCESS_TEAM_DOMAIN": "cy-team.cloudflareaccess.com",
+    "ACCESS_AUD": "cb1419d17532ebf689c2920aeef182c53a21ab3c3c92d1d9c2a6e55da55d9ef1"
+  },
   "preview_urls": false,
   "assets": {
     "directory": "./dist/site",

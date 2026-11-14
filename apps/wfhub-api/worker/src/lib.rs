@@ -5,6 +5,8 @@
 //!
 //! The routes are in `wfhub_api::routes`, the feedback rules in `wfhub_api::feedback`; this file only fetches and stores.
 
+mod access;
+
 use wfhub_api::feedback::{self, Feedback};
 use wfhub_api::routes::{Reply, Route, error, item_reply, route};
 use worker::wasm_bindgen::JsValue;
@@ -19,11 +21,13 @@ async fn asset(env: &Env, path: &str) -> Result<Option<String>> {
   Ok(Some(response.text().await?))
 }
 
-fn respond(reply: Reply, head: bool) -> Result<Response> {
+fn respond(reply: Reply, head: bool, public: bool) -> Result<Response> {
   let headers = Headers::new();
   headers.set("content-type", reply.content_type)?;
   headers.set("cache-control", reply.cache)?;
-  headers.set("access-control-allow-origin", "*")?;
+  if public {
+    headers.set("access-control-allow-origin", "*")?;
+  }
   headers.set("x-content-type-options", "nosniff")?;
   let response = if head { Response::empty()? } else { Response::ok(reply.body)? };
   Ok(response.with_status(reply.status).with_headers(headers))
@@ -96,7 +100,24 @@ async fn submit(mut req: Request, env: &Env) -> Result<Reply> {
   Ok(Reply::json(201, "{\"ok\":true}".into(), "no-store"))
 }
 
+/// `GET /api/admin/feedback`: the saved feedback, newest first. Only for the owner (Cloudflare Access).
+async fn list_feedback(req: &Request, env: &Env) -> Result<Reply> {
+  if !access::is_authorized(req, env).await {
+    return Ok(Reply { status: 403, body: "Forbidden\n".into(), cache: "no-store", content_type: "text/plain; charset=utf-8" });
+  }
+  let Ok(db) = env.d1("DB") else { return Ok(error(503, "Service unavailable")) };
+  let rows = db
+    .prepare("SELECT id, category, title, message, created_at FROM feedback ORDER BY created_at DESC LIMIT 500")
+    .all()
+    .await?
+    .results::<serde_json::Value>()?;
+  Ok(Reply::json(200, serde_json::Value::Array(rows).to_string(), "no-store"))
+}
+
 async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Reply> {
+  if url.path() == "/api/admin/feedback" {
+    return if method == "GET" { list_feedback(&req, env).await } else { Ok(wfhub_api::routes::method_not_allowed()) };
+  }
   let route = match route(method, url.path()) {
     Ok(route) => route,
     Err(reply) => return Ok(reply),
@@ -124,5 +145,6 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
   if let Ok(Route::Redirect(to)) = route(&method, url.path()) {
     return Response::redirect_with_status(url.join(to)?, 308);
   }
-  respond(answer(req, &env, &url, &method).await?, head)
+  let public = !url.path().starts_with("/api/admin/");
+  respond(answer(req, &env, &url, &method).await?, head, public)
 }

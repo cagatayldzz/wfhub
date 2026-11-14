@@ -11,6 +11,7 @@ crate-type = ["cdylib"]
 [dependencies]
 wfhub-api = { path = "..", default-features = false }
 serde_json = "1"
+base64 = "0.22"
 worker = { version = "0.8", features = ["d1"] }
 
 [lints.rust]
