@@ -4,7 +4,7 @@ WFHub has a SwiftUI iOS app, a plain HTML/CSS website and a Rust API whose outpu
 
 ## Website and API
 
-`apps/wfhub-web` is the static website (home, legal pages, Swagger page). `apps/wfhub-api` is the Rust API and owns its static data in `data/` (events, mastery, catalogue): a tool that makes the Codex catalogue files, and a Cloudflare Worker (Rust, WASM) that wrangler compiles on every deploy (the output is not committed), and mostly serves those files and stores feedback. See the [API README](../apps/wfhub-api/README.md) for configuration and data provenance.
+`apps/wfhub-web` is the static website (home, legal pages, Swagger page). `apps/wfhub-api` is the Rust API and owns its static data in `data/` (events, mastery, catalogue): a tool that makes the Codex catalogue files, and a Cloudflare Worker (Rust, WASM) that is compiled with `npm run api:build` and committed (`worker/dist`), and mostly serves those files and stores feedback. See the [API README](../apps/wfhub-api/README.md) for configuration and data provenance.
 
 ## iOS client
 

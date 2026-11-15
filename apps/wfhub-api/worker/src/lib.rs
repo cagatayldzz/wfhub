@@ -1,6 +1,6 @@
 //! The WFHub API as a Cloudflare Worker, in front of the website: requests to `/api/...` come here, the rest is served
-//! from the static assets. It is Rust compiled to WASM (wrangler runs `scripts/build-worker.sh`
-//! before deploy and dev; the result in `dist/` is not committed): it holds no data. Everything it answers comes from static files of the site (`/data/...`, `/swagger/...`), so
+//! from the static assets. It is Rust compiled to WASM (`npm run api:build`; the result in `dist/` is
+//! committed, `cf:deploy` checks it is fresh): it holds no data. Everything it answers comes from static files of the site (`/data/...`, `/swagger/...`), so
 //! changing the API is changing those files and deploying the site. The one thing it writes is feedback (D1, `DB`).
 //!
 //! The live game state (`/api/worldstate/...`) is the one thing that is not a file: it is fetched from the game, cached

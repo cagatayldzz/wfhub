@@ -2,10 +2,6 @@
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "wfhub",
   "main": "apps/wfhub-api/worker/dist/index.js",
-  "build": {
-    "command": "bash scripts/build-worker.sh",
-    "watch_dir": ["apps/wfhub-api/src", "apps/wfhub-api/worker/src"]
-  },
   "compatibility_date": "2026-10-29",
   "workers_dev": false,
   "vars": {

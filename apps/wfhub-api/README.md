@@ -4,7 +4,7 @@ The Rust API behind `https://wfhub.cagatayldzz.com/api`. It serves the WFHub Cod
 banners, the live game state (fissures, cycles, Baro...) and a feedback endpoint. For local development, run `npm run dev:web` and open `http://localhost:8000/api/` for the
 Swagger documentation.
 
-**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (wrangler builds it before every deploy and dev start; `worker/dist` is not committed), holds no data and only serves those files; it writes feedback (Cloudflare D1) and it reads the live game state (see World state below). To change the data you edit a file and deploy.
+**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (`npm run api:build`; the result, `worker/dist`, is committed and checked before every deploy), holds no data and only serves those files; it writes feedback (Cloudflare D1) and it reads the live game state (see World state below). To change the data you edit a file and deploy.
 
 ```text
 src/
@@ -25,7 +25,7 @@ worker/                 the Cloudflare Worker (Rust, WASM): glue between the sit
   migrations/           D1 migrations (feedback)
   src/lib.rs            the router            src/feedback.rs   feedback in D1
   src/worldstate.rs     fetch + cache         src/access.rs     Cloudflare Access check
-  dist/                 the compiled Worker, build output, not committed
+  dist/                 the compiled Worker, committed (rebuild with npm run api:build when Rust changes)
 data/                   what the Worker serves (copied to /data by scripts/build-site.sh)
   events.json           the banners (edit by hand)
   mastery/<name>.json   mastery checklist snapshots (edit by hand)
@@ -39,7 +39,7 @@ apps/wfhub-web/swagger  the Swagger page and openapi.json (edit by hand)
 ```sh
 npm run dev:web           # the real thing locally (wrangler dev): the website and /api together, on port 8000
 npm run api:test          # routes, feedback rules and the static files
-npm run api:build         # compiles the Worker into worker/dist by hand (wrangler does it on deploy and dev)
+npm run api:build         # compiles the Worker into worker/dist: when src/ or worker/src change; commit the result (cf:deploy checks it is fresh)
 npm run catalogue:fetch   # downloads the WFCD files
 npm run catalogue:export  # writes data/catalogue
 npm run format:rust

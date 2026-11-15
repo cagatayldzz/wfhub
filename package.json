@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "cf:deploy": "bash scripts/build-site.sh && npx wrangler d1 migrations apply DB --remote && npx wrangler deploy",
+    "cf:deploy": "bash scripts/check-worker.sh && bash scripts/build-site.sh && npx wrangler d1 migrations apply DB --remote && npx wrangler deploy",
     "cf:build": "bash scripts/build-site.sh",
-    "cf:preview": "bash scripts/build-site.sh && npx wrangler versions upload",
+    "cf:preview": "bash scripts/check-worker.sh && bash scripts/build-site.sh && npx wrangler versions upload",
     "commit": "bash scripts/commit.sh",
     "format:rust": "cargo fmt --manifest-path apps/wfhub-api/Cargo.toml",
     "format:swift": "swift format --in-place --recursive apps/wfhub-mobile/WFHub",
