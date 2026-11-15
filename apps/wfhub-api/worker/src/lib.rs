@@ -70,7 +70,7 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
   if let Ok(Route::WorldState { platform, url: upstream, section }) = route(&method, url.path()) {
     let (reply, stale) = match worldstate::game_state(&env, platform, upstream, section).await {
       Ok(answer) => answer,
-      Err(_) => (error(503, "Game state unavailable"), false),
+      Err(error) => worldstate::unavailable(&error.to_string()),
     };
     let response = respond(reply, head, true)?;
     if stale {

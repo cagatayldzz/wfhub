@@ -28,28 +28,57 @@ async fn keep(cache: &Cache, kind: &str, platform: &str, seconds: u32, body: &st
 
 /// The raw state of the game, as text, and whether it is an old copy (the game did not answer). Cached 30 seconds; the
 /// last good copy is kept a week.
-async fn raw_state(platform: &str, upstream: &str) -> Option<(String, bool)> {
+async fn raw_state(platform: &str, upstream: &str) -> std::result::Result<(String, bool), String> {
   let cache = Cache::default();
   if let Some(text) = cached(&cache, "fresh", platform).await {
-    return Some((text, false));
+    return Ok((text, false));
   }
-  if let Ok(url) = Url::parse(upstream)
-    && let Ok(mut response) = Fetch::Url(url).send().await
-    && response.status_code() == 200
-    && let Ok(text) = response.text().await
-    && serde_json::from_str::<serde_json::Value>(&text).is_ok_and(|state| state.get("Time").is_some())
-  {
-    keep(&cache, "fresh", platform, FRESH_SECONDS, &text).await;
-    keep(&cache, "last", platform, LAST_GOOD_SECONDS, &text).await;
-    return Some((text, false));
+  let fetched = fetch_upstream(upstream).await;
+  match fetched {
+    Ok(text) => {
+      keep(&cache, "fresh", platform, FRESH_SECONDS, &text).await;
+      keep(&cache, "last", platform, LAST_GOOD_SECONDS, &text).await;
+      Ok((text, false))
+    }
+    Err(reason) => {
+      console_error!("worldstate {platform}: {reason}");
+      cached(&cache, "last", platform).await.map(|text| (text, true)).ok_or(reason)
+    }
   }
-  cached(&cache, "last", platform).await.map(|text| (text, true))
+}
+
+/// The raw state from the game's server; the error says what went wrong.
+async fn fetch_upstream(upstream: &str) -> std::result::Result<String, String> {
+  let url = Url::parse(upstream).map_err(|error| format!("bad address: {error}"))?;
+  let headers = Headers::new();
+  headers.set("user-agent", "Mozilla/5.0 (compatible; WFHub/1.0)").map_err(|error| error.to_string())?;
+  headers.set("accept", "application/json, text/plain, */*").map_err(|error| error.to_string())?;
+  let mut init = RequestInit::new();
+  init.with_method(Method::Get).with_headers(headers);
+  let request = Request::new_with_init(url.as_str(), &init).map_err(|error| error.to_string())?;
+  let mut response = Fetch::Request(request).send().await.map_err(|error| format!("request failed: {error}"))?;
+  if response.status_code() != 200 {
+    return Err(format!("upstream answered {}", response.status_code()));
+  }
+  let text = response.text().await.map_err(|error| format!("body unreadable: {error}"))?;
+  match serde_json::from_str::<serde_json::Value>(&text) {
+    Ok(state) if state.get("Time").is_some() => Ok(text),
+    Ok(_) => Err("upstream answer has no Time".into()),
+    Err(error) => Err(format!("upstream answer is not JSON: {error} ({} bytes)", text.len())),
+  }
+}
+
+pub fn unavailable(reason: &str) -> (Reply, bool) {
+  (Reply::json(503, serde_json::json!({ "error": "Game state unavailable", "reason": reason }).to_string(), "no-store"), false)
 }
 
 /// `GET /api/worldstate/{platform}[/{section}].json`: the parsed state and whether it is a stale copy.
 pub async fn game_state(env: &Env, platform: &str, upstream: &str, section: Option<&str>) -> Result<(Reply, bool)> {
-  let Some((text, stale)) = raw_state(platform, upstream).await else { return Ok((error(503, "Game state unavailable"), false)) };
-  let Ok(state) = serde_json::from_str::<serde_json::Value>(&text) else { return Ok((error(503, "Game state unavailable"), false)) };
+  let (text, stale) = match raw_state(platform, upstream).await {
+    Ok(raw) => raw,
+    Err(reason) => return Ok(unavailable(&reason)),
+  };
+  let Ok(state) = serde_json::from_str::<serde_json::Value>(&text) else { return Ok(unavailable("stored state is not JSON")) };
   let Some(tables) = crate::asset(env, "/data/worldstate/tables.json").await? else { return Ok((error(503, "Names unavailable"), false)) };
   let mut shards = Vec::new();
   for shard in worldstate::shards_needed(&state) {
