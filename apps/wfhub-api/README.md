@@ -80,7 +80,9 @@ Worker cannot go through a proxy (its TLS cannot name the host the certificate m
 `.github/workflows/worldstate.yml` runs `scripts/push-worldstate.sh` on GitHub every 10 minutes: it downloads the four raw states with
 `curl` **through a proxy** (`WORLDSTATE_PROXY`, a Webshare free-plan proxy: 10 shared addresses, 1 GB a month; one run is about
 4 x 27 KB gzipped, ~0.5 GB a month) and `PUT`s each to `/api/ingest/worldstate/{platform}` with a bearer token. The Worker keeps it in D1
-(table `worldstate`).
+(table `worldstate`). The pushes go to the Worker's **workers.dev address** (`wrangler.jsonc` has `workers_dev: true`; the repository
+variable `WFHUB_INGEST_URL` holds it): the Bot Fight Mode of the `cagatayldzz.com` zone (free plan, it cannot be skipped by a rule) gives
+GitHub's addresses a managed challenge, which a `PUT` cannot solve. The token still protects the route.
 
 Reading: the raw state is read from D1 and **cached 5 minutes per platform in each data centre** (Cache API), then parsed per request.
 Answers carry `x-worldstate-age` (seconds since the push) and `x-worldstate-stale: 1` over 30 minutes; times in the answers come from the

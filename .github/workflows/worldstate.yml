@@ -2,6 +2,9 @@
 # and pushes it to the WFHub API, which keeps it in D1. Secrets of the repository:
 #   WORLDSTATE_PUSH_TOKEN  the same value as the Worker's secret of that name
 #   WORLDSTATE_PROXY       http://user:password@host:port of the proxy
+# Variable of the repository (Settings > Secrets and variables > Actions > Variables):
+#   WFHUB_INGEST_URL       the Worker's workers.dev address (https://wfhub.<subdomain>.workers.dev). The pushes go there and not to
+#                          wfhub.cagatayldzz.com, because the Bot Fight Mode of that zone challenges GitHub's addresses (managed challenge).
 # Every 10 minutes: about 4 x 27 KB gzipped per run, ~0.5 GB of proxy traffic a month (the free Webshare plan has 1 GB).
 name: World state
 
@@ -29,3 +32,4 @@ jobs:
         env:
           WORLDSTATE_PUSH_TOKEN: ${{ secrets.WORLDSTATE_PUSH_TOKEN }}
           WORLDSTATE_PROXY: ${{ secrets.WORLDSTATE_PROXY }}
+          WFHUB_URL: ${{ vars.WFHUB_INGEST_URL }}

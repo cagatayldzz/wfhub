@@ -7,7 +7,8 @@
 #   WORLDSTATE_PUSH_TOKEN=... WORLDSTATE_PROXY=http://user:password@host:port bash scripts/push-worldstate.sh
 #   (the token is the Worker's secret of that name; without it in the environment it is read from
 #   ~/.config/wfhub/worldstate-token, or the file in WFHUB_TOKEN_FILE; without a proxy the download is direct)
-#   WFHUB_URL=http://localhost:8000 ...        # push to a local `npm run dev:web` (token in .dev.vars)
+#   WFHUB_URL=http://localhost:8000 ...        # where to push: a local `npm run dev:web` (token in .dev.vars); the workflow uses the
+#                                              # Worker's workers.dev address (the Bot Fight Mode of wfhub.cagatayldzz.com challenges GitHub)
 set -uo pipefail
 
 base="${WFHUB_URL:-https://wfhub.cagatayldzz.com}"
