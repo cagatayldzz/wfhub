@@ -1,4 +1,4 @@
--- The raw game state of each platform, pushed by scripts/push-worldstate.sh (the game's server refuses the Worker itself).
+-- The raw game state of each platform (an earlier design; dropped by 0003).
 CREATE TABLE IF NOT EXISTS worldstate (
   platform TEXT PRIMARY KEY CHECK (platform IN ('pc', 'xb1', 'ps4', 'swi')),
   state_time INTEGER NOT NULL,
