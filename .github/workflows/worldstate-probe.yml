@@ -1,0 +1,32 @@
+# One-off diagnosis: which request does the game's server let through from a GitHub runner? Run it by hand (Actions ->
+# "World state probe" -> Run workflow) and read the log. Delete this file once the world state push works.
+name: World state probe
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Where does the runner come from?
+        run: curl -sS -m 20 https://ipinfo.io/json | grep -E '"(ip|org|city|country)"' || true
+      - name: Try the game's server
+        run: |
+          UA='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
+          url=https://api.warframe.com/cdn/worldState.php
+          try() { printf '%-28s' "$1"; shift; curl -sS -m 30 -o /tmp/body -w '%{http_code} %{size_download}B %{content_type}\n' "$@" "$url" || echo "curl failed"; }
+          try "default curl"
+          try "chrome UA"          -A "$UA"
+          try "chrome UA + headers" -A "$UA" -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.9' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: none' -H 'Upgrade-Insecure-Requests: 1'
+          try "chrome UA + referer" -A "$UA" -e 'https://www.warframe.com/'
+          try "http1.1"            --http1.1 -A "$UA"
+          try "UA Warframe"        -A 'Warframe'
+          try "no UA"              -A ''
+          echo "--- answer of the last 403 (first lines):"
+          head -c 400 /tmp/body; echo
+          echo "--- other hosts"
+          for h in api-xb1 api-ps4 api-swi content; do printf '%-28s' "$h"; curl -sS -m 30 -o /dev/null -w '%{http_code}\n' -A "$UA" "https://$h.warframe.com/$([ $h = content ] && echo dynamic || echo cdn)/worldState.php"; done

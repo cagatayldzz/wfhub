@@ -1,5 +1,5 @@
-//! The live game state. The game's server refuses requests from Cloudflare's network (403), so the Worker does not fetch
-//! it: `scripts/push-worldstate.sh` (run from GitHub Actions, see `.github/workflows/worldstate.yml`) fetches the raw
+//! The live game state. The game's server refuses requests from Cloudflare's network and from GitHub Actions (403), so the
+//! Worker does not fetch it: `scripts/push-worldstate.sh` (run on a Mac by `scripts/install-worldstate-agent.sh`) fetches the raw
 //! state of each platform and `PUT`s it to `/api/ingest/worldstate/{platform}`; it is kept in D1 (table `worldstate`).
 //! Reading answers from that copy (cached 30 seconds per data centre) and parses it with `wfhub_api::worldstate` and the
 //! names of `/data/worldstate`. Times in the answers are computed from the clock, so an old copy is still correct about

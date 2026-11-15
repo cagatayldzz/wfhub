@@ -75,22 +75,25 @@ result and deploy; the catalogue changes only when you run it again.
 `api-xb1.warframe.com`, ps4 `api-ps4.warframe.com`, swi `api-swi.warframe.com`, all under `/cdn/worldState.php`) into the same JSON
 shapes as warframe-status (`src/worldstate/`; pure Rust, `cargo test`, fixtures in `tests/fixtures`).
 
-**The game's server answers 403 to Cloudflare Workers**, so the Worker cannot fetch the state itself. Instead
-`scripts/push-worldstate.sh` fetches the four states and `PUT`s each to `/api/ingest/worldstate/{platform}`; the Worker keeps it in
-D1 (table `worldstate`) and parses it per request (cached 30 seconds per data centre). `.github/workflows/worldstate.yml` runs the
-script every 5 minutes (GitHub may delay scheduled runs by several minutes). Answers carry `x-worldstate-age` (seconds since the
-push) and `x-worldstate-stale: 1` over 15 minutes; times in the answers come from the clock, so an old copy is still right about
-what has expired. Before the first push the endpoints answer `503` with a `reason`.
+**The game's server answers 403 to Cloudflare Workers and to GitHub Actions**, so neither can fetch the state. Instead
+`scripts/push-worldstate.sh` runs somewhere the game lets in (a Mac, or any server with a normal address), fetches the four states and
+`PUT`s each to `/api/ingest/worldstate/{platform}` with a bearer token; the Worker keeps it in D1 (table `worldstate`) and parses it
+per request (cached 30 seconds per data centre). Answers carry `x-worldstate-age` (seconds since the push) and
+`x-worldstate-stale: 1` over 15 minutes; times in the answers come from the clock, so an old copy is still right about what has
+expired. Before the first push the endpoints answer `503` with a `reason`.
 
-Setup, once: a long random token in both places (the push route answers `401` without it, `503` while the Worker has none):
+Setup, once. The token is a long random value (`openssl rand -hex 32`) that the Worker and the script share; the push route answers
+`401` without it and `503` while the Worker has none:
 
 ```sh
-npx wrangler secret put WORLDSTATE_PUSH_TOKEN                  # the Worker (paste the token)
-gh secret set WORLDSTATE_PUSH_TOKEN                            # the repository (same token), or in the GitHub settings
+npx wrangler secret put WORLDSTATE_PUSH_TOKEN          # the Worker (paste the token)
+bash scripts/install-worldstate-agent.sh               # a Mac: asks for the same token, then pushes every 5 minutes
+bash scripts/install-worldstate-agent.sh --uninstall   # remove it
 ```
 
-Run it by hand with `WORLDSTATE_PUSH_TOKEN=... bash scripts/push-worldstate.sh` (`WFHUB_URL=http://localhost:8000` for
-`npm run dev:web`, with the token in `.dev.vars`). Any other machine that can reach the game works the same way.
+The Mac agent only runs while the Mac is awake (log: `~/Library/Logs/wfhub-worldstate.log`). On a server, run
+`WORLDSTATE_PUSH_TOKEN=... bash scripts/push-worldstate.sh` from cron every few minutes instead
+(`WFHUB_URL=http://localhost:8000` pushes to a local `npm run dev:web`, with the token in `.dev.vars`).
 
 Names (nodes, mission types, items, challenges) come from `data/worldstate`: `tables.json` and 32 name shards
 (`names/{n}.json`, by hash of the path). A request loads only the shards its state needs. Refresh them when the game adds content:
