@@ -1,4 +1,4 @@
-//! The routes of the API, as plain functions, so the Worker (compiled once, `worker/`) is only glue: it fetches static
+//! The routes of the API, as plain functions, so the Worker (`worker/`) is only glue: it fetches static
 //! files from the site's assets and hands their text to these. Paths here are the full request paths (with `/api`).
 //!
 //! | Route | Answer | Built from |
@@ -10,6 +10,8 @@
 //! | `GET /api/mastery/{category}.json` | a mastery checklist snapshot | `data/mastery/{category}.json` |
 //! | `GET /api/{category}.json` | the items of a Codex category | `data/catalogue/{category}.json` |
 //! | `GET /api/{category}/{slug}.json` | one item | `data/catalogue/{category}/{first character}.json` |
+//! | `GET /api/worldstate/{platform}.json` | every worldState section | the game's `worldState.php`, parsed by `worldstate` |
+//! | `GET /api/worldstate/{platform}/{section}.json` | one section | same |
 //! | `POST /api/feedback` | stores feedback (D1) | `feedback` |
 
 use serde_json::Value;
@@ -117,6 +119,12 @@ pub enum Route {
     slug: String,
   },
   Feedback,
+  /// The live game state of a platform: `url` is where its raw state is, `section` the endpoint (all of them when `None`).
+  WorldState {
+    platform: &'static str,
+    url: &'static str,
+    section: Option<&'static str>,
+  },
 }
 
 const JSON: &str = "application/json; charset=utf-8";
@@ -153,6 +161,15 @@ pub fn route(method: &str, path: &str) -> Result<Route, Reply> {
   let rest = path.strip_prefix("/api/").ok_or_else(not_found)?;
   let rest = rest.strip_suffix(".json").ok_or_else(not_found)?;
   match rest.split('/').collect::<Vec<_>>().as_slice() {
+    ["worldstate", platform] => {
+      let (platform, url) = crate::worldstate::platform(platform).ok_or_else(not_found)?;
+      Ok(Route::WorldState { platform, url, section: None })
+    }
+    ["worldstate", platform, section] => {
+      let (platform, url) = crate::worldstate::platform(platform).ok_or_else(not_found)?;
+      let section = crate::worldstate::SECTIONS.iter().find(|name| **name == *section).copied().ok_or_else(not_found)?;
+      Ok(Route::WorldState { platform, url, section: Some(section) })
+    }
     ["mastery", name] if MASTERY_CATEGORIES.contains(name) => file(&format!("/data/mastery/{name}.json"), JSON, SHORT),
     [category] if CATALOGUE_CATEGORIES.contains(category) => file(&format!("/data/catalogue/{category}.json"), JSON, SHORT),
     [category, slug] if CATALOGUE_CATEGORIES.contains(category) && is_slug(slug) => {

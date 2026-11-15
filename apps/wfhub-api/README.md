@@ -1,31 +1,45 @@
 # WFHub API
 
 The Rust API behind `https://wfhub.cagatayldzz.com/api`. It serves the WFHub Codex catalogue, mastery snapshots, event
-banners and a feedback endpoint. For local development, run `npm run dev:web` and open `http://localhost:8000/api/` for the
+banners, the live game state (fissures, cycles, Baro...) and a feedback endpoint. For local development, run `npm run dev:web` and open `http://localhost:8000/api/` for the
 Swagger documentation.
 
-**Everything is static.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is compiled **once** (its
-compiled form, `worker/dist`, is committed), holds no data and only serves those files; the only thing it writes is
-feedback (Cloudflare D1). To change the API you edit a file and deploy the site, and nothing is compiled again.
+**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (wrangler builds it before every deploy and dev start; `worker/dist` is not committed), holds no data and only serves those files; it writes feedback (Cloudflare D1) and it reads the live game state (see World state below). To change the data you edit a file and deploy.
 
 ```text
-src/routes.rs           the routes, as plain functions            src/feedback.rs   what feedback is accepted
-src/catalogue.rs        makes the catalogue files (tool and tests only)
-catalogue/fetch.sh      downloads the WFCD sources into catalogue/sources (not committed)
-migrations/             D1 migrations (feedback)
-worker/                 the Cloudflare Worker (Rust, WASM): glue between the site's files and the routes
-worker/dist/            the compiled Worker (index.js, index_bg.wasm), committed
-data/                   what the Worker serves
+src/
+  lib.rs                the library: everything testable without the Worker
+  routes.rs             the routes, as plain functions (path -> what to answer)
+  feedback.rs           what feedback is accepted
+  catalogue.rs          makes the catalogue files (tool and tests only)
+  worldstate/           the live game state parser
+    mod.rs              platforms, endpoints, parse_section / parse_all
+    names.rs            names of nodes, missions, items (tables + shards)
+    value.rs            reading the raw state: dates, ids, rewards, the fields of every timed thing
+    cycles.rs           Cetus, Cambion, Earth, Vallis, Zariman, Duviri
+    missions.rs         fissures, sortie, archon hunt, alerts, invasions, arbitration, sentient outposts
+    store.rs            Baro Ki'Teer, daily deals, flash sales, Steel Path
+    community.rs        events, news, Nightwave, Simaris, construction
+  bin/                  export-catalogue, export-worldstate (make the files in data/)
+worker/                 the Cloudflare Worker (Rust, WASM): glue between the site's files, the game and the library
+  migrations/           D1 migrations (feedback)
+  src/lib.rs            the router            src/feedback.rs   feedback in D1
+  src/worldstate.rs     fetch + cache         src/access.rs     Cloudflare Access check
+  dist/                 the compiled Worker, build output, not committed
+data/                   what the Worker serves (copied to /data by scripts/build-site.sh)
   events.json           the banners (edit by hand)
   mastery/<name>.json   mastery checklist snapshots (edit by hand)
   catalogue/            made by catalogue:export from WFCD: <category>.json and <category>/<first character of slug>.json
+  worldstate/           made by worldstate:export: tables.json and names/<shard>.json
+tests/                  routes, feedback, static data and the worldstate parser (fixtures/ has real states of every platform)
+.sources/               the downloaded WFCD sources (not committed); scripts/fetch-*.sh at the repository root download them
 apps/wfhub-web/swagger  the Swagger page and openapi.json (edit by hand)
 ```
 
 ```sh
 npm run dev:web           # the real thing locally (wrangler dev): the website and /api together, on port 8000
 npm run api:test          # routes, feedback rules and the static files
-npm run api:build         # compiles the Worker into worker/dist: only when worker/ or src/routes.rs, src/feedback.rs change
+npm run api:build         # compiles the Worker into worker/dist by hand (wrangler does it on deploy and dev)
 npm run catalogue:fetch   # downloads the WFCD files
 npm run catalogue:export  # writes data/catalogue
 npm run format:rust
@@ -41,6 +55,8 @@ npm run format:rust
 | `GET /api/{category}/{slug}.json` | one item, e.g. `/api/warframes/excalibur.json` |
 | `GET /api/events.json` | the banners, maintained in `data/events.json` |
 | `GET /api/mastery/{category}.json` | a mastery snapshot; `/api/mastery/updated.json` says when it was made |
+| `GET /api/worldstate/{platform}.json` | every section of the live game state (`pc`, `xb1`, `ps4`, `swi`; `ps5` and `mob` are aliases) |
+| `GET /api/worldstate/{platform}/{section}.json` | one section: alerts, arbitration, archonHunt, cambionCycle, cetusCycle, constructionProgress, dailyDeals, duviriCycle, earthCycle, events, fissures, flashSales, invasions, news, nightwave, sentientOutposts, simaris, sortie, steelPath, vallisCycle, voidTrader, zarimanCycle |
 | `POST /api/feedback` | stores anonymous feedback |
 
 Anything else answers `404`, and a wrong method `405`. Every answer carries `Access-Control-Allow-Origin: *`.
@@ -51,6 +67,27 @@ Anything else answers `404`, and a wrong method `405`. Every answer carries `Acc
 `npm run catalogue:export` turns each into a list (`name`, `imageName`, `slug`) and bucket files with the items, named by
 the first character of the slug, so the Worker never reads more than a small file. Duplicate names are dropped. Commit the
 result and deploy; the catalogue changes only when you run it again.
+
+## World state
+
+`/api/worldstate/...` replaces `api.warframestat.us`. The Worker fetches Warframe's own `worldState.php` (pc `api.warframe.com`,
+xb1 `api-xb1.warframe.com`, ps4 `api-ps4.warframe.com`, swi `api-swi.warframe.com`, all under `/cdn/worldState.php`), and
+`src/worldstate.rs` parses it into the same JSON shapes as warframe-status. The parser is pure Rust (`cargo test`, fixtures in
+`tests/fixtures`); the Worker only fetches, caches (Cache API: 30 seconds fresh, last good copy kept a week and served with
+`x-worldstate-stale: 1` when the game's server is down) and loads names.
+
+Names (nodes, mission types, items, challenges) come from `data/worldstate`: `tables.json` and 32 name shards
+(`names/{n}.json`, by hash of the path). A request loads only the shards its state needs. Refresh them when the game adds content:
+
+```sh
+npm run catalogue:fetch      # warframe-items (item names)
+npm run worldstate:fetch     # warframe-worldstate-data (nodes, languages)
+npm run worldstate:export    # writes data/worldstate
+```
+
+Not in the raw state: `arbitration` answers the "unknown" placeholder (as warframe-status does without its extra source), the
+Vallis, Earth, Duviri constants are the ones of the WFCD parser, Nightwave reputation is 1000 (daily), 4500 (weekly) and 7000 (elite).
+The raw state only has English names here; `news.translations` has `en` only.
 
 ## Mastery and events
 
@@ -72,7 +109,7 @@ items. Snapshot dates in `updated.json` must be updated when the data is refresh
 ## Feedback
 
 The Worker writes anonymous feedback to the `DB` D1 binding. `npm run cf:deploy` applies pending remote D1 migrations
-(`migrations/`) before deploying; a failed migration stops the deploy. Set a long random `FEEDBACK_RATE_LIMIT_SECRET` with
+(`worker/migrations/`) before deploying; a failed migration stops the deploy. Set a long random `FEEDBACK_RATE_LIMIT_SECRET` with
 `npx wrangler secret put FEEDBACK_RATE_LIMIT_SECRET`; the endpoint answers 503 without it. Locally, put it in `.dev.vars` and run
 `npx wrangler d1 migrations apply DB --local`.
 

@@ -1,5 +1,5 @@
 //! Writes the static catalogue: `export-catalogue <sources> <output>` reads `<sources>/<Category>.json` (WFCD files, see
-//! `catalogue/fetch.sh`) and writes `<output>/<category>.json` and `<output>/<category>/<c>.json`.
+//! `scripts/fetch-catalogue.sh`) and writes `<output>/<category>.json` and `<output>/<category>/<c>.json`.
 
 use serde_json::Value;
 use std::path::Path;
@@ -18,7 +18,7 @@ fn source_name(category: &str) -> String {
 fn run(sources: &Path, output: &Path) -> Result<(), String> {
   for category in CATALOGUE_CATEGORIES {
     let file = sources.join(format!("{}.json", source_name(category)));
-    let text = fs::read_to_string(&file).map_err(|error| format!("{}: {error} (run catalogue/fetch.sh)", file.display()))?;
+    let text = fs::read_to_string(&file).map_err(|error| format!("{}: {error} (run scripts/fetch-catalogue.sh)", file.display()))?;
     let items: Vec<Value> = serde_json::from_str(&text).map_err(|error| format!("{}: {error}", file.display()))?;
     let catalogue = make(&items);
     let folder = output.join(category);

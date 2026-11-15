@@ -41,3 +41,29 @@ fn every_category_is_distinct() {
     assert_eq!(sorted.len(), list.len());
   }
 }
+
+#[test]
+fn worldstate_routes() {
+  use wfhub_api::worldstate::SECTIONS;
+  assert_eq!(
+    route("GET", "/api/worldstate/pc/fissures.json").unwrap(),
+    Route::WorldState { platform: "pc", url: "https://api.warframe.com/cdn/worldState.php", section: Some("fissures") }
+  );
+  assert_eq!(
+    route("GET", "/api/worldstate/ps5.json").unwrap(),
+    Route::WorldState { platform: "ps4", url: "https://api-ps4.warframe.com/cdn/worldState.php", section: None }
+  );
+  for section in SECTIONS {
+    assert!(matches!(route("GET", &format!("/api/worldstate/swi/{section}.json")), Ok(Route::WorldState { .. })), "{section}");
+  }
+  for path in [
+    "/api/worldstate/ps3/fissures.json",
+    "/api/worldstate/pc/nope.json",
+    "/api/worldstate/pc/fissures",
+    "/api/worldstate/.json",
+    "/api/worldstate/pc/fissures/x.json",
+  ] {
+    assert_eq!(route("GET", path).unwrap_err().status, 404, "{path}");
+  }
+  assert_eq!(route("POST", "/api/worldstate/pc.json").unwrap_err().status, 405);
+}

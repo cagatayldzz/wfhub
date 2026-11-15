@@ -24,5 +24,6 @@
 /apps/wfhub-api/target/
 /apps/wfhub-api/worker/target/
 /apps/wfhub-api/worker/build/
-/apps/wfhub-api/catalogue/sources/
+/apps/wfhub-api/.sources/
 /dist/
+/apps/wfhub-api/worker/dist/

@@ -1,7 +1,6 @@
 #!/bin/bash
-# Compiles the API Worker (Rust, WASM) once and puts the result in apps/wfhub-api/worker/dist, which is committed: the
-# Worker holds no data (it serves the static files of the site), so it only has to be compiled again when its Rust code
-# changes. Deploying never compiles anything.
+# Compiles the API Worker (Rust, WASM) into apps/wfhub-api/worker/dist (not committed). wrangler runs this itself as the
+# `build` command of wrangler.jsonc on every `wrangler deploy` / `wrangler dev`, so Cloudflare's build compiles the Worker.
 set -euo pipefail
 cd "$(dirname "$0")/../apps/wfhub-api/worker"
 

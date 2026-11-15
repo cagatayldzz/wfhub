@@ -230,6 +230,126 @@
           }
         }
       }
+    },
+    "/api/worldstate/{platform}.json": {
+      "get": {
+        "tags": [
+          "World state"
+        ],
+        "summary": "Every section of the live game state",
+        "operationId": "getWorldState",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "description": "`ps5` is answered as `ps4` and `mob` as `pc`.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pc",
+                "xb1",
+                "ps4",
+                "swi"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Parsed state. Same shape as api.warframestat.us. When the game's server is down the last good copy is served, with the header `x-worldstate-stale: 1`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown platform or section"
+          },
+          "503": {
+            "description": "The game state is not available and there is no copy"
+          }
+        }
+      }
+    },
+    "/api/worldstate/{platform}/{section}.json": {
+      "get": {
+        "tags": [
+          "World state"
+        ],
+        "summary": "One section of the live game state (fissures, cycles, Baro, sortie...)",
+        "operationId": "getWorldStateSection",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "description": "`ps5` is answered as `ps4` and `mob` as `pc`.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pc",
+                "xb1",
+                "ps4",
+                "swi"
+              ]
+            }
+          },
+          {
+            "name": "section",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "alerts",
+                "arbitration",
+                "archonHunt",
+                "cambionCycle",
+                "cetusCycle",
+                "constructionProgress",
+                "dailyDeals",
+                "duviriCycle",
+                "earthCycle",
+                "events",
+                "fissures",
+                "flashSales",
+                "invasions",
+                "news",
+                "nightwave",
+                "sentientOutposts",
+                "simaris",
+                "sortie",
+                "steelPath",
+                "vallisCycle",
+                "voidTrader",
+                "zarimanCycle"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Parsed state. Same shape as api.warframestat.us. When the game's server is down the last good copy is served, with the header `x-worldstate-stale: 1`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown platform or section"
+          },
+          "503": {
+            "description": "The game state is not available and there is no copy"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -461,6 +581,10 @@
     {
       "name": "Events",
       "description": "Banners and links maintained for the WFHub home screen."
+    },
+    {
+      "name": "World state",
+      "description": "The live game state, read from Warframe's own worldState.php and parsed here (cached 30 seconds). Node, mission and item names are resolved from WFCD data."
     }
   ]
 }
