@@ -34,15 +34,25 @@ function join(a, b) {
 
 const HEADER_END = [13, 10, 13, 10];
 
-async function readUntilHeaderEnd(reader, limit) {
+function shown(bytes) {
+  if (bytes.length === 0) return "nothing received";
+  return `${bytes.length} bytes received: ${decoder.decode(bytes.slice(0, 120)).replace(/[^\x20-\x7e]/g, ".")}`;
+}
+
+async function readUntilHeaderEnd(reader, limit, who) {
   let bytes = new Uint8Array(0);
   for (;;) {
     const end = find(bytes, HEADER_END);
     if (end >= 0) return { head: decoder.decode(bytes.slice(0, end)), rest: bytes.slice(end + 4) };
-    if (bytes.length > limit) throw new Error("answer headers too long");
-    const { value, done } = await reader.read();
-    if (done) throw new Error("connection closed before the answer headers");
-    bytes = join(bytes, value);
+    if (bytes.length > limit) throw new Error(`${who}: answer headers too long`);
+    let chunk;
+    try {
+      chunk = await reader.read();
+    } catch (error) {
+      throw new Error(`${who}: reading failed (${error && error.message ? error.message : error}) after ${shown(bytes)}`);
+    }
+    if (chunk.done) throw new Error(`${who} closed the connection before its answer headers (${shown(bytes)})`);
+    bytes = join(bytes, chunk.value);
   }
 }
 
@@ -84,20 +94,29 @@ async function run(proxyHost, proxyPort, auth, host, path) {
   try {
     let writer = socket.writable.getWriter();
     let reader = socket.readable.getReader();
-    await writer.write(encoder.encode(
-      `CONNECT ${host}:443 HTTP/1.1\r\nHost: ${host}:443\r\nProxy-Authorization: Basic ${auth}\r\n\r\n`));
-    const connectAnswer = await readUntilHeaderEnd(reader, 8192);
+    try {
+      await writer.write(encoder.encode(
+        `CONNECT ${host}:443 HTTP/1.1\r\nHost: ${host}:443\r\nProxy-Authorization: Basic ${auth}\r\n\r\n`));
+    } catch (error) {
+      throw new Error(`could not reach the proxy ${proxyHost}:${proxyPort} (${error && error.message ? error.message : error})`);
+    }
+    const connectAnswer = await readUntilHeaderEnd(reader, 8192, `the proxy ${proxyHost}:${proxyPort} (CONNECT)`);
     const status = connectAnswer.head.split("\r\n")[0];
     if (!/^HTTP\/1\.[01] 200/.test(status)) throw new Error(`the proxy answered: ${status}`);
     writer.releaseLock();
     reader.releaseLock();
 
-    const tls = socket.startTls({ expectedServerHostname: host });
-    writer = tls.writable.getWriter();
-    reader = tls.readable.getReader();
-    await writer.write(encoder.encode(
-      `GET ${path} HTTP/1.1\r\nHost: ${host}\r\nAccept: application/json\r\nAccept-Encoding: gzip\r\nUser-Agent: WFHub\r\nConnection: close\r\n\r\n`));
-    const { head, rest } = await readUntilHeaderEnd(reader, 16384);
+    let tls;
+    try {
+      tls = socket.startTls({ expectedServerHostname: host });
+      writer = tls.writable.getWriter();
+      reader = tls.readable.getReader();
+      await writer.write(encoder.encode(
+        `GET ${path} HTTP/1.1\r\nHost: ${host}\r\nAccept: application/json\r\nAccept-Encoding: gzip\r\nUser-Agent: WFHub\r\nConnection: close\r\n\r\n`));
+    } catch (error) {
+      throw new Error(`TLS to ${host} through the proxy failed (${error && error.message ? error.message : error})`);
+    }
+    const { head, rest } = await readUntilHeaderEnd(reader, 16384, `${host} (over TLS)`);
     const [statusLine, ...lines] = head.split("\r\n");
     const code = parseInt(statusLine.split(" ")[1], 10);
     if (code !== 200) throw new Error(`the game answered ${code}`);
