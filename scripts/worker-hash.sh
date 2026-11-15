@@ -4,4 +4,4 @@
 set -euo pipefail
 cd "$(dirname "$0")/../apps/wfhub-api"
 export LC_ALL=C
-{ find src worker/src -name '*.rs' | sort; echo Cargo.toml; echo Cargo.lock; echo worker/Cargo.toml; echo worker/Cargo.lock; } | xargs cat | cksum | cut -d' ' -f1
+{ find src worker/src \( -name '*.rs' -o -name '*.js' \) | sort; echo Cargo.toml; echo Cargo.lock; echo worker/Cargo.toml; echo worker/Cargo.lock; } | xargs cat | cksum | cut -d' ' -f1

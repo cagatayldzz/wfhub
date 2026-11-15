@@ -55,7 +55,6 @@ npm run format:rust
 | `GET /api/{category}/{slug}.json` | one item, e.g. `/api/warframes/excalibur.json` |
 | `GET /api/events.json` | the banners, maintained in `data/events.json` |
 | `GET /api/mastery/{category}.json` | a mastery snapshot; `/api/mastery/updated.json` says when it was made |
-| `PUT /api/ingest/worldstate/{platform}` | stores the raw game state (bearer token; used by `scripts/push-worldstate.sh`) |
 | `GET /api/worldstate/{platform}.json` | every section of the live game state (`pc`, `xb1`, `ps4`, `swi`; `ps5` and `mob` are aliases) |
 | `GET /api/worldstate/{platform}/{section}.json` | one section: alerts, arbitration, archonHunt, cambionCycle, cetusCycle, constructionProgress, dailyDeals, duviriCycle, earthCycle, events, fissures, flashSales, invasions, news, nightwave, sentientOutposts, simaris, sortie, steelPath, vallisCycle, voidTrader, zarimanCycle |
 | `POST /api/feedback` | stores anonymous feedback |
@@ -75,31 +74,20 @@ result and deploy; the catalogue changes only when you run it again.
 `api-xb1.warframe.com`, ps4 `api-ps4.warframe.com`, swi `api-swi.warframe.com`, all under `/cdn/worldState.php`) into the same JSON
 shapes as warframe-status (`src/worldstate/`; pure Rust, `cargo test`, fixtures in `tests/fixtures`).
 
-**The game's server answers 403 to Cloudflare's addresses** (and to GitHub Actions/Azure; an empty 403 whatever the headers), and a
-Worker cannot go through a proxy (its TLS cannot name the host the certificate must match), so the Worker does not fetch the state. Instead
-`.github/workflows/worldstate.yml` runs `scripts/push-worldstate.sh` on GitHub every 10 minutes: it downloads the four raw states with
-`curl` **through a proxy** (`WORLDSTATE_PROXY`, a Webshare free-plan proxy: 10 shared addresses, 1 GB a month; one run is about
-4 x 27 KB gzipped, ~0.5 GB a month) and `PUT`s each to `/api/ingest/worldstate/{platform}` with a bearer token. The Worker keeps it in D1
-(table `worldstate`). The pushes go to the Worker's **workers.dev address** (`wrangler.jsonc` has `workers_dev: true`; the repository
-variable `WFHUB_INGEST_URL` holds it): the Bot Fight Mode of the `cagatayldzz.com` zone (free plan, it cannot be skipped by a rule) gives
-GitHub's addresses a managed challenge, which a `PUT` cannot solve. The token still protects the route.
+**The game's server answers 403 to Cloudflare's addresses** (and to GitHub Actions/Azure; an empty 403 whatever the headers), so the Worker
+fetches the state **through a proxy** (secret `WORLDSTATE_PROXY`, `http://user:password@host:port`; a Webshare proxy, free plan: 1 GB a month).
+`fetch` cannot use a proxy and workers-rs's `start_tls()` cannot name the host the certificate must match, so `worker/src/tunnel.js` does the
+tunnel with the sockets API: `CONNECT {host}:443` to the proxy, `startTls({ expectedServerHostname })`, `GET`, then chunked/gzip decoding.
 
-Reading: the raw state is read from D1 and **cached 5 minutes per platform in each data centre** (Cache API), then parsed per request.
-Answers carry `x-worldstate-age` (seconds since the push) and `x-worldstate-stale: 1` over 30 minutes; times in the answers come from the
-clock, so a copy a few minutes old is still right about what has expired. Before the first push the endpoints answer `503` with a `reason`.
-GitHub may delay scheduled runs by several minutes.
+A request is answered from the Cache API (5 minutes, per data centre); on a miss from D1 (table `worldstate`, one copy shared by all data
+centres) when it is under 5 minutes old; otherwise the Worker asks the game, stores the raw state in D1 and caches it. About 27 KB gzipped
+per fetch, so at most 4 platforms x 288 fetches a day = ~0.9 GB a month if every platform is requested around the clock; the 5 minute limit
+is why the copy is shared. If the proxy or the game fails the last copy is still answered (`503` with a `reason` only when there is none).
+Answers carry `x-worldstate-age` (seconds since the fetch) and `x-worldstate-stale: 1` over 30 minutes; times in the answers come from the
+clock, so a copy a few minutes old is still right about what has expired.
 
-Setup, once. The token is a long random value (`openssl rand -hex 32`) shared by the Worker and the workflow; the push route answers
-`401` without it and `503` while the Worker has none:
-
-```sh
-npx wrangler secret put WORLDSTATE_PUSH_TOKEN     # the Worker (or Cloudflare dashboard > Workers > wfhub > Settings > Variables and Secrets)
-gh secret set WORLDSTATE_PUSH_TOKEN               # the repository, same value (or GitHub > Settings > Secrets and variables > Actions)
-gh secret set WORLDSTATE_PROXY                    # http://user:password@host:port  (repository only; the Worker does not use it)
-```
-
-By hand: `WORLDSTATE_PUSH_TOKEN=... WORLDSTATE_PROXY=... bash scripts/push-worldstate.sh` (`WFHUB_URL=http://localhost:8000` pushes to a
-local `npm run dev:web`, with the token in `.dev.vars`).
+Setup, once: `npx wrangler secret put WORLDSTATE_PROXY` (or Cloudflare dashboard > Workers > wfhub > Settings > Variables and Secrets).
+Locally, put `WORLDSTATE_PROXY=...` in `.dev.vars` (gitignored) and `npm run dev:web`. After changing the Rust or `tunnel.js`: `npm run api:build`.
 
 Names (nodes, mission types, items, challenges) come from `data/worldstate`: `tables.json` and 32 name shards
 (`names/{n}.json`, by hash of the path). A request loads only the shards its state needs. Refresh them when the game adds content:

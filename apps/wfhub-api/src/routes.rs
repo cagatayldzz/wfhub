@@ -12,7 +12,6 @@
 //! | `GET /api/{category}/{slug}.json` | one item | `data/catalogue/{category}/{first character}.json` |
 //! | `GET /api/worldstate/{platform}.json` | every worldState section | the game's `worldState.php` (kept in D1), parsed by `worldstate` |
 //! | `GET /api/worldstate/{platform}/{section}.json` | one section | same |
-//! | `PUT /api/ingest/worldstate/{platform}` | stores the raw game state (D1), with a bearer token | `scripts/push-worldstate.sh` |
 //! | `POST /api/feedback` | stores feedback (D1) | `feedback` |
 
 use serde_json::Value;
@@ -125,10 +124,6 @@ pub enum Route {
     platform: &'static str,
     section: Option<&'static str>,
   },
-  /// `PUT`: the raw state of a platform, pushed by `scripts/push-worldstate.sh` (the game's server refuses the Worker).
-  WorldStatePush {
-    platform: &'static str,
-  },
 }
 
 const JSON: &str = "application/json; charset=utf-8";
@@ -147,10 +142,6 @@ fn is_slug(text: &str) -> bool {
 pub fn route(method: &str, path: &str) -> Result<Route, Reply> {
   if path == "/api/feedback" {
     return if method == "POST" { Ok(Route::Feedback) } else { Err(method_not_allowed()) };
-  }
-  if let Some(platform) = path.strip_prefix("/api/ingest/worldstate/") {
-    let platform = crate::worldstate::platform(platform).ok_or_else(not_found)?;
-    return if method == "PUT" { Ok(Route::WorldStatePush { platform }) } else { Err(method_not_allowed()) };
   }
   if method != "GET" {
     return Err(method_not_allowed());
