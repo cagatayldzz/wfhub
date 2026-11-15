@@ -3,14 +3,13 @@
 //! committed, `cf:deploy` checks it is fresh): it holds no data. Everything it answers comes from static files of the site (`/data/...`, `/swagger/...`), so
 //! changing the API is changing those files and deploying the site. The one thing it writes is feedback (D1, `DB`).
 //!
-//! The live game state (`/api/worldstate/...`) is the one thing that is not a file: it is fetched from the game through a
-//! proxy, cached for 5 minutes and parsed by `wfhub_api::worldstate` (see `worldstate.rs`).
+//! The live game state (`/api/worldstate/...`) is the one thing that is not a file: it is pushed to D1 by a GitHub
+//! Actions job (through a proxy), read with a 5 minute cache and parsed by `wfhub_api::worldstate` (see `worldstate.rs`).
 //!
 //! The routes are in `wfhub_api::routes`, the feedback rules in `wfhub_api::feedback`; this file only fetches and stores.
 
 mod access;
 mod feedback;
-mod tunnel;
 mod worldstate;
 
 use wfhub_api::routes::{Reply, Route, error, item_reply, route};
@@ -51,7 +50,7 @@ async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Repl
       Ok(reply) => reply,
       Err(_) => error(503, "Service unavailable"),
     },
-    Route::Redirect(_) | Route::WorldState { .. } => unreachable!("redirects and the game state are answered before"),
+    Route::Redirect(_) | Route::WorldState { .. } | Route::WorldStatePush { .. } => unreachable!("redirects and the game state are answered before"),
     Route::File { path, content_type, cache } => match asset(env, &path).await? {
       Some(body) => Reply { status: 200, body, cache, content_type },
       None => wfhub_api::routes::not_found(),
@@ -81,6 +80,13 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
       }
     }
     return Ok(response);
+  }
+  if let Ok(Route::WorldStatePush { platform }) = route(&method, url.path()) {
+    let reply = match worldstate::ingest(req, &env, platform).await {
+      Ok(reply) => reply,
+      Err(_) => error(503, "Service unavailable"),
+    };
+    return respond(reply, head, false);
   }
   let public = !url.path().starts_with("/api/admin/");
   respond(answer(req, &env, &url, &method).await?, head, public)

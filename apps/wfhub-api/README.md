@@ -4,7 +4,7 @@ The Rust API behind `https://wfhub.cagatayldzz.com/api`. It serves the WFHub Cod
 banners, the live game state (fissures, cycles, Baro...) and a feedback endpoint. For local development, run `npm run dev:web` and open `http://localhost:8000/api/` for the
 Swagger documentation.
 
-**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (`npm run api:build`; the result, `worker/dist`, is committed and checked before every deploy), holds no data and only serves those files; it writes feedback (Cloudflare D1) and reads the live game state through a proxy (see World state below). To change the data you edit a file and deploy.
+**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (`npm run api:build`; the result, `worker/dist`, is committed and checked before every deploy), holds no data and only serves those files; it writes feedback and the pushed game state (Cloudflare D1) and parses that state live (see World state below). To change the data you edit a file and deploy.
 
 ```text
 src/
@@ -24,8 +24,7 @@ src/
 worker/                 the Cloudflare Worker (Rust, WASM): glue between the site's files, the game and the library
   migrations/           D1 migrations (feedback)
   src/lib.rs            the router            src/feedback.rs   feedback in D1
-  src/worldstate.rs     game state + cache    src/access.rs     Cloudflare Access check
-  src/tunnel.rs         HTTPS through a proxy (CONNECT over TCP sockets)
+  src/worldstate.rs     game state in D1      src/access.rs     Cloudflare Access check
   dist/                 the compiled Worker, committed (rebuild with npm run api:build when Rust changes)
 data/                   what the Worker serves (copied to /data by scripts/build-site.sh)
   events.json           the banners (edit by hand)
@@ -56,6 +55,7 @@ npm run format:rust
 | `GET /api/{category}/{slug}.json` | one item, e.g. `/api/warframes/excalibur.json` |
 | `GET /api/events.json` | the banners, maintained in `data/events.json` |
 | `GET /api/mastery/{category}.json` | a mastery snapshot; `/api/mastery/updated.json` says when it was made |
+| `PUT /api/ingest/worldstate/{platform}` | stores the raw game state (bearer token; used by `scripts/push-worldstate.sh`) |
 | `GET /api/worldstate/{platform}.json` | every section of the live game state (`pc`, `xb1`, `ps4`, `swi`; `ps5` and `mob` are aliases) |
 | `GET /api/worldstate/{platform}/{section}.json` | one section: alerts, arbitration, archonHunt, cambionCycle, cetusCycle, constructionProgress, dailyDeals, duviriCycle, earthCycle, events, fissures, flashSales, invasions, news, nightwave, sentientOutposts, simaris, sortie, steelPath, vallisCycle, voidTrader, zarimanCycle |
 | `POST /api/feedback` | stores anonymous feedback |
@@ -75,31 +75,29 @@ result and deploy; the catalogue changes only when you run it again.
 `api-xb1.warframe.com`, ps4 `api-ps4.warframe.com`, swi `api-swi.warframe.com`, all under `/cdn/worldState.php`) into the same JSON
 shapes as warframe-status (`src/worldstate/`; pure Rust, `cargo test`, fixtures in `tests/fixtures`).
 
-**The game's server answers 403 to Cloudflare's addresses** (and to GitHub Actions/Azure; the answer is an empty 403 whatever the
-headers), so the Worker reaches it **through a proxy** whose addresses it accepts. `fetch()` cannot use a proxy, so
-`worker/src/tunnel.rs` opens a `CONNECT` tunnel over the Worker's TCP sockets (`cloudflare:sockets`), starts TLS to the game's server
-inside it and sends the request (a small piece of inline JavaScript, because workers-rs cannot name the host the certificate must
-match; everything around it is Rust). The raw state is about 27 KB gzipped on the wire.
+**The game's server answers 403 to Cloudflare's addresses** (and to GitHub Actions/Azure; an empty 403 whatever the headers), and a
+Worker cannot go through a proxy (its TLS cannot name the host the certificate must match), so the Worker does not fetch the state. Instead
+`.github/workflows/worldstate.yml` runs `scripts/push-worldstate.sh` on GitHub every 10 minutes: it downloads the four raw states with
+`curl` **through a proxy** (`WORLDSTATE_PROXY`, a Webshare free-plan proxy: 10 shared addresses, 1 GB a month; one run is about
+4 x 27 KB gzipped, ~0.5 GB a month) and `PUT`s each to `/api/ingest/worldstate/{platform}` with a bearer token. The Worker keeps it in D1
+(table `worldstate`).
 
-The raw state is cached **5 minutes per platform in each data centre** (Cache API; one copy for everybody, not one per user, since
-every miss costs proxy traffic), and the last good copy is kept for a day for when the proxy or the game fails. Answers carry
-`x-worldstate-age` (seconds since the copy was fetched) and `x-worldstate-stale: 1` over 15 minutes; times in the answers come from
-the clock, so a copy a few minutes old is still right about what has expired. When there is no copy and the proxy fails, the
-endpoints answer `503` with a `reason`.
+Reading: the raw state is read from D1 and **cached 5 minutes per platform in each data centre** (Cache API), then parsed per request.
+Answers carry `x-worldstate-age` (seconds since the push) and `x-worldstate-stale: 1` over 30 minutes; times in the answers come from the
+clock, so a copy a few minutes old is still right about what has expired. Before the first push the endpoints answer `503` with a `reason`.
+GitHub may delay scheduled runs by several minutes.
 
-Proxy traffic: each data centre fetches a platform at most every 5 minutes while someone asks for it, about 27 KB each time, so
-a few data centres and one or two platforms is roughly 0.5 to 1 GB a month. The free Webshare plan (10 shared addresses, 1 GB a
-month) is the budget this was sized for; a paid plan or fewer platforms changes that.
-
-Setup, once: a Worker secret with the proxy (`http://user:password@host:port`; the rotating Webshare endpoint
-`p.webshare.io:80` with the `-rotate` user works):
+Setup, once. The token is a long random value (`openssl rand -hex 32`) shared by the Worker and the workflow; the push route answers
+`401` without it and `503` while the Worker has none:
 
 ```sh
-npx wrangler secret put WORLDSTATE_PROXY
+npx wrangler secret put WORLDSTATE_PUSH_TOKEN     # the Worker (or Cloudflare dashboard > Workers > wfhub > Settings > Variables and Secrets)
+gh secret set WORLDSTATE_PUSH_TOKEN               # the repository, same value (or GitHub > Settings > Secrets and variables > Actions)
+gh secret set WORLDSTATE_PROXY                    # http://user:password@host:port  (repository only; the Worker does not use it)
 ```
 
-Locally, put it in `.dev.vars` (`WORLDSTATE_PROXY=http://user:password@host:port`) and run `npm run dev:web`. Without the secret
-the endpoints answer `503` ("no proxy is configured").
+By hand: `WORLDSTATE_PUSH_TOKEN=... WORLDSTATE_PROXY=... bash scripts/push-worldstate.sh` (`WFHUB_URL=http://localhost:8000` pushes to a
+local `npm run dev:web`, with the token in `.dev.vars`).
 
 Names (nodes, mission types, items, challenges) come from `data/worldstate`: `tables.json` and 32 name shards
 (`names/{n}.json`, by hash of the path). A request loads only the shards its state needs. Refresh them when the game adds content:

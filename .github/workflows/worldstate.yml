@@ -1,0 +1,31 @@
+# Downloads the raw game state of every platform through a proxy (the game's server answers 403 to GitHub's own addresses)
+# and pushes it to the WFHub API, which keeps it in D1. Secrets of the repository:
+#   WORLDSTATE_PUSH_TOKEN  the same value as the Worker's secret of that name
+#   WORLDSTATE_PROXY       http://user:password@host:port of the proxy
+# Every 10 minutes: about 4 x 27 KB gzipped per run, ~0.5 GB of proxy traffic a month (the free Webshare plan has 1 GB).
+name: World state
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: worldstate
+  cancel-in-progress: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/push-worldstate.sh
+          sparse-checkout-cone-mode: false
+      - run: bash scripts/push-worldstate.sh
+        env:
+          WORLDSTATE_PUSH_TOKEN: ${{ secrets.WORLDSTATE_PUSH_TOKEN }}
+          WORLDSTATE_PROXY: ${{ secrets.WORLDSTATE_PROXY }}

@@ -61,3 +61,13 @@ fn worldstate_routes() {
   }
   assert_eq!(route("POST", "/api/worldstate/pc.json").unwrap_err().status, 405);
 }
+
+#[test]
+fn worldstate_push_route() {
+  assert_eq!(route("PUT", "/api/ingest/worldstate/xb1").unwrap(), Route::WorldStatePush { platform: "xb1" });
+  assert_eq!(route("PUT", "/api/ingest/worldstate/ps5").unwrap(), Route::WorldStatePush { platform: "ps4" });
+  assert_eq!(route("GET", "/api/ingest/worldstate/pc").unwrap_err().status, 405);
+  assert_eq!(route("POST", "/api/ingest/worldstate/pc").unwrap_err().status, 405);
+  assert_eq!(route("PUT", "/api/ingest/worldstate/nope").unwrap_err().status, 404);
+  assert_eq!(route("PUT", "/api/ingest/worldstate/").unwrap_err().status, 404);
+}

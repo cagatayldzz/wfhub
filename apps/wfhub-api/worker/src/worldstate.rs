@@ -1,73 +1,60 @@
-//! The live game state. The game's server answers 403 to Cloudflare's addresses, so the Worker reaches it through a proxy
-//! (`WORLDSTATE_PROXY`, a secret: `http://user:password@host:port`) whose addresses it accepts: a `CONNECT` tunnel to the
-//! game's server over the Worker's TCP sockets (`tunnel.rs`). The raw state (about 27 KB gzipped on the wire) is cached
-//! for 5 minutes per platform in each data centre (Cache API), and the last good copy is kept for a day for when the proxy
-//! or the game fails. It is parsed per request by `wfhub_api::worldstate` with the names of `/data/worldstate`; times in
-//! the answers come from the clock, so a copy a few minutes old is still right about what has expired.
-//! The `x-worldstate-age` header says how old the copy is; `x-worldstate-stale` flags a copy over 15 minutes.
+//! The live game state. The game's server answers 403 to Cloudflare's addresses and the Worker cannot use a proxy (a
+//! Worker's TLS cannot name the host the certificate must match), so the Worker does not fetch it: `.github/workflows/
+//! worldstate.yml` runs `scripts/push-worldstate.sh` on GitHub, which downloads the raw state of each platform with `curl`
+//! through a proxy and `PUT`s it to `/api/ingest/worldstate/{platform}`; it is kept in D1 (table `worldstate`).
+//! Reading answers from that copy (cached 5 minutes per platform in each data centre) and parses it with
+//! `wfhub_api::worldstate` and the names of `/data/worldstate`. Times in the answers are computed from the clock, so an
+//! old copy is still right about what has expired; the `x-worldstate-age` header says how old it is and
+//! `x-worldstate-stale` flags a copy over 30 minutes.
 
-use crate::tunnel;
-use wfhub_api::routes::Reply;
+use wfhub_api::routes::{Reply, error};
 use wfhub_api::worldstate::{self, Names};
+use worker::wasm_bindgen::JsValue;
 use worker::*;
 
-/// How long a data centre uses the raw state before asking the game again (through the proxy, which is metered).
+/// How long a data centre keeps the copy it read from D1 before reading it again.
 const FRESH_SECONDS: u32 = 300;
-/// How long the last good copy is kept, for when the game or the proxy does not answer.
-const LAST_GOOD_SECONDS: u32 = 24 * 3600;
 /// A copy older than this is flagged as stale.
-pub const STALE_AFTER_SECONDS: i64 = 15 * 60;
+pub const STALE_AFTER_SECONDS: i64 = 30 * 60;
+/// The raw state is about 170 KB; this is far more than it needs and far less than the Worker's limits.
+const MAX_BODY: usize = 3_000_000;
+/// A pushed state must be from now, give or take this.
+const MAX_CLOCK_DIFFERENCE: i64 = 2 * 24 * 3600;
 
-fn cache_key(kind: &str, platform: &str) -> String {
-  format!("https://worldstate.invalid/{kind}/{platform}")
+fn cache_key(platform: &str) -> String {
+  format!("https://worldstate.invalid/{platform}")
 }
 
-/// A copy in the cache: `{fetched_at}\n{raw state}`.
-async fn cached(cache: &Cache, kind: &str, platform: &str) -> Option<(i64, String)> {
-  let mut response = cache.get(cache_key(kind, platform), false).await.ok().flatten()?;
-  let text = response.text().await.ok()?;
-  let (at, body) = text.split_once('\n')?;
-  Some((at.parse().ok()?, body.to_string()))
+fn db_error(error: impl std::fmt::Display) -> String {
+  format!("database: {error}")
 }
 
-async fn keep(cache: &Cache, kind: &str, platform: &str, seconds: u32, fetched_at: i64, body: &str) {
-  let Ok(response) = Response::ok(format!("{fetched_at}\n{body}")) else { return };
-  if response.headers().set("cache-control", &format!("public, max-age={seconds}")).is_err() {
-    return;
-  }
-  let _ = cache.put(cache_key(kind, platform), response).await;
-}
-
-/// The raw state of a platform from the game, through the proxy; the error says what went wrong.
-async fn fetch_state(env: &Env, platform: &str) -> std::result::Result<String, String> {
-  let proxy = env.secret("WORLDSTATE_PROXY").map_err(|_| "no proxy is configured (secret WORLDSTATE_PROXY)".to_string())?.to_string();
-  let host = worldstate::host(platform).ok_or("unknown platform")?;
-  let text = tunnel::get(&proxy, host, "/cdn/worldState.php").await?;
-  match serde_json::from_str::<serde_json::Value>(&text) {
-    // Stored in one line: the cached copy is `{at}\n{body}`.
-    Ok(state) if state.get("Time").is_some() => Ok(state.to_string()),
-    Ok(_) => Err("the game's answer has no Time".into()),
-    Err(error) => Err(format!("the game's answer is not JSON: {error} ({} bytes)", text.len())),
-  }
-}
-
-/// The raw state of a platform and when it was fetched (seconds since the epoch).
-async fn raw_state(env: &Env, platform: &str, now: i64) -> std::result::Result<(i64, String), String> {
+/// The raw state of a platform and when it was pushed (seconds since the epoch), `None` before the first push.
+async fn stored_state(env: &Env, platform: &str) -> std::result::Result<Option<(i64, String)>, String> {
   let cache = Cache::default();
-  if let Some(copy) = cached(&cache, "fresh", platform).await {
-    return Ok(copy);
+  if let Some(mut response) = cache.get(cache_key(platform), false).await.ok().flatten()
+    && let Ok(text) = response.text().await
+    && let Some((at, body)) = text.split_once('\n')
+    && let Ok(at) = at.parse()
+  {
+    return Ok(Some((at, body.to_string())));
   }
-  match fetch_state(env, platform).await {
-    Ok(body) => {
-      keep(&cache, "fresh", platform, FRESH_SECONDS, now, &body).await;
-      keep(&cache, "last", platform, LAST_GOOD_SECONDS, now, &body).await;
-      Ok((now, body))
-    }
-    Err(reason) => {
-      console_error!("worldstate {platform}: {reason}");
-      cached(&cache, "last", platform).await.ok_or(reason)
-    }
+  let db = env.d1("DB").map_err(db_error)?;
+  let row = db
+    .prepare("SELECT fetched_at, body FROM worldstate WHERE platform = ?1")
+    .bind(&[JsValue::from_str(platform)])
+    .map_err(db_error)?
+    .first::<serde_json::Value>(None)
+    .await
+    .map_err(db_error)?;
+  let Some(row) = row else { return Ok(None) };
+  let (at, body) = (row["fetched_at"].as_i64().unwrap_or(0), row["body"].as_str().unwrap_or_default().to_string());
+  if let Ok(response) = Response::ok(format!("{at}\n{body}"))
+    && response.headers().set("cache-control", &format!("public, max-age={FRESH_SECONDS}")).is_ok()
+  {
+    let _ = cache.put(cache_key(platform), response).await;
   }
+  Ok(Some((at, body)))
 }
 
 /// The answer when there is no state to parse, and the age of what there is (none here).
@@ -78,8 +65,9 @@ pub fn unavailable(reason: &str) -> (Reply, Option<i64>) {
 /// `GET /api/worldstate/{platform}[/{section}].json`: the parsed state and the age of the copy it comes from (seconds).
 pub async fn game_state(env: &Env, platform: &str, section: Option<&str>) -> Result<(Reply, Option<i64>)> {
   let now = (Date::now().as_millis() / 1000) as i64;
-  let (fetched_at, text) = match raw_state(env, platform, now).await {
-    Ok(copy) => copy,
+  let (pushed_at, text) = match stored_state(env, platform).await {
+    Ok(Some(state)) => state,
+    Ok(None) => return Ok(unavailable(&format!("no state has been pushed for {platform} yet"))),
     Err(reason) => return Ok(unavailable(&reason)),
   };
   let Ok(state) = serde_json::from_str::<serde_json::Value>(&text) else { return Ok(unavailable("stored state is not JSON")) };
@@ -96,7 +84,53 @@ pub async fn game_state(env: &Env, platform: &str, section: Option<&str>) -> Res
     None => Some(worldstate::parse_all(&state, now * 1000, &names)),
   };
   let Some(body) = body else { return Ok((wfhub_api::routes::not_found(), None)) };
-  let age = (now - fetched_at).max(0);
+  let age = (now - pushed_at).max(0);
   let cache = if age > STALE_AFTER_SECONDS { "public, max-age=10" } else { "public, max-age=60" };
   Ok((Reply::json(200, body.to_string(), cache), Some(age)))
+}
+
+/// Compares two secrets without stopping at the first difference.
+fn same(a: &[u8], b: &[u8]) -> bool {
+  let mut difference = a.len() ^ b.len();
+  for (x, y) in a.iter().zip(b.iter()) {
+    difference |= usize::from(x ^ y);
+  }
+  difference == 0
+}
+
+/// `PUT /api/ingest/worldstate/{platform}`: stores the raw state (the body, as the game sent it). Needs
+/// `Authorization: Bearer <WORLDSTATE_PUSH_TOKEN>` (a secret of the Worker). An older state never replaces a newer one.
+pub async fn ingest(mut req: Request, env: &Env, platform: &str) -> Result<Reply> {
+  let Ok(secret) = env.secret("WORLDSTATE_PUSH_TOKEN") else { return Ok(error(503, "Service unavailable")) };
+  let secret = secret.to_string();
+  let header = req.headers().get("authorization")?.unwrap_or_default();
+  if secret.is_empty() || !same(header.strip_prefix("Bearer ").unwrap_or("").as_bytes(), secret.as_bytes()) {
+    return Ok(error(401, "Unauthorized"));
+  }
+  if req.headers().get("content-length")?.and_then(|length| length.parse::<usize>().ok()).is_some_and(|length| length > MAX_BODY) {
+    return Ok(error(413, "Too large"));
+  }
+  let bytes = req.bytes().await?;
+  if bytes.len() > MAX_BODY {
+    return Ok(error(413, "Too large"));
+  }
+  let Ok(state) = serde_json::from_slice::<serde_json::Value>(&bytes) else { return Ok(error(400, "Not JSON")) };
+  let Some(time) = state.get("Time").and_then(serde_json::Value::as_i64) else { return Ok(error(400, "Not a worldState")) };
+  let now = (Date::now().as_millis() / 1000) as i64;
+  if (time - now).abs() > MAX_CLOCK_DIFFERENCE {
+    return Ok(error(400, "State is not from now"));
+  }
+  let Ok(db) = env.d1("DB") else { return Ok(error(503, "Service unavailable")) };
+  // The state is stored compact (one line), which also keeps the cached copy's `{at}\n{body}` format unambiguous.
+  let body = state.to_string();
+  let number = |value: i64| JsValue::from_f64(value as f64);
+  db.prepare(
+    "INSERT INTO worldstate (platform, state_time, fetched_at, body) VALUES (?1, ?2, ?3, ?4)
+     ON CONFLICT(platform) DO UPDATE SET state_time = excluded.state_time, fetched_at = excluded.fetched_at, body = excluded.body
+     WHERE excluded.state_time >= worldstate.state_time",
+  )
+  .bind(&[JsValue::from_str(platform), number(time), number(now), JsValue::from_str(&body)])?
+  .run()
+  .await?;
+  Ok(Reply::json(200, serde_json::json!({ "ok": true, "time": time }).to_string(), "no-store"))
 }

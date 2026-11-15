@@ -23,17 +23,6 @@ use serde_json::{Map, Value, json};
 /// The platforms of the game.
 pub const PLATFORMS: [&str; 4] = ["pc", "xb1", "ps4", "swi"];
 
-/// The host of the game's server that has the raw state of a platform (`https://{host}/cdn/worldState.php`).
-pub fn host(platform: &str) -> Option<&'static str> {
-  Some(match platform {
-    "pc" => "api.warframe.com",
-    "xb1" => "api-xb1.warframe.com",
-    "ps4" => "api-ps4.warframe.com",
-    "swi" => "api-swi.warframe.com",
-    _ => return None,
-  })
-}
-
 /// The platform of a request path (`ps5` is `ps4`, `mob` is `pc`).
 pub fn platform(key: &str) -> Option<&'static str> {
   let key = match key {
