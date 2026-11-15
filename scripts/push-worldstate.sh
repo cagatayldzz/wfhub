@@ -20,7 +20,8 @@ fi
 proxy=()
 [ -n "${WORLDSTATE_PROXY:-}" ] && proxy=(--proxy "$WORLDSTATE_PROXY")
 tmp="$(mktemp)"
-trap 'rm -f "$tmp"' EXIT
+out="$(mktemp)"
+trap 'rm -f "$tmp" "$out"' EXIT
 
 failed=0
 for entry in pc=api xb1=api-xb1 ps4=api-ps4 swi=api-swi; do
@@ -31,14 +32,17 @@ for entry in pc=api xb1=api-xb1 ps4=api-ps4 swi=api-swi; do
     failed=1
     continue
   fi
-  if ! answer=$(curl -sS --retry 3 --retry-delay 2 --max-time 60 -X PUT \
+  code=$(curl -sS --retry 3 --retry-delay 2 --max-time 60 -X PUT -o "$out" -w '%{http_code}' \
     -H "Authorization: Bearer $WORLDSTATE_PUSH_TOKEN" -H "Content-Type: application/json" \
-    --data-binary "@$tmp" -w ' [%{http_code}]' "$base/api/ingest/worldstate/$platform"); then
-    echo "$platform: push failed" >&2
+    --data-binary "@$tmp" "$base/api/ingest/worldstate/$platform") || code="no answer"
+  if [ "$code" = 200 ]; then
+    echo "$platform: $(head -c 200 "$out") [200]"
+  else
+    echo "$platform: the push to $base answered $code: $(head -c 160 "$out" | tr '\n' ' ')" >&2
+    if [ "$code" = 403 ] && grep -q "Just a moment" "$out" 2>/dev/null; then
+      echo "  (Cloudflare challenges this address: push to the Worker's workers.dev address, set the repository variable WFHUB_INGEST_URL)" >&2
+    fi
     failed=1
-    continue
   fi
-  echo "$platform: $answer"
-  case "$answer" in *"[200]") ;; *) failed=1 ;; esac
 done
 exit "$failed"
