@@ -1,7 +1,7 @@
 //! Events, news, Nightwave, Simaris and the relay construction progress.
 
 use super::names::{Names, humanize};
-use super::value::{array, eta, iso, ms, number, oid, percent, reward, text, timed};
+use super::value::{array, iso, ms, number, oid, percent, reward, text, timed};
 use serde_json::{Map, Value, json};
 
 pub(super) fn events(raw: &Value, now: i64, names: &Names) -> Value {
@@ -10,7 +10,7 @@ pub(super) fn events(raw: &Value, now: i64, names: &Names) -> Value {
     .filter(|goal| goal.get("Expiry").and_then(ms).is_none_or(|expiry| expiry >= now))
     .map(|goal| {
       let (activation, expiry) = (goal.get("Activation").and_then(ms), goal.get("Expiry").and_then(ms));
-      let mut map = timed(oid(goal), activation, expiry, now);
+      let mut map = timed(oid(goal), activation, expiry);
       let description = names.lookup(text(goal, "Desc")).map(str::to_string).unwrap_or_else(|| humanize(text(goal, "Desc")));
       map.insert("description".into(), json!(description));
       map.insert("tooltip".into(), json!(names.lookup(text(goal, "ToolTip")).unwrap_or("")));
@@ -31,7 +31,7 @@ pub(super) fn events(raw: &Value, now: i64, names: &Names) -> Value {
   Value::Array(list)
 }
 
-pub(super) fn news(raw: &Value, now: i64, names: &Names) -> Value {
+pub(super) fn news(raw: &Value, names: &Names) -> Value {
   let mut list: Vec<(i64, Value)> = array(raw, "Events")
     .iter()
     .filter_map(|event| {
@@ -46,8 +46,7 @@ pub(super) fn news(raw: &Value, now: i64, names: &Names) -> Value {
       }
       let english = translations.get("en")?.as_str()?.to_string();
       let date = event.get("Date").and_then(ms).unwrap_or(0);
-      let mut map = timed(oid(event), None, None, now);
-      map.remove("active");
+      let mut map = timed(oid(event), None, None);
       map.insert("message".into(), json!(english));
       map.insert("link".into(), json!(text(event, "Prop")));
       map.insert(
@@ -56,12 +55,11 @@ pub(super) fn news(raw: &Value, now: i64, names: &Names) -> Value {
       );
       map.insert("priority".into(), json!(event.get("Priority").and_then(Value::as_bool).unwrap_or(false)));
       map.insert("date".into(), json!(iso(date)));
-      map.insert("eta".into(), json!(eta(date - now)));
       map.insert("update".into(), json!(english.to_ascii_lowercase().contains("update") || english.to_ascii_lowercase().contains("hotfix")));
       map.insert("primeAccess".into(), json!(english.to_ascii_lowercase().contains("prime access")));
       map.insert("stream".into(), json!(english.to_ascii_lowercase().contains("devstream") || english.to_ascii_lowercase().contains("prime time")));
       map.insert("translations".into(), Value::Object(translations));
-      map.insert("asString".into(), json!(format!("{} - {}", eta(date - now), english)));
+      map.insert("asString".into(), json!(english.clone()));
       Some((date, Value::Object(map)))
     })
     .collect();
@@ -72,7 +70,7 @@ pub(super) fn news(raw: &Value, now: i64, names: &Names) -> Value {
 pub(super) fn nightwave(raw: &Value, now: i64, names: &Names) -> Value {
   let Some(season) = raw.get("SeasonInfo") else { return json!({}) };
   let (activation, expiry) = (season.get("Activation").and_then(ms), season.get("Expiry").and_then(ms));
-  let mut map = timed(format!("nightwave{}", number(season, "Season")), activation, expiry, now);
+  let mut map = timed(format!("nightwave{}", number(season, "Season")), activation, expiry);
   let challenges: Vec<Value> = season
     .get("ActiveChallenges")
     .and_then(Value::as_array)
@@ -84,7 +82,7 @@ pub(super) fn nightwave(raw: &Value, now: i64, names: &Names) -> Value {
       let daily = challenge.get("Daily").and_then(Value::as_bool).unwrap_or(false);
       let elite = path.contains("WeeklyHard");
       let (a, e) = (challenge.get("Activation").and_then(ms), challenge.get("Expiry").and_then(ms));
-      let mut entry = timed(oid(challenge), a, e, now);
+      let mut entry = timed(oid(challenge), a, e);
       let title = names.lookup(path).map(str::to_string).unwrap_or_else(|| {
         let last = path.rsplit('/').next().unwrap_or(path);
         humanize(

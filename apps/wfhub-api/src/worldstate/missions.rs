@@ -23,7 +23,7 @@ pub(super) fn fissures(raw: &Value, now: i64, names: &Names) -> Value {
       let tier_key = if storm { text(mission, "ActiveMissionTier") } else { text(mission, "Modifier") };
       let (tier, tier_num) = tiers(tier_key);
       let mission_key = if storm { "MT_VOID_FLOOD" } else { text(mission, "MissionType") };
-      let mut map = timed(oid(mission), activation, expiry, now);
+      let mut map = timed(oid(mission), activation, expiry);
       map.insert("node".into(), json!(names.node(node)));
       map.insert("nodeKey".into(), json!(node));
       map.insert("missionType".into(), json!(if storm { "Void Storm".to_string() } else { names.mission_type(mission_key) }));
@@ -40,10 +40,10 @@ pub(super) fn fissures(raw: &Value, now: i64, names: &Names) -> Value {
   Value::Array(list)
 }
 
-pub(super) fn sortie(raw: &Value, now: i64, names: &Names) -> Value {
+pub(super) fn sortie(raw: &Value, names: &Names) -> Value {
   let Some(sortie) = array(raw, "Sorties").first() else { return json!({}) };
   let (activation, expiry) = (sortie.get("Activation").and_then(ms), sortie.get("Expiry").and_then(ms));
-  let mut map = timed(oid(sortie), activation, expiry, now);
+  let mut map = timed(oid(sortie), activation, expiry);
   let boss_key = text(sortie, "Boss");
   let (boss, faction) = names.boss(boss_key).unwrap_or_else(|| (title(boss_key.strip_prefix("SORTIE_BOSS_").unwrap_or(boss_key)), String::new()));
   let variants: Vec<Value> = sortie
@@ -69,10 +69,10 @@ pub(super) fn sortie(raw: &Value, now: i64, names: &Names) -> Value {
   Value::Object(map)
 }
 
-pub(super) fn archon_hunt(raw: &Value, now: i64, names: &Names) -> Value {
+pub(super) fn archon_hunt(raw: &Value, names: &Names) -> Value {
   let Some(hunt) = array(raw, "LiteSorties").first() else { return json!({}) };
   let (activation, expiry) = (hunt.get("Activation").and_then(ms), hunt.get("Expiry").and_then(ms));
-  let mut map = timed(oid(hunt), activation, expiry, now);
+  let mut map = timed(oid(hunt), activation, expiry);
   let boss_key = text(hunt, "Boss");
   let (boss, faction) = names.boss(boss_key).unwrap_or_else(|| (title(boss_key.strip_prefix("SORTIE_BOSS_").unwrap_or(boss_key)), String::new()));
   let missions: Vec<Value> = hunt
@@ -103,7 +103,7 @@ pub(super) fn alerts(raw: &Value, now: i64, names: &Names) -> Value {
       }
       let info = alert.get("MissionInfo")?;
       let node = text(info, "location");
-      let mut map = timed(oid(alert), activation, expiry, now);
+      let mut map = timed(oid(alert), activation, expiry);
       let reward = reward(info.get("missionReward").unwrap_or(&Value::Null), names);
       let mission = json!({
         "description": names.lookup(text(info, "descText")).unwrap_or(""),
@@ -129,7 +129,7 @@ pub(super) fn alerts(raw: &Value, now: i64, names: &Names) -> Value {
   Value::Array(list)
 }
 
-pub(super) fn invasions(raw: &Value, now: i64, names: &Names) -> Value {
+pub(super) fn invasions(raw: &Value, names: &Names) -> Value {
   let list = array(raw, "Invasions")
     .iter()
     .filter(|invasion| !invasion.get("Completed").and_then(Value::as_bool).unwrap_or(false))
@@ -140,7 +140,7 @@ pub(super) fn invasions(raw: &Value, now: i64, names: &Names) -> Value {
       let (count, goal) = (number(invasion, "Count"), number(invasion, "Goal").max(1));
       let versus_infestation = attacker == "FC_INFESTATION";
       let completion = if versus_infestation { (count.max(0) as f64 / goal as f64) * 100.0 } else { (1.0 + count as f64 / goal as f64) * 50.0 };
-      let mut map = timed(oid(invasion), activation, None, now);
+      let mut map = timed(oid(invasion), activation, None);
       map.insert("node".into(), json!(names.node(node)));
       map.insert("nodeKey".into(), json!(node));
       map.insert("desc".into(), json!(names.lookup(text(invasion, "LocTag")).unwrap_or("")));
@@ -181,7 +181,7 @@ pub(super) fn arbitration() -> Value {
 pub(super) fn sentient_outposts(raw: &Value, now: i64, names: &Names) -> Value {
   let tmp: Value = raw.get("Tmp").and_then(Value::as_str).and_then(|text| serde_json::from_str(text).ok()).unwrap_or(Value::Null);
   let id = tmp.get("sfn").and_then(|v| v.as_i64().or_else(|| v.as_str().and_then(|s| s.parse().ok())));
-  let mut map = timed(format!("sentientoutposts{}", now / 1_800_000), None, None, now);
+  let mut map = timed(format!("sentientoutposts{}", now / 1_800_000), None, None);
   match id {
     Some(id) => {
       let code = format!("CrewBattleNode{id}");

@@ -3,8 +3,8 @@
 //! that `tunnel.js` reaches with a CONNECT tunnel. The raw state is kept in D1 (table `worldstate`), so all data centres share
 //! one fetch, and in the Cache API (5 minutes) in front of it. When the proxy or the game fails the last copy is still
 //! answered, flagged by `x-worldstate-stale`. The state is parsed with `wfhub_api::worldstate` and the names of
-//! `/data/worldstate`. Times in the answers are computed from the clock, so an old copy is still right about what has
-//! expired; the `x-worldstate-age` header says how old the copy is.
+//! `/data/worldstate`. Nothing in an answer depends on the clock (the client counts down from `activation` and `expiry`), so the parsed
+//! answer is cached too (1 minute); the `x-worldstate-age` header says how old the copy it comes from is.
 
 use wfhub_api::routes::Reply;
 use wfhub_api::worldstate::{self, Names};
@@ -14,6 +14,9 @@ use worker::*;
 
 /// How long a copy is used before the game is asked again.
 const FRESH_SECONDS: i64 = 300;
+/// How long a parsed answer is reused: nothing in it depends on the clock, and parsing (the 170 KB state, the name tables) is
+/// what makes a request slow.
+const ANSWER_SECONDS: i64 = 60;
 /// A copy older than this is flagged as stale.
 pub const STALE_AFTER_SECONDS: i64 = 30 * 60;
 
@@ -120,9 +123,26 @@ pub fn unavailable(reason: &str) -> (Reply, Option<i64>) {
   (Reply::json(503, serde_json::json!({ "error": "Game state unavailable", "reason": reason }).to_string(), "no-store"), None)
 }
 
+fn answer_key(platform: &str, section: Option<&str>) -> String {
+  format!("https://worldstate.invalid/answer/{platform}/{}", section.unwrap_or("all"))
+}
+
+fn answer_cache_control(age: i64) -> &'static str {
+  if age > STALE_AFTER_SECONDS { "public, max-age=10" } else { "public, max-age=60" }
+}
+
 /// `GET /api/worldstate/{platform}[/{section}].json`: the parsed state and the age of the copy it comes from (seconds).
 pub async fn game_state(env: &Env, platform: &str, section: Option<&str>) -> Result<(Reply, Option<i64>)> {
   let now = now();
+  let key = answer_key(platform, section);
+  if let Some(mut response) = Cache::default().get(key.clone(), false).await.ok().flatten()
+    && let Ok(text) = response.text().await
+    && let Some((fetched_at, body)) = text.split_once('\n')
+    && let Ok(fetched_at) = fetched_at.parse::<i64>()
+  {
+    let age = (now - fetched_at).max(0);
+    return Ok((Reply::json(200, body.to_string(), answer_cache_control(age)), Some(age)));
+  }
   let (fetched_at, text) = match stored_state(env, platform).await {
     Ok(state) => state,
     Err(reason) => return Ok(unavailable(&reason)),
@@ -142,6 +162,11 @@ pub async fn game_state(env: &Env, platform: &str, section: Option<&str>) -> Res
   };
   let Some(body) = body else { return Ok((wfhub_api::routes::not_found(), None)) };
   let age = (now - fetched_at).max(0);
-  let cache = if age > STALE_AFTER_SECONDS { "public, max-age=10" } else { "public, max-age=60" };
-  Ok((Reply::json(200, body.to_string(), cache), Some(age)))
+  let body = body.to_string();
+  if let Ok(response) = Response::ok(format!("{fetched_at}\n{body}"))
+    && response.headers().set("cache-control", &format!("public, max-age={ANSWER_SECONDS}")).is_ok()
+  {
+    let _ = Cache::default().put(key, response).await;
+  }
+  Ok((Reply::json(200, body, answer_cache_control(age)), Some(age)))
 }

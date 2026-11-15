@@ -83,8 +83,9 @@ A request is answered from the Cache API (5 minutes, per data centre); on a miss
 centres) when it is under 5 minutes old; otherwise the Worker asks the game, stores the raw state in D1 and caches it. About 27 KB gzipped
 per fetch, so at most 4 platforms x 288 fetches a day = ~0.9 GB a month if every platform is requested around the clock; the 5 minute limit
 is why the copy is shared. If the proxy or the game fails the last copy is still answered (`503` with a `reason` only when there is none).
-Answers carry `x-worldstate-age` (seconds since the fetch) and `x-worldstate-stale: 1` over 30 minutes; times in the answers come from the
-clock, so a copy a few minutes old is still right about what has expired.
+Answers carry `x-worldstate-age` (seconds since the fetch) and `x-worldstate-stale: 1` over 30 minutes. **Nothing in an answer depends on
+the clock** (no `eta`, `timeLeft`, `expired`, `active`, `timestamp`, no countdown strings): the client counts down from `activation` and
+`expiry`. So the parsed answer of a platform/section is cached 60 seconds too, and a request that hits it does no parsing at all.
 
 Setup, once: `npx wrangler secret put WORLDSTATE_PROXY` (or Cloudflare dashboard > Workers > wfhub > Settings > Variables and Secrets).
 Locally, put `WORLDSTATE_PROXY=...` in `.dev.vars` (gitignored) and `npm run dev:web`. After changing the Rust or `tunnel.js`: `npm run api:build`.

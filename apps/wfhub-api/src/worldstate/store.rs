@@ -1,13 +1,13 @@
 //! Trade: Baro Ki'Teer, daily deals, flash sales and the Steel Path honors.
 
 use super::names::Names;
-use super::value::{array, eta, iso, ms, number, oid, text, timed};
+use super::value::{array, iso, ms, number, oid, text, timed};
 use serde_json::{Value, json};
 
 pub(super) fn void_trader(raw: &Value, now: i64, names: &Names) -> Value {
   let Some(trader) = array(raw, "VoidTraders").first() else { return json!({}) };
   let (activation, expiry) = (trader.get("Activation").and_then(ms), trader.get("Expiry").and_then(ms));
-  let mut map = timed(oid(trader), activation, expiry, now);
+  let mut map = timed(oid(trader), activation, expiry);
   let node = text(trader, "Node");
   let character = if text(trader, "Character").contains("Baro") { "Baro Ki'Teer" } else { text(trader, "Character") };
   let inventory: Vec<Value> = trader
@@ -24,17 +24,15 @@ pub(super) fn void_trader(raw: &Value, now: i64, names: &Names) -> Value {
   map.insert("location".into(), json!(names.node(node)));
   map.insert("nodeKey".into(), json!(node));
   map.insert("inventory".into(), json!(if started { inventory } else { Vec::new() }));
-  map.insert("startString".into(), json!(activation.map(|a| eta(a - now)).unwrap_or_default()));
-  map.insert("endString".into(), json!(expiry.map(|e| eta(e - now)).unwrap_or_default()));
   Value::Object(map)
 }
 
-pub(super) fn daily_deals(raw: &Value, now: i64, names: &Names) -> Value {
+pub(super) fn daily_deals(raw: &Value, names: &Names) -> Value {
   let list = array(raw, "DailyDeals")
     .iter()
     .map(|deal| {
       let (activation, expiry) = (deal.get("Activation").and_then(ms), deal.get("Expiry").and_then(ms));
-      let mut map = timed(format!("dailyDeal{}", expiry.unwrap_or(0)), activation, expiry, now);
+      let mut map = timed(format!("dailyDeal{}", expiry.unwrap_or(0)), activation, expiry);
       map.insert("item".into(), json!(names.text(text(deal, "StoreItem"))));
       map.insert("sku".into(), json!(text(deal, "StoreItem")));
       map.insert("originalPrice".into(), json!(number(deal, "OriginalPrice")));
@@ -56,7 +54,7 @@ pub(super) fn flash_sales(raw: &Value, now: i64, names: &Names) -> Value {
       if expiry.is_some_and(|e| e < now) || activation.is_some_and(|a| a > now) {
         return None;
       }
-      let mut map = timed(format!("{}{}", text(sale, "TypeName"), expiry.unwrap_or(0)), activation, expiry, now);
+      let mut map = timed(format!("{}{}", text(sale, "TypeName"), expiry.unwrap_or(0)), activation, expiry);
       map.insert("item".into(), json!(names.text(text(sale, "TypeName"))));
       map.insert("discount".into(), json!(number(sale, "Discount")));
       map.insert("regularOverride".into(), json!(number(sale, "RegularOverride")));
@@ -85,7 +83,6 @@ pub(super) fn steel_path(now: i64, names: &Names) -> Value {
     "currentReward": rotation.get(index).cloned().unwrap_or(Value::Null),
     "activation": iso(activation),
     "expiry": iso(expiry),
-    "remaining": eta(expiry - now),
     "rotation": rotation,
     "evergreens": evergreens,
     "incursions": { "id": format!("spi:{day}"), "activation": iso(day), "expiry": iso(day + 86_399_000) },

@@ -18,7 +18,7 @@ mod value;
 pub use names::{Names, SHARDS, collect_paths, desc_key, humanize, normalize, shard_of, shards_needed};
 pub use value::{eta, iso, ms};
 
-use serde_json::{Map, Value, json};
+use serde_json::{Map, Value};
 
 /// The platforms of the game.
 pub const PLATFORMS: [&str; 4] = ["pc", "xb1", "ps4", "swi"];
@@ -64,22 +64,22 @@ pub fn parse_section(raw: &Value, section: &str, now: i64, names: &Names) -> Opt
   Some(match section {
     "alerts" => missions::alerts(raw, now, names),
     "arbitration" => missions::arbitration(),
-    "archonHunt" => missions::archon_hunt(raw, now, names),
+    "archonHunt" => missions::archon_hunt(raw, names),
     "cambionCycle" => cycles::cambion(raw, now),
     "cetusCycle" => cycles::cetus(raw, now),
     "constructionProgress" => community::construction(raw, now),
-    "dailyDeals" => store::daily_deals(raw, now, names),
+    "dailyDeals" => store::daily_deals(raw, names),
     "duviriCycle" => cycles::duviri(raw, now),
     "earthCycle" => cycles::earth(now),
     "events" => community::events(raw, now, names),
     "fissures" => missions::fissures(raw, now, names),
     "flashSales" => store::flash_sales(raw, now, names),
-    "invasions" => missions::invasions(raw, now, names),
-    "news" => community::news(raw, now, names),
+    "invasions" => missions::invasions(raw, names),
+    "news" => community::news(raw, names),
     "nightwave" => community::nightwave(raw, now, names),
     "sentientOutposts" => missions::sentient_outposts(raw, now, names),
     "simaris" => community::simaris(raw, names),
-    "sortie" => missions::sortie(raw, now, names),
+    "sortie" => missions::sortie(raw, names),
     "steelPath" => store::steel_path(now, names),
     "vallisCycle" => cycles::vallis(now),
     "voidTrader" => store::void_trader(raw, now, names),
@@ -91,7 +91,6 @@ pub fn parse_section(raw: &Value, section: &str, now: i64, names: &Names) -> Opt
 /// All endpoints in one object.
 pub fn parse_all(raw: &Value, now: i64, names: &Names) -> Value {
   let mut all = Map::new();
-  all.insert("timestamp".into(), json!(iso(now)));
   for section in SECTIONS {
     if let Some(value) = parse_section(raw, section, now, names) {
       all.insert(section.into(), value);

@@ -62,8 +62,10 @@ pub fn eta(delta_ms: i64) -> String {
   format!("{sign}{}", parts.join(" "))
 }
 
-/// An object that starts with the fields every timed thing has.
-pub(super) fn timed(id: String, activation: Option<i64>, expiry: Option<i64>, now: i64) -> Map<String, Value> {
+/// An object that starts with the fields every timed thing has. Nothing in it depends on the clock (no `eta`, `expired`,
+/// `active`): the client counts down from `activation` and `expiry`, so the answer is the same for as long as the game's
+/// state is.
+pub(super) fn timed(id: String, activation: Option<i64>, expiry: Option<i64>) -> Map<String, Value> {
   let mut map = Map::new();
   map.insert("id".into(), json!(id));
   if let Some(activation) = activation {
@@ -71,10 +73,7 @@ pub(super) fn timed(id: String, activation: Option<i64>, expiry: Option<i64>, no
   }
   if let Some(expiry) = expiry {
     map.insert("expiry".into(), json!(iso(expiry)));
-    map.insert("expired".into(), json!(expiry < now));
-    map.insert("eta".into(), json!(eta(expiry - now)));
   }
-  map.insert("active".into(), json!(activation.is_none_or(|a| a <= now) && expiry.is_none_or(|e| e > now)));
   map
 }
 

@@ -1,6 +1,6 @@
 //! The cycles: Cetus, Cambion Drift, Earth, Orb Vallis, Zariman and Duviri.
 
-use super::value::{array, eta, ms, text, timed};
+use super::value::{array, ms, text, timed};
 use serde_json::{Value, json};
 
 pub(super) fn bounty_end(raw: &Value, tag: &str) -> i64 {
@@ -29,19 +29,17 @@ pub(super) fn cetus_state(raw: &Value, now: i64) -> (bool, i64, i64) {
 
 pub(super) fn cetus(raw: &Value, now: i64) -> Value {
   let (day, start, expiry) = cetus_state(raw, now);
-  let mut map = timed(format!("cetusCycle{expiry}"), Some(start), Some(expiry), now);
+  let mut map = timed(format!("cetusCycle{expiry}"), Some(start), Some(expiry));
   map.insert("isDay".into(), json!(day));
   map.insert("state".into(), json!(if day { "day" } else { "night" }));
-  map.insert("timeLeft".into(), json!(eta(expiry - now)));
   map.insert("isCetus".into(), json!(true));
   Value::Object(map)
 }
 
 pub(super) fn cambion(raw: &Value, now: i64) -> Value {
   let (day, start, expiry) = cetus_state(raw, now);
-  let mut map = timed(format!("cambionCycle{expiry}"), Some(start), Some(expiry), now);
+  let mut map = timed(format!("cambionCycle{expiry}"), Some(start), Some(expiry));
   map.insert("state".into(), json!(if day { "fass" } else { "vome" }));
-  map.insert("timeLeft".into(), json!(eta(expiry - now)));
   Value::Object(map)
 }
 
@@ -51,10 +49,9 @@ pub(super) fn earth(now: i64) -> Value {
   let left = 14_400 - cycle % 14_400;
   let expiry = now + left * 1000;
   let rounded = (expiry as f64 / 60_000.0).round() as i64 * 60_000;
-  let mut map = timed(format!("earthCycle{rounded}"), Some(expiry - 14_400_000), Some(expiry), now);
+  let mut map = timed(format!("earthCycle{rounded}"), Some(expiry - 14_400_000), Some(expiry));
   map.insert("isDay".into(), json!(day));
   map.insert("state".into(), json!(if day { "day" } else { "night" }));
-  map.insert("timeLeft".into(), json!(eta(expiry - now)));
   Value::Object(map)
 }
 
@@ -68,10 +65,9 @@ pub(super) fn vallis(now: i64) -> Value {
   let warm = to_full > COLD;
   let to_next = if warm { to_full - COLD } else { to_full };
   let previous = (now + to_full - if warm { LOOP } else { COLD }) / 60_000 * 60_000;
-  let mut map = timed(format!("vallisCycle{previous}"), Some(previous), Some(now + to_next), now);
+  let mut map = timed(format!("vallisCycle{previous}"), Some(previous), Some(now + to_next));
   map.insert("isWarm".into(), json!(warm));
   map.insert("state".into(), json!(if warm { "warm" } else { "cold" }));
-  map.insert("timeLeft".into(), json!(eta(to_next)));
   Value::Object(map)
 }
 
@@ -86,10 +82,9 @@ pub(super) fn zariman(raw: &Value, now: i64) -> Value {
   // The state ends where the bounties' cycle does, but never earlier than now.
   let remaining = if corpus { left - HALF } else { left };
   let expiry = ((now + remaining.max(0)) as f64 / 60_000.0).round() as i64 * 60_000;
-  let mut map = timed(format!("zarimanCycle{expiry}"), Some(expiry - HALF), Some(expiry), now);
+  let mut map = timed(format!("zarimanCycle{expiry}"), Some(expiry - HALF), Some(expiry));
   map.insert("isCorpus".into(), json!(corpus));
   map.insert("state".into(), json!(if corpus { "corpus" } else { "grineer" }));
-  map.insert("timeLeft".into(), json!(eta(expiry - now)));
   Value::Object(map)
 }
 
@@ -102,7 +97,7 @@ pub(super) fn duviri(raw: &Value, now: i64) -> Value {
   let until = STATE - delta % STATE;
   let expiry = (now + until * 1000) / 60_000 * 60_000;
   let activation = expiry - STATE * 1000;
-  let mut map = timed(format!("duviriCycle{}{expiry}", STATES[index]), Some(activation), Some(expiry), now);
+  let mut map = timed(format!("duviriCycle{}{expiry}", STATES[index]), Some(activation), Some(expiry));
   map.insert("state".into(), json!(STATES[index]));
   let choices: Vec<Value> = array(raw, "EndlessXpSchedule")
     .first()

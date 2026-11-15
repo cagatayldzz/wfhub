@@ -61,7 +61,7 @@ fn every_platform_parses_every_section() {
       assert!(!value.is_null(), "{platform}/{section}");
     }
     assert!(parse_section(&raw, "nope", now, &names).is_none());
-    assert_eq!(parse_all(&raw, now, &names).as_object().unwrap().len(), SECTIONS.len() + 1);
+    assert_eq!(parse_all(&raw, now, &names).as_object().unwrap().len(), SECTIONS.len());
   }
 }
 
@@ -108,8 +108,7 @@ fn cycles_are_consistent() {
   for name in ["cetusCycle", "cambionCycle", "vallisCycle", "earthCycle", "zarimanCycle", "duviriCycle"] {
     let value = cycle(name);
     assert!(value["state"].is_string(), "{name}");
-    assert_eq!(value["expired"], false, "{name}");
-    assert_eq!(value["active"], true, "{name}");
+    assert!(value.get("expired").is_none() && value.get("eta").is_none() && value.get("timeLeft").is_none(), "{name}");
   }
   let earth = cycle("earthCycle");
   assert!(["day", "night"].contains(&earth["state"].as_str().unwrap()));
