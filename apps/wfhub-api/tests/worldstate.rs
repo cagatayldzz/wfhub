@@ -31,9 +31,9 @@ fn now(raw: &Value) -> i64 {
 #[test]
 fn platforms_and_aliases() {
   assert_eq!(PLATFORMS.len(), 4);
-  assert_eq!(platform("ps5").unwrap().0, "ps4");
-  assert_eq!(platform("mob").unwrap().0, "pc");
-  assert_eq!(platform("pc").unwrap().1, "https://api.warframe.com/cdn/worldState.php");
+  assert_eq!(platform("ps5"), Some("ps4"));
+  assert_eq!(platform("mob"), Some("pc"));
+  assert_eq!(platform("pc"), Some("pc"));
   assert!(platform("../x").is_none());
   assert!(platform("PC").is_none());
 }
@@ -52,7 +52,7 @@ fn time_helpers() {
 
 #[test]
 fn every_platform_parses_every_section() {
-  for (platform, _) in PLATFORMS {
+  for platform in PLATFORMS {
     let raw = raw(platform);
     let names = names_for(&raw);
     let now = now(&raw);

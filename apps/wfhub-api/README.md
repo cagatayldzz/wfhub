@@ -4,7 +4,7 @@ The Rust API behind `https://wfhub.cagatayldzz.com/api`. It serves the WFHub Cod
 banners, the live game state (fissures, cycles, Baro...) and a feedback endpoint. For local development, run `npm run dev:web` and open `http://localhost:8000/api/` for the
 Swagger documentation.
 
-**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (`npm run api:build`; the result, `worker/dist`, is committed and checked before every deploy), holds no data and only serves those files; it writes feedback (Cloudflare D1) and it reads the live game state (see World state below). To change the data you edit a file and deploy.
+**Almost everything is static, except the live game state.** The data are files in `apps/wfhub-api/data`, which `scripts/build-site.sh` copies into the site Cloudflare serves (at `/data`). The Worker is Rust compiled to WASM (`npm run api:build`; the result, `worker/dist`, is committed and checked before every deploy), holds no data and only serves those files; it writes feedback and the pushed game state (Cloudflare D1) and parses that state live (see World state below). To change the data you edit a file and deploy.
 
 ```text
 src/
@@ -24,7 +24,7 @@ src/
 worker/                 the Cloudflare Worker (Rust, WASM): glue between the site's files, the game and the library
   migrations/           D1 migrations (feedback)
   src/lib.rs            the router            src/feedback.rs   feedback in D1
-  src/worldstate.rs     fetch + cache         src/access.rs     Cloudflare Access check
+  src/worldstate.rs     game state in D1      src/access.rs     Cloudflare Access check
   dist/                 the compiled Worker, committed (rebuild with npm run api:build when Rust changes)
 data/                   what the Worker serves (copied to /data by scripts/build-site.sh)
   events.json           the banners (edit by hand)
@@ -55,6 +55,7 @@ npm run format:rust
 | `GET /api/{category}/{slug}.json` | one item, e.g. `/api/warframes/excalibur.json` |
 | `GET /api/events.json` | the banners, maintained in `data/events.json` |
 | `GET /api/mastery/{category}.json` | a mastery snapshot; `/api/mastery/updated.json` says when it was made |
+| `PUT /api/ingest/worldstate/{platform}` | stores the raw game state (bearer token; used by `scripts/push-worldstate.sh`) |
 | `GET /api/worldstate/{platform}.json` | every section of the live game state (`pc`, `xb1`, `ps4`, `swi`; `ps5` and `mob` are aliases) |
 | `GET /api/worldstate/{platform}/{section}.json` | one section: alerts, arbitration, archonHunt, cambionCycle, cetusCycle, constructionProgress, dailyDeals, duviriCycle, earthCycle, events, fissures, flashSales, invasions, news, nightwave, sentientOutposts, simaris, sortie, steelPath, vallisCycle, voidTrader, zarimanCycle |
 | `POST /api/feedback` | stores anonymous feedback |
@@ -70,11 +71,26 @@ result and deploy; the catalogue changes only when you run it again.
 
 ## World state
 
-`/api/worldstate/...` replaces `api.warframestat.us`. The Worker fetches Warframe's own `worldState.php` (pc `api.warframe.com`,
-xb1 `api-xb1.warframe.com`, ps4 `api-ps4.warframe.com`, swi `api-swi.warframe.com`, all under `/cdn/worldState.php`), and
-`src/worldstate.rs` parses it into the same JSON shapes as warframe-status. The parser is pure Rust (`cargo test`, fixtures in
-`tests/fixtures`); the Worker only fetches, caches (Cache API: 30 seconds fresh, last good copy kept a week and served with
-`x-worldstate-stale: 1` when the game's server is down) and loads names.
+`/api/worldstate/...` replaces `api.warframestat.us`. It parses Warframe's own `worldState.php` (pc `api.warframe.com`, xb1
+`api-xb1.warframe.com`, ps4 `api-ps4.warframe.com`, swi `api-swi.warframe.com`, all under `/cdn/worldState.php`) into the same JSON
+shapes as warframe-status (`src/worldstate/`; pure Rust, `cargo test`, fixtures in `tests/fixtures`).
+
+**The game's server answers 403 to Cloudflare Workers**, so the Worker cannot fetch the state itself. Instead
+`scripts/push-worldstate.sh` fetches the four states and `PUT`s each to `/api/ingest/worldstate/{platform}`; the Worker keeps it in
+D1 (table `worldstate`) and parses it per request (cached 30 seconds per data centre). `.github/workflows/worldstate.yml` runs the
+script every 5 minutes (GitHub may delay scheduled runs by several minutes). Answers carry `x-worldstate-age` (seconds since the
+push) and `x-worldstate-stale: 1` over 15 minutes; times in the answers come from the clock, so an old copy is still right about
+what has expired. Before the first push the endpoints answer `503` with a `reason`.
+
+Setup, once: a long random token in both places (the push route answers `401` without it, `503` while the Worker has none):
+
+```sh
+npx wrangler secret put WORLDSTATE_PUSH_TOKEN                  # the Worker (paste the token)
+gh secret set WORLDSTATE_PUSH_TOKEN                            # the repository (same token), or in the GitHub settings
+```
+
+Run it by hand with `WORLDSTATE_PUSH_TOKEN=... bash scripts/push-worldstate.sh` (`WFHUB_URL=http://localhost:8000` for
+`npm run dev:web`, with the token in `.dev.vars`). Any other machine that can reach the game works the same way.
 
 Names (nodes, mission types, items, challenges) come from `data/worldstate`: `tables.json` and 32 name shards
 (`names/{n}.json`, by hash of the path). A request loads only the shards its state needs. Refresh them when the game adds content:
@@ -85,8 +101,8 @@ npm run worldstate:fetch     # warframe-worldstate-data (nodes, languages)
 npm run worldstate:export    # writes data/worldstate
 ```
 
-Not in the raw state: `arbitration` answers the "unknown" placeholder (as warframe-status does without its extra source), the
-Vallis, Earth, Duviri constants are the ones of the WFCD parser, Nightwave reputation is 1000 (daily), 4500 (weekly) and 7000 (elite).
+Not in the raw state: `arbitration` answers the "unknown" placeholder (as warframe-status does without its extra source); the
+Vallis, Earth, Duviri constants are the ones of the WFCD parser; Nightwave reputation is 1000 (daily), 4500 (weekly) and 7000 (elite).
 The raw state only has English names here; `news.translations` has `en` only.
 
 ## Mastery and events

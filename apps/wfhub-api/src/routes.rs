@@ -10,8 +10,9 @@
 //! | `GET /api/mastery/{category}.json` | a mastery checklist snapshot | `data/mastery/{category}.json` |
 //! | `GET /api/{category}.json` | the items of a Codex category | `data/catalogue/{category}.json` |
 //! | `GET /api/{category}/{slug}.json` | one item | `data/catalogue/{category}/{first character}.json` |
-//! | `GET /api/worldstate/{platform}.json` | every worldState section | the game's `worldState.php`, parsed by `worldstate` |
+//! | `GET /api/worldstate/{platform}.json` | every worldState section | the game's `worldState.php` (kept in D1), parsed by `worldstate` |
 //! | `GET /api/worldstate/{platform}/{section}.json` | one section | same |
+//! | `PUT /api/ingest/worldstate/{platform}` | stores the raw game state (D1), with a bearer token | `scripts/push-worldstate.sh` |
 //! | `POST /api/feedback` | stores feedback (D1) | `feedback` |
 
 use serde_json::Value;
@@ -119,11 +120,14 @@ pub enum Route {
     slug: String,
   },
   Feedback,
-  /// The live game state of a platform: `url` is where its raw state is, `section` the endpoint (all of them when `None`).
+  /// The live game state of a platform; `section` is the endpoint (all of them when `None`).
   WorldState {
     platform: &'static str,
-    url: &'static str,
     section: Option<&'static str>,
+  },
+  /// `PUT`: the raw state of a platform, pushed by `scripts/push-worldstate.sh` (the game's server refuses the Worker).
+  WorldStatePush {
+    platform: &'static str,
   },
 }
 
@@ -144,6 +148,10 @@ pub fn route(method: &str, path: &str) -> Result<Route, Reply> {
   if path == "/api/feedback" {
     return if method == "POST" { Ok(Route::Feedback) } else { Err(method_not_allowed()) };
   }
+  if let Some(platform) = path.strip_prefix("/api/ingest/worldstate/") {
+    let platform = crate::worldstate::platform(platform).ok_or_else(not_found)?;
+    return if method == "PUT" { Ok(Route::WorldStatePush { platform }) } else { Err(method_not_allowed()) };
+  }
   if method != "GET" {
     return Err(method_not_allowed());
   }
@@ -162,13 +170,13 @@ pub fn route(method: &str, path: &str) -> Result<Route, Reply> {
   let rest = rest.strip_suffix(".json").ok_or_else(not_found)?;
   match rest.split('/').collect::<Vec<_>>().as_slice() {
     ["worldstate", platform] => {
-      let (platform, url) = crate::worldstate::platform(platform).ok_or_else(not_found)?;
-      Ok(Route::WorldState { platform, url, section: None })
+      let platform = crate::worldstate::platform(platform).ok_or_else(not_found)?;
+      Ok(Route::WorldState { platform, section: None })
     }
     ["worldstate", platform, section] => {
-      let (platform, url) = crate::worldstate::platform(platform).ok_or_else(not_found)?;
+      let platform = crate::worldstate::platform(platform).ok_or_else(not_found)?;
       let section = crate::worldstate::SECTIONS.iter().find(|name| **name == *section).copied().ok_or_else(not_found)?;
-      Ok(Route::WorldState { platform, url, section: Some(section) })
+      Ok(Route::WorldState { platform, section: Some(section) })
     }
     ["mastery", name] if MASTERY_CATEGORIES.contains(name) => file(&format!("/data/mastery/{name}.json"), JSON, SHORT),
     [category] if CATALOGUE_CATEGORIES.contains(category) => file(&format!("/data/catalogue/{category}.json"), JSON, SHORT),

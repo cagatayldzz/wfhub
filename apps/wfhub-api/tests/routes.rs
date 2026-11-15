@@ -45,14 +45,8 @@ fn every_category_is_distinct() {
 #[test]
 fn worldstate_routes() {
   use wfhub_api::worldstate::SECTIONS;
-  assert_eq!(
-    route("GET", "/api/worldstate/pc/fissures.json").unwrap(),
-    Route::WorldState { platform: "pc", url: "https://api.warframe.com/cdn/worldState.php", section: Some("fissures") }
-  );
-  assert_eq!(
-    route("GET", "/api/worldstate/ps5.json").unwrap(),
-    Route::WorldState { platform: "ps4", url: "https://api-ps4.warframe.com/cdn/worldState.php", section: None }
-  );
+  assert_eq!(route("GET", "/api/worldstate/pc/fissures.json").unwrap(), Route::WorldState { platform: "pc", section: Some("fissures") });
+  assert_eq!(route("GET", "/api/worldstate/ps5.json").unwrap(), Route::WorldState { platform: "ps4", section: None });
   for section in SECTIONS {
     assert!(matches!(route("GET", &format!("/api/worldstate/swi/{section}.json")), Ok(Route::WorldState { .. })), "{section}");
   }
@@ -66,4 +60,14 @@ fn worldstate_routes() {
     assert_eq!(route("GET", path).unwrap_err().status, 404, "{path}");
   }
   assert_eq!(route("POST", "/api/worldstate/pc.json").unwrap_err().status, 405);
+}
+
+#[test]
+fn worldstate_push_route() {
+  assert_eq!(route("PUT", "/api/ingest/worldstate/xb1").unwrap(), Route::WorldStatePush { platform: "xb1" });
+  assert_eq!(route("PUT", "/api/ingest/worldstate/ps5").unwrap(), Route::WorldStatePush { platform: "ps4" });
+  assert_eq!(route("GET", "/api/ingest/worldstate/pc").unwrap_err().status, 405);
+  assert_eq!(route("POST", "/api/ingest/worldstate/pc").unwrap_err().status, 405);
+  assert_eq!(route("PUT", "/api/ingest/worldstate/nope").unwrap_err().status, 404);
+  assert_eq!(route("PUT", "/api/ingest/worldstate/").unwrap_err().status, 404);
 }

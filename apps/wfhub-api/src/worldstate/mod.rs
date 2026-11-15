@@ -20,22 +20,17 @@ pub use value::{eta, iso, ms};
 
 use serde_json::{Map, Value, json};
 
-/// The platforms and the address of their raw state. The Worker never builds an address from a request.
-pub const PLATFORMS: [(&str, &str); 4] = [
-  ("pc", "https://api.warframe.com/cdn/worldState.php"),
-  ("xb1", "https://api-xb1.warframe.com/cdn/worldState.php"),
-  ("ps4", "https://api-ps4.warframe.com/cdn/worldState.php"),
-  ("swi", "https://api-swi.warframe.com/cdn/worldState.php"),
-];
+/// The platforms of the game. Their raw state is read by `scripts/push-worldstate.sh` (see `worker/src/worldstate.rs`).
+pub const PLATFORMS: [&str; 4] = ["pc", "xb1", "ps4", "swi"];
 
-/// The platform of a request path (`ps5` is `ps4`, `mob` is `pc`): its key and the address of its raw state.
-pub fn platform(key: &str) -> Option<(&'static str, &'static str)> {
+/// The platform of a request path (`ps5` is `ps4`, `mob` is `pc`).
+pub fn platform(key: &str) -> Option<&'static str> {
   let key = match key {
     "ps5" => "ps4",
     "mob" => "pc",
     other => other,
   };
-  PLATFORMS.iter().find(|(name, _)| *name == key).copied()
+  PLATFORMS.iter().find(|name| **name == key).copied()
 }
 
 /// Every endpoint under `/api/worldstate/{platform}/`.

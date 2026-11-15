@@ -3,8 +3,8 @@
 //! committed, `cf:deploy` checks it is fresh): it holds no data. Everything it answers comes from static files of the site (`/data/...`, `/swagger/...`), so
 //! changing the API is changing those files and deploying the site. The one thing it writes is feedback (D1, `DB`).
 //!
-//! The live game state (`/api/worldstate/...`) is the one thing that is not a file: it is fetched from the game, cached
-//! (the last good copy is kept for when the game's server is down) and parsed by `wfhub_api::worldstate`.
+//! The live game state (`/api/worldstate/...`) is the one thing that is not a file: it is pushed to D1 by
+//! `scripts/push-worldstate.sh` and parsed by `wfhub_api::worldstate` (see `worldstate.rs`).
 //!
 //! The routes are in `wfhub_api::routes`, the feedback rules in `wfhub_api::feedback`; this file only fetches and stores.
 
@@ -50,7 +50,7 @@ async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Repl
       Ok(reply) => reply,
       Err(_) => error(503, "Service unavailable"),
     },
-    Route::Redirect(_) | Route::WorldState { .. } => unreachable!("redirects and the game state are answered before"),
+    Route::Redirect(_) | Route::WorldState { .. } | Route::WorldStatePush { .. } => unreachable!("redirects and the game state are answered before"),
     Route::File { path, content_type, cache } => match asset(env, &path).await? {
       Some(body) => Reply { status: 200, body, cache, content_type },
       None => wfhub_api::routes::not_found(),
@@ -67,16 +67,29 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
   if let Ok(Route::Redirect(to)) = route(&method, url.path()) {
     return Response::redirect_with_status(url.join(to)?, 308);
   }
-  if let Ok(Route::WorldState { platform, url: upstream, section }) = route(&method, url.path()) {
-    let (reply, stale) = match worldstate::game_state(&env, platform, upstream, section).await {
-      Ok(answer) => answer,
-      Err(error) => worldstate::unavailable(&error.to_string()),
-    };
-    let response = respond(reply, head, true)?;
-    if stale {
-      response.headers().set("x-worldstate-stale", "1")?;
+  match route(&method, url.path()) {
+    Ok(Route::WorldState { platform, section }) => {
+      let (reply, age) = match worldstate::game_state(&env, platform, section).await {
+        Ok(answer) => answer,
+        Err(error) => worldstate::unavailable(&error.to_string()),
+      };
+      let response = respond(reply, head, true)?;
+      if let Some(age) = age {
+        response.headers().set("x-worldstate-age", &age.to_string())?;
+        if age > worldstate::STALE_AFTER_SECONDS {
+          response.headers().set("x-worldstate-stale", "1")?;
+        }
+      }
+      return Ok(response);
     }
-    return Ok(response);
+    Ok(Route::WorldStatePush { platform }) => {
+      let reply = match worldstate::ingest(req, &env, platform).await {
+        Ok(reply) => reply,
+        Err(_) => error(503, "Service unavailable"),
+      };
+      return respond(reply, head, false);
+    }
+    _ => {}
   }
   let public = !url.path().starts_with("/api/admin/");
   respond(answer(req, &env, &url, &method).await?, head, public)
