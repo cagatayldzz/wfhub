@@ -20,6 +20,8 @@ All WFHub endpoints live on `https://wfhub.cagatayldzz.com/`: `/api/{category}.j
 
 ## Client behavior
 
-The iOS client uses Swift networking and `AsyncImage`. It stores preferences with `AppStorage`. Home, market, and activity screens periodically refresh while their tasks are active; data screens also provide pull-to-refresh.
+Both clients fetch the addresses of the shared core (`crates/wfhub-core`, module `urls`) and hand the JSON text back to it. The iOS client uses `URLSession` and its own image cache; the Android client uses `HttpURLConnection` and Coil.
+
+The iOS client stores preferences with `AppStorage`. Home, market, and activity screens periodically refresh while their tasks are active; data screens also provide pull-to-refresh.
 
 The app should not assume that an optional API field or image is always present. When adding a screen, handle empty data and failed requests, and avoid displaying raw identifiers when a user-facing name is available.

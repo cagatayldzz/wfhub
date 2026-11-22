@@ -1,7 +1,8 @@
 /target/
 /.cloudflare-build/
-/apps/wfhub-mobile/build/
-/apps/wfhub-mobile/*.xcodeproj/
+/apps/wfhub-ios/build/
+/apps/wfhub-ios/*.xcodeproj/
+/apps/wfhub-ios/Generated/
 .DS_Store
 
 # Local credentials and signing material
@@ -26,3 +27,14 @@
 /apps/wfhub-api/worker/build/
 /apps/wfhub-api/.sources/
 /dist/
+
+# Shared Rust core and the Android app.
+/crates/target/
+/apps/wfhub-android/.gradle/
+/apps/wfhub-android/build/
+/apps/wfhub-android/app/build/
+/apps/wfhub-android/local.properties
+/apps/wfhub-android/app/src/main/jniLibs/
+/apps/wfhub-android/app/src/main/generated/
+*.jks
+*.keystore

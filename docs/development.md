@@ -2,21 +2,32 @@
 
 ## Prerequisites
 
-Install Node.js (for Wrangler) and Rust with the `wasm32-unknown-unknown` target for web and API development. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device.
+Install Node.js (for Wrangler) and Rust with the `wasm32-unknown-unknown` target for web and API development. The shared core (`crates/`) needs the `aarch64-apple-ios` and `aarch64-apple-ios-sim` targets for iOS and `cargo-ndk` with the Android targets for Android. iOS development requires Xcode, XcodeGen, and an iOS 17 or later simulator or device (Apple silicon). Android development requires the Android SDK (API 36), NDK r28 or later, JDK 17 or later and Gradle (or Android Studio).
 
 ## Run the clients
 
-To generate the iOS project and open it in Xcode:
+To generate the iOS project and open it in Xcode (build the Rust core first; `scripts/ios.sh` does this for you):
 
 ```sh
-cd apps/wfhub-mobile
+bash scripts/build-core.sh ios
+cd apps/wfhub-ios
 xcodegen generate
 open WFHub.xcodeproj
 ```
 
 Select the `WFHub` scheme and a simulator or device. Physical devices require a valid signing team.
 
-Alternatively, from the repository root, `bash scripts/mobile.sh simulator` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
+Alternatively, from the repository root, `bash scripts/ios.sh simulator` generates the project, builds the app, and launches the default iPhone 15 simulator. Set `WFHUB_SIMULATOR` to another device name or UDID when needed. The simulator script requires a matching available simulator.
+
+### Android
+
+```sh
+rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+cargo install cargo-ndk
+bash scripts/android.sh install   # builds the core, the debug APK and installs it on the connected device or emulator
+```
+
+To use Android Studio instead, run `bash scripts/build-core.sh android` once (and again after changing `crates/`), then open `apps/wfhub-android`. Set `sdk.dir` in `apps/wfhub-android/local.properties`. The first run of `scripts/android.sh` creates the Gradle wrapper with `gradle wrapper`.
 
 ## Website and API
 
@@ -28,16 +39,17 @@ The privacy and terms pages are drafts and require review before publication. Se
 
 ```sh
 npm run api:test
+npm run core:test
 npm run format:rust
 ```
 
-API tests cover routes, HTTP methods, feedback validation, and the static data files; they do not replace UI and device testing. When changing UI behavior, exercise the affected screens and navigation in the relevant client.
+`core:test` runs the unit tests of the shared Rust core. API tests cover routes, HTTP methods, feedback validation, and the static data files; they do not replace UI and device testing. When changing UI behavior, exercise the affected screens and navigation in the relevant client.
 
 ## Generated files and release
 
-The iOS `build/` directory and generated `.xcodeproj` files are ignored by Git. Edit `apps/wfhub-mobile/project.yml` and regenerate the project instead of editing the generated project as the source of truth.
+The iOS `build/` directory and generated `.xcodeproj` files are ignored by Git. Edit `apps/wfhub-ios/project.yml` and regenerate the project instead of editing the generated project as the source of truth.
 
-`bash scripts/mobile.sh archive` generates an iOS archive and increments `CURRENT_PROJECT_VERSION` in `project.yml` by default. Invoke the script directly with `--no-bump` to retain the current number. Archiving requires an appropriately configured signing team.
+`bash scripts/ios.sh archive` generates an iOS archive and increments `CURRENT_PROJECT_VERSION` in `project.yml` by default. Invoke the script directly with `--no-bump` to retain the current number. Archiving requires an appropriately configured signing team.
 
 If the simulator script cannot find iPhone 15, select an available simulator with `WFHUB_SIMULATOR`. Network-backed screens require access to the services listed in [Data and integrations](data-and-integrations.md).
 

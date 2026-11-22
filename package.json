@@ -8,8 +8,8 @@
     "cf:build": "bash scripts/build-site.sh",
     "cf:preview": "bash scripts/check-worker.sh && bash scripts/build-site.sh && npx wrangler versions upload",
     "commit": "bash scripts/commit.sh",
-    "format:rust": "cargo fmt --manifest-path apps/wfhub-api/Cargo.toml",
-    "format:swift": "swift format --in-place --recursive apps/wfhub-mobile/WFHub",
+    "format:rust": "cargo fmt --manifest-path apps/wfhub-api/Cargo.toml && cargo fmt --manifest-path crates/Cargo.toml",
+    "format:swift": "swift format --in-place --recursive apps/wfhub-ios/WFHub",
     "dev:web": "bash scripts/build-site.sh && npx wrangler dev --local --port 8000",
     "api:test": "cargo test --release --manifest-path apps/wfhub-api/Cargo.toml",
     "api:build": "bash scripts/build-worker.sh",
@@ -17,9 +17,14 @@
     "catalogue:export": "cargo run --release --manifest-path apps/wfhub-api/Cargo.toml --bin export-catalogue -- apps/wfhub-api/.sources/catalogue apps/wfhub-api/data/catalogue",
     "worldstate:fetch": "bash scripts/fetch-worldstate.sh",
     "worldstate:export": "cargo run --release --manifest-path apps/wfhub-api/Cargo.toml --bin export-worldstate -- apps/wfhub-api/.sources/worldstate apps/wfhub-api/.sources/catalogue apps/wfhub-api/data/worldstate",
-    "mobile:archive": "bash scripts/mobile.sh archive",
-    "mobile:project": "bash scripts/mobile.sh project",
-    "mobile:simulator": "bash scripts/mobile.sh simulator",
-    "test": "cargo test --release --manifest-path apps/wfhub-api/Cargo.toml"
+    "ios:archive": "bash scripts/ios.sh archive",
+    "ios:project": "bash scripts/ios.sh project",
+    "ios:simulator": "bash scripts/ios.sh simulator",
+    "test": "cargo test --release --manifest-path apps/wfhub-api/Cargo.toml && cargo test --manifest-path crates/Cargo.toml",
+    "core:test": "cargo test --manifest-path crates/Cargo.toml",
+    "core:ios": "bash scripts/build-core.sh ios",
+    "core:android": "bash scripts/build-core.sh android",
+    "android:build": "bash scripts/android.sh build",
+    "android:install": "bash scripts/android.sh install"
   }
 }

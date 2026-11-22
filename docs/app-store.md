@@ -1,6 +1,6 @@
 # App Store listing
 
-Stable listing text. Per-version text (Promotional Text, What's New and App Review Notes) lives in [`apps/wfhub-mobile/changelog`](../apps/wfhub-mobile/changelog), one file per version.
+Stable listing text. Per-version text (Promotional Text, What's New and App Review Notes) lives in [`apps/wfhub-ios/changelog`](../apps/wfhub-ios/changelog), one file per version.
 
 ## Keywords
 
