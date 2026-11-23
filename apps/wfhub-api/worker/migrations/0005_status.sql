@@ -2,7 +2,7 @@
 -- Rows older than 90 days are deleted by the cron.
 CREATE TABLE IF NOT EXISTS status_checks (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  service TEXT NOT NULL CHECK (service IN ('api', 'warframestat')),
+  service TEXT NOT NULL CHECK (service IN ('api', 'warframestat', 'compare')),
   checked_at INTEGER NOT NULL,
   ok INTEGER NOT NULL CHECK (ok IN (0, 1)),
   latency_ms INTEGER NOT NULL,

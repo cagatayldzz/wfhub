@@ -18,18 +18,50 @@
     return Math.round(minutes / 60) + " h ago";
   }
 
+  const tip = el("div", "tip");
+  tip.hidden = true;
+  document.body.append(tip);
+  const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "2-digit", year: "numeric", timeZone: "UTC" });
+
+  function showTip(bar) {
+    const { kind, date, minutes } = bar.dataset;
+    const title = { up: "Operational", down: "Downtime", none: "Not monitored" }[kind];
+    tip.replaceChildren();
+    const head = el("div", "tip-head");
+    head.append(el("span", "dot " + kind), title);
+    tip.append(head);
+    if (kind === "down") tip.append(el("div", "tip-sub", "Down for " + minutes + " minute" + (minutes === "5" ? "" : "s")));
+    if (kind === "none") tip.append(el("div", "tip-sub", "Not monitored"));
+    tip.append(el("div", "tip-date", dateFormat.format(new Date(date + "T00:00:00Z"))));
+    tip.hidden = false;
+    const box = bar.getBoundingClientRect();
+    const width = tip.offsetWidth;
+    const left = Math.min(Math.max(8, box.left + box.width / 2 - width / 2), document.documentElement.clientWidth - width - 8);
+    tip.style.left = left + window.scrollX + "px";
+    tip.style.top = box.bottom + 14 + window.scrollY + "px";
+  }
+  const hideTip = () => { tip.hidden = true; };
+
   function bars(days) {
-    const byDate = new Map(days.map((day) => [day.date, day.uptime]));
+    const byDate = new Map(days.map((day) => [day.date, day]));
     const wrap = el("div", "bars");
     for (let i = DAYS - 1; i >= 0; i--) {
       const date = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
-      const uptime = byDate.get(date);
-      const bar = el("div", "bar" + (uptime === undefined ? "" : uptime >= 99 ? " ok" : uptime >= 90 ? " warn" : " bad"));
-      bar.title = date + (uptime === undefined ? ": no data" : ": " + uptime + "% uptime");
+      const day = byDate.get(date);
+      const kind = !day ? "none" : day.downChecks > 0 ? "down" : "up";
+      const bar = el("div", "bar " + kind);
+      Object.assign(bar.dataset, { kind, date, minutes: day ? day.downChecks * 5 : 0 });
+      bar.tabIndex = 0;
+      bar.addEventListener("mouseenter", () => showTip(bar));
+      bar.addEventListener("focus", () => showTip(bar));
+      bar.addEventListener("click", () => showTip(bar));
+      bar.addEventListener("mouseleave", hideTip);
+      bar.addEventListener("blur", hideTip);
       wrap.append(bar);
     }
     return wrap;
   }
+  document.addEventListener("scroll", hideTip, { passive: true });
 
   try {
     const response = await fetch("/api/status", { cache: "no-store" });
@@ -40,13 +72,15 @@
       const row = el("div", "row");
       const state = el("span", "state " + (service.status || ""));
       const dot = el("span", "dot");
-      state.append(dot, service.status === "up" ? "Operational" : service.status === "down" ? "Down" : "No data yet");
+      const compare = service.id === "compare";
+      state.append(dot, service.status === "up" ? (compare ? "Matching" : "Operational") : service.status === "down" ? (compare ? "Differs" : "Down") : "No data yet");
       row.append(el("h2", "", service.name), state);
       const scale = el("div", "scale");
       scale.append(el("span", "", DAYS + " days ago"), el("span", "", service.uptime === null ? "" : service.uptime + "% uptime"), el("span", "", "Today"));
       card.append(row, bars(service.days), scale);
       if (service.status) {
-        const parts = ["Last check " + ago(service.checkedAt), service.latencyMs + " ms"];
+        const parts = ["Last check " + ago(service.checkedAt)];
+        if (!compare) parts.push(service.latencyMs + " ms");
         if (service.status === "down" && service.detail) parts.push(service.detail);
         card.append(el("p", "detail", parts.join(" · ")));
       }
@@ -55,7 +89,8 @@
     const known = services.filter((service) => service.status);
     const down = known.filter((service) => service.status === "down");
     banner.classList.add(!known.length ? "none" : down.length ? "down" : "up");
-    summary.textContent = !known.length ? "No checks yet" : down.length ? down.map((service) => service.name).join(" and ") + (down.length > 1 ? " are" : " is") + " down" : "All systems operational";
+    const broken = down.map((service) => (service.id === "compare" ? "The two APIs show different data" : service.name + " is down"));
+    summary.textContent = !known.length ? "No checks yet" : down.length ? broken.join(" · ") : "All systems operational";
   } catch (error) {
     banner.classList.add("down");
     summary.textContent = "Could not load the status (" + error.message + ")";

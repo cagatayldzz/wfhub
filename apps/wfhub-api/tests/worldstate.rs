@@ -61,7 +61,10 @@ fn every_platform_parses_every_section() {
       assert!(!value.is_null(), "{platform}/{section}");
     }
     assert!(parse_section(&raw, "nope", now, &names).is_none());
-    assert_eq!(parse_all(&raw, now, &names).as_object().unwrap().len(), SECTIONS.len());
+    let all = parse_all(&raw, now, &names);
+    assert_eq!(all.as_object().unwrap().len(), SECTIONS.len() + 2);
+    assert!(all["timestamp"].as_str().unwrap().ends_with('Z'));
+    assert!(!all["buildLabel"].as_str().unwrap().is_empty());
   }
 }
 
@@ -134,4 +137,29 @@ fn name_files_are_complete() {
       assert_eq!(shard_of(key.strip_suffix("|desc").unwrap_or(key)), shard, "{key}");
     }
   }
+}
+
+#[test]
+fn status_comparison_finds_what_differs() {
+  use wfhub_api::status::{differences, parse_iso};
+  assert_eq!(parse_iso("2026-11-23T10:35:13.000Z"), Some(1_795_430_113));
+  let now = 1_795_430_113;
+  let mine = serde_json::json!({
+    "timestamp": "2026-11-23T10:35:13.000Z",
+    "news": [{ "id": "a" }, { "id": "b" }], "events": [], "alerts": [{ "id": "x", "expiry": "2026-11-23T10:36:00.000Z" }],
+    "sortie": { "id": "s1" }, "archonHunt": { "id": "h" }, "voidTrader": { "id": "v" }, "nightwave": { "id": "n" },
+    "invasions": [{ "id": "i1" }], "fissures": [{ "id": "f1" }],
+  });
+  assert!(differences(&mine, &mine, now).is_empty());
+  let mut theirs = mine.clone();
+  // An alert that ends right now is not held against either side.
+  theirs["alerts"] = serde_json::json!([]);
+  assert!(differences(&mine, &theirs, now).is_empty());
+  theirs["news"] = serde_json::json!([{ "id": "a" }]);
+  theirs["sortie"] = serde_json::json!({ "id": "s2" });
+  theirs["fissures"] = serde_json::Value::Null;
+  let found = differences(&mine, &theirs, now);
+  assert_eq!(found, ["news: 1 only in WFHub, 0 only in Warframe Status", "sortie: 1 only in WFHub, 1 only in Warframe Status", "fissures: missing in Warframe Status"]);
+  theirs["timestamp"] = serde_json::json!("2026-11-23T09:00:00.000Z");
+  assert!(differences(&mine, &theirs, now)[0].starts_with("timestamp: 95 min"));
 }

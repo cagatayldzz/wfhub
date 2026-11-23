@@ -1,17 +1,19 @@
-//! The status page: every 5 minutes (cron trigger, `wrangler.jsonc`) the Worker checks two services and stores the result in
+//! The status page: every 5 minutes (cron trigger, `wrangler.jsonc`) the Worker checks three things and stores the result in
 //! D1 (`status_checks`); `GET /api/status` reads it back for `/status`.
 //!
-//! - `api`: this API itself. A Worker cannot fetch its own public address, so the check is what the API needs to answer:
-//!   the database answers a query and the static data (`/data/...`) can be read.
-//! - `warframestat`: `https://api.warframestat.us/heartbeat`, the community API the apps used before `/api/worldstate`.
+//! - `api`: this API itself. A Worker cannot fetch its own public address, so the check runs what `/api/worldstate/pc.json`
+//!   runs: the answer must have game data (open fissures) and come from a copy that is not stale.
+//! - `warframestat`: `https://api.warframestat.us/pc`, the community API the apps used before `/api/worldstate`, with the same rule.
+//! - `compare`: the two answers hold the same news, events, alerts, sortie and so on (`wfhub_api::status`).
 
 use wfhub_api::routes::Reply;
 use worker::wasm_bindgen::JsValue;
 use worker::*;
 
-pub const SERVICES: [(&str, &str); 2] = [("api", "WFHub API"), ("warframestat", "Warframe Status API")];
+pub const SERVICES: [(&str, &str); 3] =
+  [("api", "WFHub API"), ("warframestat", "Warframe Status API"), ("compare", "Same data in both APIs")];
 
-const WARFRAMESTAT_URL: &str = "https://api.warframestat.us/heartbeat";
+const WARFRAMESTAT_URL: &str = "https://api.warframestat.us/pc";
 const TIMEOUT_MS: u32 = 10_000;
 const KEEP_DAYS: i64 = 90;
 
@@ -23,29 +25,51 @@ fn number(value: i64) -> JsValue {
   JsValue::from_f64(value as f64)
 }
 
-/// `Ok(())` when this API can do what it is for.
-async fn check_api(env: &Env) -> std::result::Result<(), String> {
-  let db = env.d1("DB").map_err(|e| format!("database: {e}"))?;
-  db.prepare("SELECT 1 AS ok").first::<serde_json::Value>(None).await.map_err(|e| format!("database: {e}"))?;
-  match crate::asset(env, "/data/events.json").await {
-    Ok(Some(_)) => Ok(()),
-    Ok(None) => Err("static data not found".into()),
-    Err(e) => Err(format!("static data: {e}")),
+/// Fissures are always open in the game, so a state without any means the data is missing or broken (alerts and events can be
+/// empty).
+fn has_data(state: &serde_json::Value) -> std::result::Result<(), String> {
+  match state["fissures"].as_array() {
+    Some(fissures) if !fissures.is_empty() => Ok(()),
+    Some(_) => Err("no fissures in the data".into()),
+    None => Err("the data has no fissures".into()),
   }
 }
 
-async fn check_warframestat() -> std::result::Result<(), String> {
+/// `Ok(())` when this API answers with game data that is not stale: the same answer `/api/worldstate/pc.json` gives.
+async fn check_api(env: &Env) -> std::result::Result<serde_json::Value, String> {
+  let (reply, age) = match crate::worldstate::game_state(env, "pc", None).await {
+    Ok(answer) => answer,
+    Err(error) => return Err(error.to_string()),
+  };
+  if reply.status != 200 {
+    return Err(format!("worldstate answered {}", reply.status));
+  }
+  let state = serde_json::from_str::<serde_json::Value>(&reply.body).map_err(|_| "worldstate is not JSON".to_string())?;
+  has_data(&state)?;
+  match age {
+    Some(age) if age > crate::worldstate::STALE_AFTER_SECONDS => Err(format!("the game data is {} min old", age / 60)),
+    _ => Ok(state),
+  }
+}
+
+/// `Ok(())` when api.warframestat.us answers with game data (the whole request, body included, must take less than `TIMEOUT_MS`).
+async fn check_warframestat() -> std::result::Result<serde_json::Value, String> {
   let controller = AbortController::default();
-  let timeout = Delay::from(std::time::Duration::from_millis(TIMEOUT_MS as u64));
   let signal = controller.signal();
-  let request = Request::new(WARFRAMESTAT_URL, Method::Get).map_err(|e| e.to_string())?;
-  let fetch = Fetch::Request(request);
-  let fetching = fetch.send_with_signal(&signal);
-  futures_util::pin_mut!(fetching);
-  match futures_util::future::select(fetching, timeout).await {
-    futures_util::future::Either::Left((Ok(response), _)) if (200..300).contains(&response.status_code()) => Ok(()),
-    futures_util::future::Either::Left((Ok(response), _)) => Err(format!("HTTP {}", response.status_code())),
-    futures_util::future::Either::Left((Err(e), _)) => Err(e.to_string()),
+  let timeout = Delay::from(std::time::Duration::from_millis(TIMEOUT_MS as u64));
+  let download = async {
+    let request = Request::new(WARFRAMESTAT_URL, Method::Get).map_err(|e| e.to_string())?;
+    let mut response = Fetch::Request(request).send_with_signal(&signal).await.map_err(|e| e.to_string())?;
+    if !(200..300).contains(&response.status_code()) {
+      return Err(format!("HTTP {}", response.status_code()));
+    }
+    let state = response.json::<serde_json::Value>().await.map_err(|_| "the answer is not JSON".to_string())?;
+    has_data(&state)?;
+    Ok(state)
+  };
+  futures_util::pin_mut!(download);
+  match futures_util::future::select(download, timeout).await {
+    futures_util::future::Either::Left((result, _)) => result,
     futures_util::future::Either::Right(_) => {
       controller.abort();
       Err(format!("no answer in {} s", TIMEOUT_MS / 1000))
@@ -56,7 +80,7 @@ async fn check_warframestat() -> std::result::Result<(), String> {
 async fn record(db: &D1Database, service: &str, at: i64, result: std::result::Result<(), String>, latency_ms: i64) -> Result<()> {
   let (ok, detail) = match result {
     Ok(()) => (1, JsValue::NULL),
-    Err(reason) => (0, JsValue::from_str(&reason.chars().take(200).collect::<String>())),
+    Err(reason) => (0, JsValue::from_str(&reason.chars().take(300).collect::<String>())),
   };
   db.prepare("INSERT INTO status_checks (service, checked_at, ok, latency_ms, detail) VALUES (?1, ?2, ?3, ?4, ?5)")
     .bind(&[JsValue::from_str(service), number(at), number(ok), number(latency_ms), detail])?
@@ -75,15 +99,24 @@ pub async fn run_checks(env: &Env) -> Result<()> {
   let start = Date::now().as_millis();
   let warframestat = check_warframestat().await;
   let warframestat_ms = timed(start);
+  let compared = match (&api, &warframestat) {
+    (Ok(mine), Ok(theirs)) => match wfhub_api::status::differences(mine, theirs, now()) {
+      differences if differences.is_empty() => Ok(()),
+      differences => Err(differences.join("; ")),
+    },
+    (Err(_), _) => Err("cannot compare: the WFHub API has no data".into()),
+    (_, Err(_)) => Err("cannot compare: the Warframe Status API has no data".into()),
+  };
   let at = now();
-  record(&db, "api", at, api, api_ms).await?;
-  record(&db, "warframestat", at, warframestat, warframestat_ms).await?;
+  record(&db, "api", at, api.map(|_| ()), api_ms).await?;
+  record(&db, "warframestat", at, warframestat.map(|_| ()), warframestat_ms).await?;
+  record(&db, "compare", at, compared, 0).await?;
   db.prepare("DELETE FROM status_checks WHERE checked_at < ?1").bind(&[number(at - KEEP_DAYS * 86_400)])?.run().await?;
   Ok(())
 }
 
 /// `GET /api/status`: for each service the last check, the uptime and the average latency of the last 90 days, and the
-/// uptime of each day (UTC), oldest first.
+/// uptime and number of failed checks (5 minutes each) of each day (UTC), oldest first.
 pub async fn report(env: &Env) -> Result<Reply> {
   let db = env.d1("DB")?;
   let since = now() - KEEP_DAYS * 86_400;
@@ -123,6 +156,7 @@ pub async fn report(env: &Env) -> Result<Reply> {
       "days": days.iter().map(|d| serde_json::json!({
         "date": d["day"],
         "uptime": (d["up"].as_f64().unwrap_or(0.0) / d["checks"].as_f64().unwrap_or(1.0) * 10_000.0).round() / 100.0,
+        "downChecks": d["checks"].as_i64().unwrap_or(0) - d["up"].as_i64().unwrap_or(0),
       })).collect::<Vec<_>>(),
     })
   });

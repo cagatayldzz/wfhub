@@ -4,6 +4,7 @@
 
 pub mod feedback;
 pub mod routes;
+pub mod status;
 pub mod worldstate;
 
 #[cfg(feature = "generate")]

@@ -18,7 +18,7 @@ mod value;
 pub use names::{Names, SHARDS, collect_paths, desc_key, humanize, normalize, shard_of, shards_needed};
 pub use value::{eta, iso, ms};
 
-use serde_json::{Map, Value};
+use serde_json::{Map, Value, json};
 
 /// The platforms of the game.
 pub const PLATFORMS: [&str; 4] = ["pc", "xb1", "ps4", "swi"];
@@ -88,9 +88,14 @@ pub fn parse_section(raw: &Value, section: &str, now: i64, names: &Names) -> Opt
   })
 }
 
-/// All endpoints in one object.
+/// All endpoints in one object, after `timestamp` (the game's clock when the state was made) and `buildLabel` (the game build), as
+/// api.warframestat.us has them.
 pub fn parse_all(raw: &Value, now: i64, names: &Names) -> Value {
   let mut all = Map::new();
+  if let Some(seconds) = raw.get("Time").and_then(Value::as_i64) {
+    all.insert("timestamp".into(), json!(iso(seconds * 1000)));
+  }
+  all.insert("buildLabel".into(), json!(raw.get("BuildLabel").and_then(Value::as_str).unwrap_or("")));
   for section in SECTIONS {
     if let Some(value) = parse_section(raw, section, now, names) {
       all.insert(section.into(), value);
