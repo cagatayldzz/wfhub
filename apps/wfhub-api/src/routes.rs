@@ -6,6 +6,7 @@
 //! | `GET /api/` | the Swagger page | `swagger/index.html` |
 //! | `GET /api/swagger/openapi.json` | the OpenAPI description | `swagger/openapi.json` |
 //! | `GET /api/health` | `"ok"` | |
+//! | `GET /api/status` | the uptime of the API and of api.warframestat.us | `status_checks` (D1), written by the Worker's cron |
 //! | `GET /api/events.json` | the banners | `data/events.json` |
 //! | `GET /api/mastery/{category}.json` | a mastery checklist snapshot | `data/mastery/{category}.json` |
 //! | `GET /api/{category}.json` | the items of a Codex category | `data/catalogue/{category}.json` |
@@ -105,6 +106,8 @@ pub fn error(status: u16, message: &str) -> Reply {
 #[derive(Debug, PartialEq)]
 pub enum Route {
   Health,
+  /// The status page's data (D1).
+  Status,
   /// Send the client to this path.
   Redirect(&'static str),
   /// A static file of the site, answered as it is.
@@ -154,6 +157,7 @@ pub fn route(method: &str, path: &str) -> Result<Route, Reply> {
     "/api/swagger/openapi.json" => return file("/swagger/openapi.json", JSON, "no-cache"),
     "/api/swagger/init.js" => return file("/swagger/init.js", "text/javascript; charset=utf-8", "no-cache"),
     "/api/health" => return Ok(Route::Health),
+    "/api/status" => return Ok(Route::Status),
     "/api/events.json" => return file("/data/events.json", JSON, SHORT),
     _ => {}
   }

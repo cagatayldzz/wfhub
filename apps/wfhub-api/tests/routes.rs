@@ -12,6 +12,7 @@ fn reads_the_routes() {
     route("GET", "/api/warframes/excalibur.json").unwrap(),
     Route::Item { bucket: "/data/catalogue/warframes/e.json".into(), slug: "excalibur".into() }
   );
+  assert_eq!(route("GET", "/api/status").unwrap(), Route::Status);
   assert_eq!(route("POST", "/api/feedback").unwrap(), Route::Feedback);
 }
 

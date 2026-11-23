@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Current status and uptime of the WFHub API and the Warframe Status API."><meta name="theme-color" content="#06121a"><title>WFHub Status</title><link rel="icon" href="/assets/icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"><link rel="stylesheet" href="/styles.css">
+<style>
+.status{max-width:780px;padding:32px 0 96px;flex:1}
+.status h1{font-size:clamp(32px,5vw,44px);margin:12px 0 24px}
+.banner{display:flex;align-items:center;gap:12px;padding:18px 22px;border-radius:12px;font-weight:700;font-size:18px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.banner.up{background:rgba(52,199,132,.12);box-shadow:inset 0 0 0 1px rgba(52,199,132,.45)}
+.banner.down{background:rgba(240,84,84,.12);box-shadow:inset 0 0 0 1px rgba(240,84,84,.5)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--steel);flex:none}
+.up .dot{background:#34c784}.down .dot{background:#f05454}
+.service{margin-top:20px;padding:20px 22px;border-radius:12px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.service .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.service h2{margin:0;font-size:18px}
+.service .state{margin-left:auto;display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--soft)}
+.bars{display:flex;gap:2px;height:34px;margin:16px 0 8px}
+.bar{flex:1;min-width:2px;border-radius:2px;background:var(--line)}
+.bar.ok{background:#34c784}.bar.warn{background:#f0aa42}.bar.bad{background:#f05454}
+.scale{display:flex;justify-content:space-between;color:var(--steel);font-size:13px}
+.detail{margin:10px 0 0;color:var(--steel);font-size:14px}
+.note{margin-top:28px;color:var(--steel);font-size:14px}
+</style></head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<header class="top wrap"><a class="brand" href="/"><img src="/assets/icon.png" alt="">WFHub</a><nav><a href="https://github.com/cagatayldzz/wfhub">GitHub</a></nav></header>
+<main class="wrap status">
+<p class="eyebrow">Status</p>
+<h1>WFHub Status</h1>
+<div class="banner" id="banner"><span class="dot"></span><span id="summary">Loading…</span></div>
+<div id="services"></div>
+<p class="note" id="note">Checked every 5 minutes. Uptime is for the last 90 days.</p>
+</main>
+<footer class="wrap foot"><span>WFHub is an independent community project. Warframe is a trademark of Digital Extremes. WFHub is not affiliated with or endorsed by Digital Extremes.</span><div><a href="/legal/contact">Contact</a><a href="/legal/privacy-policy">Privacy</a><a href="/legal/terms-of-service">Terms</a></div></footer>
+<script src="/status/app.js"></script>
+</body></html>

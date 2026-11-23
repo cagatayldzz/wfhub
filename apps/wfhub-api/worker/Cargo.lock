@@ -785,6 +785,7 @@ name = "wfhub-worker"
 version = "0.1.0"
 dependencies = [
  "base64",
+ "futures-util",
  "serde_json",
  "wfhub-api",
  "worker",

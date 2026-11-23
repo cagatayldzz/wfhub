@@ -1,7 +1,7 @@
 //! The WFHub API as a Cloudflare Worker, in front of the website: requests to `/api/...` come here, the rest is served
 //! from the static assets. It is Rust compiled to WASM (`npm run api:build`; the result in `dist/` is
 //! committed, `cf:deploy` checks it is fresh): it holds no data. Everything it answers comes from static files of the site (`/data/...`, `/swagger/...`), so
-//! changing the API is changing those files and deploying the site. The one thing it writes is feedback (D1, `DB`).
+//! changing the API is changing those files and deploying the site. It writes feedback and the status checks (D1, `DB`; the checks run from a cron trigger every 5 minutes, see `status.rs`).
 //!
 //! The live game state (`/api/worldstate/...`) is the one thing that is not a file: the Worker fetches it from the game
 //! through a proxy when its copy (D1 + a 5 minute cache) is old, and parses it with `wfhub_api::worldstate` (see `worldstate.rs`).
@@ -10,6 +10,7 @@
 
 mod access;
 mod feedback;
+mod status;
 mod worldstate;
 
 use wfhub_api::routes::{Reply, Route, error, item_reply, route};
@@ -50,6 +51,7 @@ async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Repl
       Ok(reply) => reply,
       Err(_) => error(503, "Service unavailable"),
     },
+    Route::Status => status::report(env).await?,
     Route::Redirect(_) | Route::WorldState { .. } => unreachable!("redirects and the game state are answered before"),
     Route::File { path, content_type, cache } => match asset(env, &path).await? {
       Some(body) => Reply { status: 200, body, cache, content_type },
@@ -57,6 +59,13 @@ async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Repl
     },
     Route::Item { bucket, slug } => item_reply(asset(env, &bucket).await?.as_deref(), &slug),
   })
+}
+
+#[event(scheduled)]
+async fn scheduled(_event: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
+  if let Err(error) = status::run_checks(&env).await {
+    console_error!("status checks failed: {error}");
+  }
 }
 
 #[event(fetch)]
