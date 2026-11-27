@@ -29,7 +29,14 @@ pub fn parse_iso(text: &str) -> Option<i64> {
   Some(days * 86_400 + hour * 3600 + minute * 60 + second)
 }
 
-fn ids(section: &Value, now: i64) -> BTreeSet<String> {
+/// What names an item: its `id`, except in `nightwave`, whose ids are written differently in the two (`nightwave18` and
+/// `nightwave1804464000000`): the season is named by when it starts.
+fn key(section: &str, item: &Value) -> Option<String> {
+  let field = if section == "nightwave" { "activation" } else { "id" };
+  item.get(field).and_then(Value::as_str).map(str::to_string)
+}
+
+fn ids(name: &str, section: &Value, now: i64) -> BTreeSet<String> {
   let items: Vec<&Value> = match section {
     Value::Array(items) => items.iter().collect(),
     Value::Object(_) => vec![section],
@@ -37,11 +44,13 @@ fn ids(section: &Value, now: i64) -> BTreeSet<String> {
   };
   items
     .into_iter()
+    // api.warframestat.us also lists the invasions that are over (`completed`); this API only the running ones.
+    .filter(|item| item.get("completed").and_then(Value::as_bool) != Some(true))
     .filter(|item| {
       let near = |key: &str| item.get(key).and_then(Value::as_str).and_then(parse_iso).is_some_and(|at| (at - now).abs() < EDGE_SECONDS);
       !(near("activation") || near("expiry"))
     })
-    .filter_map(|item| item.get("id").and_then(Value::as_str).map(str::to_string))
+    .filter_map(|item| key(name, item))
     .collect()
 }
 
@@ -59,7 +68,7 @@ pub fn differences(mine: &Value, theirs: &Value, now: i64) -> Vec<String> {
       found.push(format!("{section}: missing in {}", if a.is_null() { "WFHub" } else { "Warframe Status" }));
       continue;
     }
-    let (a, b) = (ids(a, now), ids(b, now));
+    let (a, b) = (ids(section, a, now), ids(section, b, now));
     let (only_a, only_b) = (a.difference(&b).count(), b.difference(&a).count());
     if only_a + only_b > 0 {
       found.push(format!("{section}: {only_a} only in WFHub, {only_b} only in Warframe Status"));

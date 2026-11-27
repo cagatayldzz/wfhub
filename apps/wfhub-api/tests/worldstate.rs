@@ -163,3 +163,25 @@ fn status_comparison_finds_what_differs() {
   theirs["timestamp"] = serde_json::json!("2026-11-23T09:00:00.000Z");
   assert!(differences(&mine, &theirs, now)[0].starts_with("timestamp: 95 min"));
 }
+
+#[test]
+fn status_comparison_ignores_how_the_two_write_the_same_thing() {
+  use wfhub_api::status::{COMPARED, differences};
+  let now = 1_795_430_113;
+  let state = |nightwave: &str, invasions: serde_json::Value| {
+    let mut state = serde_json::json!({ "timestamp": "2026-11-23T10:35:13.000Z" });
+    for name in COMPARED {
+      state[name] = serde_json::json!([]);
+    }
+    state["nightwave"] = serde_json::json!({ "id": nightwave, "activation": "2026-08-12T15:30:00.000Z" });
+    state["invasions"] = invasions;
+    state
+  };
+  // The same season under two ids, and an invasion that is over only in one of them.
+  let mine = state("nightwave18", serde_json::json!([{ "id": "i1" }]));
+  let theirs = state("nightwave1804464000000", serde_json::json!([{ "id": "i1" }, { "id": "i2", "completed": true }]));
+  assert_eq!(differences(&mine, &theirs, now), Vec::<String>::new());
+  // A running invasion that is missing is still found.
+  let theirs = state("nightwave1804464000000", serde_json::json!([{ "id": "i1" }, { "id": "i3", "completed": false }]));
+  assert_eq!(differences(&mine, &theirs, now), ["invasions: 0 only in WFHub, 1 only in Warframe Status"]);
+}
