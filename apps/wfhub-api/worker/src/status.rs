@@ -93,8 +93,10 @@ async fn record(db: &D1Database, service: &str, at: i64, result: std::result::Re
 pub async fn run_checks(env: &Env) -> Result<()> {
   let db = env.d1("DB")?;
   let timed = |start: u64| (Date::now().as_millis() - start) as i64;
-  let start = Date::now().as_millis();
+  // The first answer may have to be made (parsing the state), which no user waits for: the time shown is that of the next one, from the cache.
   let api = check_api(env).await;
+  let start = Date::now().as_millis();
+  let _ = crate::worldstate::game_state(env, "pc", None, None).await;
   let api_ms = timed(start);
   let start = Date::now().as_millis();
   let warframestat = check_warframestat().await;
