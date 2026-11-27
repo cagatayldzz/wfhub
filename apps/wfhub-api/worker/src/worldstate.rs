@@ -56,7 +56,8 @@ async fn cache_copy(platform: &str, at: i64, body: &str) {
 
 /// Asks the game (through the proxy) for the raw state of a platform and keeps it in D1.
 async fn refresh(env: &Env, platform: &str) -> std::result::Result<(i64, String), String> {
-  let proxy = env.secret("WORLDSTATE_PROXY").map_err(|_| "the proxy is not configured (secret WORLDSTATE_PROXY)".to_string())?.to_string();
+  // Optional: the game answers a raw socket directly; the proxy is the fallback.
+  let proxy = env.secret("WORLDSTATE_PROXY").map(|secret| secret.to_string()).unwrap_or_default();
   let host = match platform {
     "pc" => "api",
     "xb1" => "api-xb1",

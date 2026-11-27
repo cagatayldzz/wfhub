@@ -1,6 +1,6 @@
 // GET of an https address through an HTTP proxy (CONNECT tunnel), from a Worker. `fetch` cannot use a proxy and workers-rs's
 // `start_tls()` cannot say which host the certificate must match, so the tunnel is done here, with the sockets API.
-// The game's server answers 403 to Cloudflare's addresses; the proxy's addresses it accepts.
+// The game's server answers 403 to Cloudflare's `fetch` addresses; a raw socket it accepts, and the proxy's addresses too.
 import { connect } from "cloudflare:sockets";
 
 const MAX_BYTES = 3_000_000;
@@ -57,25 +57,10 @@ function unchunk(body) {
   }
 }
 
-async function run(proxyUrl, host, path) {
-  const proxy = new URL(proxyUrl);
-  const socket = connect({ hostname: proxy.hostname, port: Number(proxy.port || 80) }, { secureTransport: "starttls", allowHalfOpen: false });
-  let writer = socket.writable.getWriter();
-  let reader = socket.readable.getReader();
-
-  const credentials = btoa(`${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`);
-  await writer.write(
-    encoder.encode(`CONNECT ${host}:443 HTTP/1.1\r\nHost: ${host}:443\r\nProxy-Authorization: Basic ${credentials}\r\nProxy-Connection: keep-alive\r\n\r\n`),
-  );
-  const reply = decoder.decode(await readWhile(reader, (bytes) => indexOfBytes(bytes, "\r\n\r\n") >= 0));
-  const statusLine = reply.split("\r\n")[0];
-  if (!/^HTTP\/1\.[01] 200/.test(statusLine)) throw new Error(`proxy CONNECT: ${statusLine.slice(0, 80) || "no answer"}`);
-
-  writer.releaseLock();
-  reader.releaseLock();
-  const tls = socket.startTls({ expectedServerHostname: host });
-  writer = tls.writable.getWriter();
-  reader = tls.readable.getReader();
+/** GET over an open TLS socket, then decode chunked and gzip. */
+async function get(socket, tls, host, path) {
+  const writer = tls.writable.getWriter();
+  const reader = tls.readable.getReader();
   await writer.write(
     encoder.encode(`GET ${path} HTTP/1.1\r\nHost: ${host}\r\nAccept-Encoding: gzip\r\nAccept: application/json\r\nConnection: close\r\n\r\n`),
   );
@@ -96,7 +81,45 @@ async function run(proxyUrl, host, path) {
   return decoder.decode(body);
 }
 
-/** The body of `https://{host}{path}`, fetched through the proxy at `proxyUrl` (http://user:password@host:port). */
+/** Straight to the game with a raw TLS socket: its server answers 403 to Workers' `fetch`, but not to a socket. */
+async function runDirect(host, path) {
+  const socket = connect({ hostname: host, port: 443 }, { secureTransport: "on", allowHalfOpen: false });
+  return get(socket, socket, host, path);
+}
+
+async function runViaProxy(proxyUrl, host, path) {
+  const proxy = new URL(proxyUrl);
+  const socket = connect({ hostname: proxy.hostname, port: Number(proxy.port || 80) }, { secureTransport: "starttls", allowHalfOpen: false });
+  const writer = socket.writable.getWriter();
+  const reader = socket.readable.getReader();
+
+  const credentials = btoa(`${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`);
+  await writer.write(
+    encoder.encode(`CONNECT ${host}:443 HTTP/1.1\r\nHost: ${host}:443\r\nProxy-Authorization: Basic ${credentials}\r\nProxy-Connection: keep-alive\r\n\r\n`),
+  );
+  const reply = decoder.decode(await readWhile(reader, (bytes) => indexOfBytes(bytes, "\r\n\r\n") >= 0));
+  const statusLine = reply.split("\r\n")[0];
+  if (!/^HTTP\/1\.[01] 200/.test(statusLine)) throw new Error(`proxy CONNECT: ${statusLine.slice(0, 80) || "no answer"}`);
+
+  writer.releaseLock();
+  reader.releaseLock();
+  return get(socket, socket.startTls({ expectedServerHostname: host }), host, path);
+}
+
+async function run(proxyUrl, host, path) {
+  try {
+    return await runDirect(host, path);
+  } catch (direct) {
+    if (!proxyUrl) throw direct;
+    try {
+      return await runViaProxy(proxyUrl, host, path);
+    } catch (proxied) {
+      throw new Error(`direct: ${direct.message}; proxy: ${proxied.message}`);
+    }
+  }
+}
+
+/** The body of `https://{host}{path}`: with a raw socket, else through the proxy at `proxyUrl` (http://user:password@host:port; may be empty). */
 export async function fetch_via_proxy(proxyUrl, host, path) {
   let timer;
   const timeout = new Promise((_, reject) => {
