@@ -62,14 +62,19 @@ async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Repl
 }
 
 #[event(scheduled)]
-async fn scheduled(_event: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
-  if let Err(error) = status::run_checks(&env).await {
+async fn scheduled(event: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
+  // Every minute: keep the game state at most ~4 minutes old, so requests never wait for the game. Every 5th minute: the status
+  // checks (they read the state too, so they are made after it was refreshed).
+  worldstate::keep_fresh(&env, 240).await;
+  if (event.schedule() as u64 / 60_000) % 5 == 0
+    && let Err(error) = status::run_checks(&env).await
+  {
     console_error!("status checks failed: {error}");
   }
 }
 
 #[event(fetch)]
-async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
+async fn fetch(req: Request, env: Env, ctx: Context) -> Result<Response> {
   let url = req.url()?;
   let head = req.method() == Method::Head;
   let method = if head { "GET".to_string() } else { req.method().to_string() };
@@ -77,7 +82,7 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
     return Response::redirect_with_status(url.join(to)?, 308);
   }
   if let Ok(Route::WorldState { platform, section }) = route(&method, url.path()) {
-    let (reply, age) = match worldstate::game_state(&env, platform, section).await {
+    let (reply, age) = match worldstate::game_state(&env, platform, section, Some(&ctx)).await {
       Ok(answer) => answer,
       Err(error) => worldstate::unavailable(&error.to_string()),
     };

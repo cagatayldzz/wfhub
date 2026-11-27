@@ -9,7 +9,7 @@
     "ACCESS_AUD": "cb1419d17532ebf689c2920aeef182c53a21ab3c3c92d1d9c2a6e55da55d9ef1"
   },
   "preview_urls": false,
-  "triggers": { "crons": ["*/5 * * * *"] },
+  "triggers": { "crons": ["* * * * *"] },
   "assets": {
     "directory": "./dist/site",
     "binding": "ASSETS",

@@ -37,7 +37,7 @@ fn has_data(state: &serde_json::Value) -> std::result::Result<(), String> {
 
 /// `Ok(())` when this API answers with game data that is not stale: the same answer `/api/worldstate/pc.json` gives.
 async fn check_api(env: &Env) -> std::result::Result<serde_json::Value, String> {
-  let (reply, age) = match crate::worldstate::game_state(env, "pc", None).await {
+  let (reply, age) = match crate::worldstate::game_state(env, "pc", None, None).await {
     Ok(answer) => answer,
     Err(error) => return Err(error.to_string()),
   };

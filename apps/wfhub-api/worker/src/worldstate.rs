@@ -7,7 +7,7 @@
 //! answer is cached too (1 minute); the `x-worldstate-age` header says how old the copy it comes from is.
 
 use wfhub_api::routes::Reply;
-use wfhub_api::worldstate::{self, Names};
+use wfhub_api::worldstate::{self, Names, PLATFORMS};
 use worker::js_sys;
 use worker::wasm_bindgen::{self, JsValue, prelude::wasm_bindgen};
 use worker::*;
@@ -17,8 +17,12 @@ const FRESH_SECONDS: i64 = 300;
 /// How long a parsed answer is reused: nothing in it depends on the clock, and parsing (the 170 KB state, the name tables) is
 /// what makes a request slow.
 const ANSWER_SECONDS: i64 = 60;
-/// A copy older than this is flagged as stale.
+/// A copy older than this is flagged as stale (and is not answered while the game is asked: the answer waits for it).
 pub const STALE_AFTER_SECONDS: i64 = 30 * 60;
+/// How long a parsed answer is kept in the cache: after `ANSWER_SECONDS` it is answered once more and made again in the background.
+const ANSWER_KEEP_SECONDS: i64 = 300;
+/// How long a refresh in the background blocks another one in the same data centre.
+const GUARD_SECONDS: i64 = 20;
 
 #[wasm_bindgen(module = "/src/tunnel.js")]
 extern "C" {
@@ -85,9 +89,26 @@ async fn refresh(env: &Env, platform: &str) -> std::result::Result<(i64, String)
   Ok((at, body))
 }
 
+/// Only one request per data centre refreshes something at a time: others keep answering what they have.
+async fn take_guard(key: &str) -> bool {
+  let key = format!("https://worldstate.invalid/refreshing/{}", key.trim_start_matches("https://worldstate.invalid/"));
+  let cache = Cache::default();
+  if cache.get(key.clone(), false).await.ok().flatten().is_some() {
+    return false;
+  }
+  if let Ok(response) = Response::ok("1")
+    && response.headers().set("cache-control", &format!("public, max-age={GUARD_SECONDS}")).is_ok()
+  {
+    let _ = cache.put(key, response).await;
+  }
+  true
+}
+
 /// The raw state of a platform and when it was fetched (seconds since the epoch): from the cache, else from D1 when it is
-/// fresh, else from the game. If the game cannot be reached the last copy is returned; the error only when there is none.
-async fn stored_state(env: &Env, platform: &str) -> std::result::Result<(i64, String), String> {
+/// fresh, else from the game. A copy that is only a little old (and `ctx` to run it after the answer) is answered at once while
+/// the game is asked in the background, so nobody waits for the game; with none (or a very old one) the game is asked here, and
+/// if it cannot be reached the last copy is returned: the error only when there is none.
+async fn stored_state(env: &Env, platform: &'static str, ctx: Option<&Context>) -> std::result::Result<(i64, String), String> {
   if let Some(mut response) = Cache::default().get(cache_key(platform), false).await.ok().flatten()
     && let Ok(text) = response.text().await
     && let Some((at, body)) = text.split_once('\n')
@@ -110,6 +131,20 @@ async fn stored_state(env: &Env, platform: &str) -> std::result::Result<(i64, St
     cache_copy(platform, *at, body).await;
     return Ok(last.unwrap());
   }
+  if let (Some((at, _)), Some(ctx)) = (&last, ctx)
+    && now() - at < STALE_AFTER_SECONDS
+  {
+    if take_guard(&cache_key(platform)).await {
+      let env = env.clone();
+      ctx.wait_until(async move {
+        match refresh(&env, platform).await {
+          Ok((at, body)) => cache_copy(platform, at, &body).await,
+          Err(reason) => console_error!("worldstate refresh failed ({platform}): {reason}"),
+        }
+      });
+    }
+    return Ok(last.unwrap());
+  }
   match refresh(env, platform).await {
     Ok((at, body)) => {
       cache_copy(platform, at, &body).await;
@@ -118,6 +153,29 @@ async fn stored_state(env: &Env, platform: &str) -> std::result::Result<(i64, St
     Err(reason) => {
       console_error!("worldstate refresh failed ({platform}): {reason}");
       last.ok_or(reason)
+    }
+  }
+}
+
+/// When the copy of a platform was fetched (`None` when there is none).
+async fn fetched_at(env: &Env, platform: &str) -> Option<i64> {
+  let db = env.d1("DB").ok()?;
+  let statement = db.prepare("SELECT fetched_at FROM worldstate WHERE platform = ?1").bind(&[JsValue::from_str(platform)]).ok()?;
+  let row = statement.first::<serde_json::Value>(None).await.ok()??;
+  row["fetched_at"].as_i64()
+}
+
+/// The cron (every minute): asks the game again when the copy of a platform is `max_age` seconds old, so requests find a fresh one.
+/// Only `pc` and platforms that have been asked for are kept.
+pub async fn keep_fresh(env: &Env, max_age: i64) {
+  for platform in PLATFORMS {
+    let at = fetched_at(env, platform).await;
+    if (at.is_none() && platform != "pc") || at.is_some_and(|at| now() - at < max_age) {
+      continue;
+    }
+    match refresh(env, platform).await {
+      Ok((at, body)) => cache_copy(platform, at, &body).await,
+      Err(reason) => console_error!("worldstate refresh failed ({platform}): {reason}"),
     }
   }
 }
@@ -132,22 +190,24 @@ fn answer_key(platform: &str, section: Option<&str>) -> String {
 }
 
 fn answer_cache_control(age: i64) -> &'static str {
-  if age > STALE_AFTER_SECONDS { "public, max-age=10" } else { "public, max-age=60" }
+  if age > STALE_AFTER_SECONDS { "public, max-age=10" } else { "public, max-age=60, stale-while-revalidate=240" }
 }
 
-/// `GET /api/worldstate/{platform}[/{section}].json`: the parsed state and the age of the copy it comes from (seconds).
-pub async fn game_state(env: &Env, platform: &str, section: Option<&str>) -> Result<(Reply, Option<i64>)> {
+/// A parsed answer from the cache: when the copy it comes from was fetched, when it was made, and the text.
+async fn cached_answer(key: &str) -> Option<(i64, i64, String)> {
+  let mut response = Cache::default().get(key.to_string(), false).await.ok().flatten()?;
+  let text = response.text().await.ok()?;
+  let (head, body) = text.split_once('\n')?;
+  let mut times = head.split(' ').map(str::parse::<i64>);
+  let fetched_at = times.next()?.ok()?;
+  let made_at = times.next().and_then(|time| time.ok()).unwrap_or(0);
+  Some((fetched_at, made_at, body.to_string()))
+}
+
+/// Parses the state into the answer for a route, and keeps it in the cache.
+async fn make_answer(env: &Env, platform: &'static str, section: Option<&'static str>, ctx: Option<&Context>) -> Result<(Reply, Option<i64>)> {
   let now = now();
-  let key = answer_key(platform, section);
-  if let Some(mut response) = Cache::default().get(key.clone(), false).await.ok().flatten()
-    && let Ok(text) = response.text().await
-    && let Some((fetched_at, body)) = text.split_once('\n')
-    && let Ok(fetched_at) = fetched_at.parse::<i64>()
-  {
-    let age = (now - fetched_at).max(0);
-    return Ok((Reply::json(200, body.to_string(), answer_cache_control(age)), Some(age)));
-  }
-  let (fetched_at, text) = match stored_state(env, platform).await {
+  let (fetched_at, text) = match stored_state(env, platform, ctx).await {
     Ok(state) => state,
     Err(reason) => return Ok(unavailable(&reason)),
   };
@@ -167,10 +227,37 @@ pub async fn game_state(env: &Env, platform: &str, section: Option<&str>) -> Res
   let Some(body) = body else { return Ok((wfhub_api::routes::not_found(), None)) };
   let age = (now - fetched_at).max(0);
   let body = body.to_string();
-  if let Ok(response) = Response::ok(format!("{fetched_at}\n{body}"))
-    && response.headers().set("cache-control", &format!("public, max-age={ANSWER_SECONDS}")).is_ok()
+  if let Ok(response) = Response::ok(format!("{fetched_at} {now}\n{body}"))
+    && response.headers().set("cache-control", &format!("public, max-age={ANSWER_KEEP_SECONDS}")).is_ok()
   {
-    let _ = Cache::default().put(key, response).await;
+    let _ = Cache::default().put(answer_key(platform, section), response).await;
   }
   Ok((Reply::json(200, body, answer_cache_control(age)), Some(age)))
+}
+
+/// `GET /api/worldstate/{platform}[/{section}].json`: the parsed state and the age of the copy it comes from (seconds).
+/// An answer older than `ANSWER_SECONDS` is still sent at once (when `ctx` can run work after the response) and made again in the
+/// background, so only the first request after a quiet time (`ANSWER_KEEP_SECONDS`) waits for the parsing.
+pub async fn game_state(env: &Env, platform: &'static str, section: Option<&'static str>, ctx: Option<&Context>) -> Result<(Reply, Option<i64>)> {
+  let now = now();
+  let key = answer_key(platform, section);
+  if let Some((fetched_at, made_at, body)) = cached_answer(&key).await {
+    let age = (now - fetched_at).max(0);
+    let fresh = now - made_at < ANSWER_SECONDS;
+    if fresh {
+      return Ok((Reply::json(200, body, answer_cache_control(age)), Some(age)));
+    }
+    if let Some(ctx) = ctx {
+      if take_guard(&key).await {
+        let env = env.clone();
+        ctx.wait_until(async move {
+          if let Err(error) = make_answer(&env, platform, section, None).await {
+            console_error!("worldstate answer failed ({platform}): {error}");
+          }
+        });
+      }
+      return Ok((Reply::json(200, body, answer_cache_control(age)), Some(age)));
+    }
+  }
+  make_answer(env, platform, section, ctx).await
 }

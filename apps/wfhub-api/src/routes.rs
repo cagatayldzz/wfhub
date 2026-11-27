@@ -130,7 +130,7 @@ pub enum Route {
 }
 
 const JSON: &str = "application/json; charset=utf-8";
-const SHORT: &str = "public, max-age=300";
+const SHORT: &str = "public, max-age=300, stale-while-revalidate=3600";
 
 /// The first character of a slug names the file its item is in: `data/catalogue/{category}/{character}.json`.
 pub fn bucket_name(slug: &str) -> Option<char> {
