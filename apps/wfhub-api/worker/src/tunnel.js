@@ -83,7 +83,7 @@ async function run(proxyUrl, host, path) {
   socket.close().catch(() => {});
 
   const split = indexOfBytes(raw, "\r\n\r\n");
-  if (split < 0) throw new Error("game answer: no headers");
+  if (split < 0) throw new Error(`game answer: no headers (${raw.length} bytes: ${JSON.stringify(decoder.decode(raw.slice(0, 120)))})`);
   const head = decoder.decode(raw.slice(0, split)).split("\r\n");
   const status = Number(head[0].split(" ")[1]);
   const headers = Object.fromEntries(head.slice(1).map((line) => [line.slice(0, line.indexOf(":")).toLowerCase(), line.slice(line.indexOf(":") + 1).trim()]));
