@@ -114,7 +114,10 @@ async fn stored_state(env: &Env, platform: &str) -> std::result::Result<(i64, St
       cache_copy(platform, at, &body).await;
       Ok((at, body))
     }
-    Err(reason) => last.ok_or(reason),
+    Err(reason) => {
+      console_error!("worldstate refresh failed ({platform}): {reason}");
+      last.ok_or(reason)
+    }
   }
 }
 
