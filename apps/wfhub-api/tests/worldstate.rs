@@ -161,7 +161,7 @@ fn status_comparison_finds_what_differs() {
   let found = differences(&mine, &theirs, now);
   assert_eq!(found, ["news: 1 only in WFHub, 0 only in Warframe Status", "sortie: 1 only in WFHub, 1 only in Warframe Status", "fissures: missing in Warframe Status"]);
   theirs["timestamp"] = serde_json::json!("2026-11-23T09:00:00.000Z");
-  assert!(differences(&mine, &theirs, now)[0].starts_with("timestamp: 95 min"));
+  assert_eq!(differences(&mine, &theirs, now), ["timestamp: 95 min apart, Warframe Status is behind"]);
 }
 
 #[test]

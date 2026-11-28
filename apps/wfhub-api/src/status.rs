@@ -56,12 +56,14 @@ fn ids(name: &str, section: &Value, now: i64) -> BTreeSet<String> {
 
 /// What differs between the two states, one line each (empty when they agree). `now` is in seconds.
 pub fn differences(mine: &Value, theirs: &Value, now: i64) -> Vec<String> {
-  let mut found = Vec::new();
   if let (Some(a), Some(b)) = (mine["timestamp"].as_str().and_then(parse_iso), theirs["timestamp"].as_str().and_then(parse_iso))
     && (a - b).abs() > MAX_CLOCK_GAP_SECONDS
   {
-    found.push(format!("timestamp: {} min apart", (a - b).abs() / 60));
+    // One of the two copies is old: the items differ because of that, so only that is said (and who is behind).
+    let behind = if a < b { "WFHub" } else { "Warframe Status" };
+    return vec![format!("timestamp: {} min apart, {behind} is behind", (a - b).abs() / 60)];
   }
+  let mut found = Vec::new();
   for section in COMPARED {
     let (a, b) = (&mine[section], &theirs[section]);
     if a.is_null() || b.is_null() {

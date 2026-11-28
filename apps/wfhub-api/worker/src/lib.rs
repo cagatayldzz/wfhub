@@ -63,9 +63,9 @@ async fn answer(req: Request, env: &Env, url: &Url, method: &str) -> Result<Repl
 
 #[event(scheduled)]
 async fn scheduled(event: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
-  // Every minute: keep the game state at most ~4 minutes old, so requests never wait for the game. Every 5th minute: the status
+  // Every minute: keep the game state at most ~3 minutes old, so requests never wait for the game. Every 5th minute: the status
   // checks (they read the state too, so they are made after it was refreshed).
-  worldstate::keep_fresh(&env, 240).await;
+  worldstate::keep_fresh(&env, 120).await;
   if (event.schedule() as u64 / 60_000) % 5 == 0
     && let Err(error) = status::run_checks(&env).await
   {
